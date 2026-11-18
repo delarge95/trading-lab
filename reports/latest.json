@@ -3,20 +3,18 @@
   "sources": {
     "Precios": "OK (yahoo), 8/8 tickers",
     "FRED": "OK (5/5 series)",
-    "SEC": "FALLÓ: GET https://www.sec.gov/files/company_tickers.json falló tras 3 intentos: 403 Client Error: Forbidden for url: https://www.sec.gov/files/company_tickers.json"
+    "SEC": "OK (8/8 gestores, 6 emisores); 13F atrasado: Pershing Square"
   },
-  "errors": [
-    "SEC: GET https://www.sec.gov/files/company_tickers.json falló tras 3 intentos: 403 Client Error: Forbidden for url: https://www.sec.gov/files/company_tickers.json"
-  ],
+  "errors": [],
   "tickers": {
     "SPY": {
       "last_date": "2026-11-17",
       "last_price": 732.4400024414062,
       "n_obs": 2512,
-      "momentum_12_1": 0.15302076005302534,
+      "momentum_12_1": 0.15302086591830233,
       "trend": "positiva",
       "vol_63d": 0.15133702282201544,
-      "vol_252d": 0.1378501168180064,
+      "vol_252d": 0.13785011012036577,
       "ret_21d": -0.04441078553222777,
       "prob_up": {
         "horizon": 21,
@@ -42,7 +40,7 @@
       "momentum_12_1": 0.18538768396779015,
       "trend": "positiva",
       "vol_63d": 0.24067325758833705,
-      "vol_252d": 0.216396235367207,
+      "vol_252d": 0.21639628449750117,
       "ret_21d": -0.08548635001499627,
       "prob_up": {
         "horizon": 21,
@@ -65,10 +63,10 @@
       "last_date": "2026-11-17",
       "last_price": 351.9100036621094,
       "n_obs": 2512,
-      "momentum_12_1": 0.2623378912624035,
+      "momentum_12_1": 0.26233774935241394,
       "trend": "positiva",
       "vol_63d": 0.21804968483524792,
-      "vol_252d": 0.249152446674601,
+      "vol_252d": 0.24915249198759423,
       "ret_21d": 0.026935879709243826,
       "prob_up": {
         "horizon": 21,
@@ -91,10 +89,10 @@
       "last_date": "2026-11-17",
       "last_price": 506.239990234375,
       "n_obs": 2512,
-      "momentum_12_1": 0.05435273409515018,
+      "momentum_12_1": 0.05435267050773418,
       "trend": "positiva",
       "vol_63d": 0.2707723703192463,
-      "vol_252d": 0.33531792732827465,
+      "vol_252d": 0.3353179418430812,
       "ret_21d": -0.051132156804243656,
       "prob_up": {
         "horizon": 21,
@@ -120,7 +118,7 @@
       "momentum_12_1": 0.1442925401383217,
       "trend": "positiva",
       "vol_63d": 0.43036075854583433,
-      "vol_252d": 0.387500544796178,
+      "vol_252d": 0.3875006048025012,
       "ret_21d": -0.28389143057563637,
       "prob_up": {
         "horizon": 21,
@@ -169,10 +167,10 @@
       "last_date": "2026-11-17",
       "last_price": 280.20001220703125,
       "n_obs": 2512,
-      "momentum_12_1": 0.24841762833980607,
+      "momentum_12_1": 0.248417490147399,
       "trend": "positiva",
       "vol_63d": 0.36065853014789784,
-      "vol_252d": 0.33808324304993675,
+      "vol_252d": 0.33808319493809047,
       "ret_21d": -0.1858910507009609,
       "prob_up": {
         "horizon": 21,
@@ -221,36 +219,36 @@
   "backtest": {
     "SPY": {
       "periods": 107,
-      "sharpe_strategy": 0.8144441421862256,
-      "sharpe_buy_hold": 0.9305721946863904,
+      "sharpe_strategy": 0.8144447043272467,
+      "sharpe_buy_hold": 0.9305724251314049,
       "hit_rate_in_market": 0.6458333333333334,
       "exposure": 0.897196261682243
     },
     "QQQ": {
       "periods": 107,
-      "sharpe_strategy": 0.7984152395125832,
-      "sharpe_buy_hold": 0.9688312737209298,
+      "sharpe_strategy": 0.7984151800015411,
+      "sharpe_buy_hold": 0.9688313836085752,
       "hit_rate_in_market": 0.6,
       "exposure": 0.8878504672897196
     },
     "AAPL": {
       "periods": 107,
-      "sharpe_strategy": 0.6012229841596202,
-      "sharpe_buy_hold": 0.9851153063988691,
+      "sharpe_strategy": 0.6012233178334658,
+      "sharpe_buy_hold": 0.9851153447899348,
       "hit_rate_in_market": 0.5408163265306123,
       "exposure": 0.9158878504672897
     },
     "MSFT": {
       "periods": 107,
-      "sharpe_strategy": 0.8000595560572479,
-      "sharpe_buy_hold": 1.0473499496043595,
+      "sharpe_strategy": 0.8000594887899728,
+      "sharpe_buy_hold": 1.047349782661044,
       "hit_rate_in_market": 0.5666666666666667,
       "exposure": 0.8411214953271028
     },
     "NVDA": {
       "periods": 107,
-      "sharpe_strategy": 0.8938525124922568,
-      "sharpe_buy_hold": 1.1148230941317487,
+      "sharpe_strategy": 0.8938523870369486,
+      "sharpe_buy_hold": 1.1148230315594074,
       "hit_rate_in_market": 0.625,
       "exposure": 0.822429906542056
     },
@@ -263,8 +261,8 @@
     },
     "GOOGL": {
       "periods": 107,
-      "sharpe_strategy": 0.5742702292858594,
-      "sharpe_buy_hold": 0.7890258765806041,
+      "sharpe_strategy": 0.5742702353768937,
+      "sharpe_buy_hold": 0.7890260724797613,
       "hit_rate_in_market": 0.5280898876404494,
       "exposure": 0.8317757009345794
     },
@@ -276,8 +274,841 @@
       "exposure": 0.897196261682243
     }
   },
-  "insiders": {},
-  "managers": [],
+  "insiders": {
+    "AAPL": {
+      "window_days": 90,
+      "n_buys": 0,
+      "routine": 0,
+      "opportunistic": 0,
+      "unclassified": 0,
+      "buy_value": 0,
+      "opportunistic_value": 0,
+      "sell_value": 97039854.29,
+      "buys": []
+    },
+    "MSFT": {
+      "window_days": 90,
+      "n_buys": 0,
+      "routine": 0,
+      "opportunistic": 0,
+      "unclassified": 0,
+      "buy_value": 0,
+      "opportunistic_value": 0,
+      "sell_value": 74769313.3089,
+      "buys": []
+    },
+    "NVDA": {
+      "window_days": 90,
+      "n_buys": 0,
+      "routine": 0,
+      "opportunistic": 0,
+      "unclassified": 0,
+      "buy_value": 0,
+      "opportunistic_value": 0,
+      "sell_value": 967599313.4595001,
+      "buys": []
+    },
+    "AMZN": {
+      "window_days": 90,
+      "n_buys": 0,
+      "routine": 0,
+      "opportunistic": 0,
+      "unclassified": 0,
+      "buy_value": 0,
+      "opportunistic_value": 0,
+      "sell_value": 18539226.6663,
+      "buys": []
+    },
+    "GOOGL": {
+      "window_days": 90,
+      "n_buys": 0,
+      "routine": 0,
+      "opportunistic": 0,
+      "unclassified": 0,
+      "buy_value": 0,
+      "opportunistic_value": 0,
+      "sell_value": 169237.57,
+      "buys": []
+    },
+    "BRK-B": {
+      "window_days": 90,
+      "n_buys": 2,
+      "routine": 0,
+      "opportunistic": 0,
+      "unclassified": 2,
+      "buy_value": 250207.3,
+      "opportunistic_value": 0,
+      "sell_value": 19972776.22,
+      "buys": [
+        {
+          "owner": "O'Sullivan Michael J.",
+          "owner_cik": "0001713777",
+          "issuer_cik": "1067983",
+          "role": "Officer",
+          "code": "P",
+          "date": "2026-11-12",
+          "shares": 367.0,
+          "price": 594.4,
+          "value": 218144.8,
+          "filed": "2026-11-16",
+          "class": "indeterminado"
+        },
+        {
+          "owner": "O'Sullivan Michael J.",
+          "owner_cik": "0001713777",
+          "issuer_cik": "1067983",
+          "role": "Officer",
+          "code": "P",
+          "date": "2026-11-12",
+          "shares": 54.0,
+          "price": 593.75,
+          "value": 32062.5,
+          "filed": "2026-11-16",
+          "class": "indeterminado"
+        }
+      ]
+    }
+  },
+  "managers": [
+    {
+      "name": "Berkshire Hathaway",
+      "cik": 1067983,
+      "period": "2026-09-30",
+      "filed": "2026-11-16",
+      "age_days": 49,
+      "stale": false,
+      "total_value": 304196581325.0,
+      "positions": 30,
+      "top": [
+        {
+          "cusip": "037833100",
+          "name": "APPLE INC",
+          "value": 75901188420.0,
+          "weight": 0.24951361415501272,
+          "change": "="
+        },
+        {
+          "cusip": "025816109",
+          "name": "AMERICAN EXPRESS CO",
+          "value": 46104813870.0,
+          "weight": 0.1515625641457889,
+          "change": "="
+        },
+        {
+          "cusip": "191216100",
+          "name": "COCA COLA CO",
+          "value": 34432000000.0,
+          "weight": 0.11318996370709788,
+          "change": "="
+        },
+        {
+          "cusip": "02079K305",
+          "name": "ALPHABET INC",
+          "value": 27110464741.0,
+          "weight": 0.08912152997549799,
+          "change": "="
+        },
+        {
+          "cusip": "060505104",
+          "name": "BANK OF AMER CORP",
+          "value": 24812509222.0,
+          "weight": 0.08156735067147454,
+          "change": "-6%"
+        },
+        {
+          "cusip": "166764100",
+          "name": "CHEVRON CORPORATION",
+          "value": 17230393553.0,
+          "weight": 0.05664229847011743,
+          "change": "="
+        },
+        {
+          "cusip": "674599105",
+          "name": "OCCIDENTAL PETE CORP",
+          "value": 14656559963.0,
+          "weight": 0.04818121196221172,
+          "change": "="
+        },
+        {
+          "cusip": "615369105",
+          "name": "MOODYS CORP",
+          "value": 11203286284.0,
+          "weight": 0.03682909990375777,
+          "change": "="
+        },
+        {
+          "cusip": "H1467J104",
+          "name": "CHUBB LIMITED",
+          "value": 11139546771.0,
+          "weight": 0.03661956594804279,
+          "change": "="
+        },
+        {
+          "cusip": "02079K107",
+          "name": "ALPHABET INC",
+          "value": 9264186660.0,
+          "weight": 0.030454604781051938,
+          "change": "="
+        }
+      ],
+      "closed": [],
+      "value_rescaled_from_thousands": false
+    },
+    {
+      "name": "Pershing Square",
+      "cik": 1336528,
+      "period": "2026-03-31",
+      "filed": "2026-05-15",
+      "age_days": 232,
+      "stale": true,
+      "total_value": 13714299861.0,
+      "positions": 11,
+      "top": [
+        {
+          "cusip": "11271J107",
+          "name": "BROOKFIELD CORP",
+          "value": 2415946008.0,
+          "weight": 0.17616254803282663,
+          "change": "-3%"
+        },
+        {
+          "cusip": "023135106",
+          "name": "AMAZON COM INC",
+          "value": 2385104083.0,
+          "weight": 0.1739136599880416,
+          "change": "+19%"
+        },
+        {
+          "cusip": "90353T100",
+          "name": "UBER TECHNOLOGIES INC",
+          "value": 2154934398.0,
+          "weight": 0.15713047110250872,
+          "change": "="
+        },
+        {
+          "cusip": "594918104",
+          "name": "MICROSOFT CORP",
+          "value": 2092970053.0,
+          "weight": 0.15261224227361964,
+          "change": "NUEVA"
+        },
+        {
+          "cusip": "76131D103",
+          "name": "RESTAURANT BRANDS INTL INC",
+          "value": 1673501194.0,
+          "weight": 0.1220260028555314,
+          "change": "="
+        },
+        {
+          "cusip": "30303M102",
+          "name": "META PLATFORMS INC",
+          "value": 1522358404.0,
+          "weight": 0.11100518578634862,
+          "change": "="
+        },
+        {
+          "cusip": "44267T102",
+          "name": "HOWARD HUGHES HOLDINGS INC",
+          "value": 1192581569.0,
+          "weight": 0.08695898303867486,
+          "change": "="
+        },
+        {
+          "cusip": "812215200",
+          "name": "SEAPORT ENTMT GROUP INC",
+          "value": 107910794.0,
+          "weight": 0.007868487279242815,
+          "change": "="
+        },
+        {
+          "cusip": "02079K107",
+          "name": "ALPHABET INC",
+          "value": 89421720.0,
+          "weight": 0.0065203270240789145,
+          "change": "-95%"
+        },
+        {
+          "cusip": "42806J700",
+          "name": "HERTZ GLOBAL HLDGS INC",
+          "value": 70261595.0,
+          "weight": 0.00512323601730528,
+          "change": "="
+        }
+      ],
+      "closed": [
+        {
+          "name": "HILTON WORLDWIDE HLDGS INC",
+          "value": 869983734.0
+        }
+      ],
+      "value_rescaled_from_thousands": false
+    },
+    {
+      "name": "Appaloosa",
+      "cik": 1656456,
+      "period": "2026-09-30",
+      "filed": "2026-11-16",
+      "age_days": 49,
+      "stale": false,
+      "total_value": 7559628593.0,
+      "positions": 24,
+      "top": [
+        {
+          "cusip": "595112103",
+          "name": "MICRON TECHNOLOGY INC",
+          "value": 1331387500.0,
+          "weight": 0.17611810998662378,
+          "change": "+28%"
+        },
+        {
+          "cusip": "023135106",
+          "name": "AMAZON COM INC",
+          "value": 1114946250.0,
+          "weight": 0.14748690842198364,
+          "change": "-10%"
+        },
+        {
+          "cusip": "874039100",
+          "name": "TAIWAN SEMICONDUCTOR MANUFAC",
+          "value": 718499250.0,
+          "weight": 0.095044252658829,
+          "change": "-5%"
+        },
+        {
+          "cusip": "84615Q103",
+          "name": "SPACE EXPLORATION TECHN CORP",
+          "value": 556547062.0,
+          "weight": 0.07362095308694751,
+          "change": "+1626%"
+        },
+        {
+          "cusip": "90353T100",
+          "name": "UBER TECHNOLOGIES INC",
+          "value": 501150650.0,
+          "weight": 0.06629302535630535,
+          "change": "-5%"
+        },
+        {
+          "cusip": "67066G104",
+          "name": "NVIDIA CORPORATION",
+          "value": 456760000.0,
+          "weight": 0.06042095777336822,
+          "change": "+31%"
+        },
+        {
+          "cusip": "464286772",
+          "name": "ISHARES INC",
+          "value": 384961914.0,
+          "weight": 0.05092338985495448,
+          "change": "-13%"
+        },
+        {
+          "cusip": "30303M102",
+          "name": "META PLATFORMS INC",
+          "value": 380719500.0,
+          "weight": 0.0503621964116776,
+          "change": "-22%"
+        },
+        {
+          "cusip": "02079K107",
+          "name": "ALPHABET INC",
+          "value": 340740000.0,
+          "weight": 0.04507364294530494,
+          "change": "-46%"
+        },
+        {
+          "cusip": "92840M102",
+          "name": "VISTRA CORP",
+          "value": 292647881.0,
+          "weight": 0.03871193900596963,
+          "change": "-5%"
+        }
+      ],
+      "closed": [
+        {
+          "name": "ADVANCED MICRO DEVICES INC",
+          "value": 114729725.0
+        },
+        {
+          "name": "BROADCOM INC",
+          "value": 56662500.0
+        },
+        {
+          "name": "QUALCOMM INC",
+          "value": 46197500.0
+        },
+        {
+          "name": "WHIRLPOOL CORP",
+          "value": 28185300.0
+        },
+        {
+          "name": "GOODYEAR TIRE & RUBR CO",
+          "value": 9956701.0
+        }
+      ],
+      "value_rescaled_from_thousands": false
+    },
+    {
+      "name": "Third Point",
+      "cik": 1040273,
+      "period": "2026-09-30",
+      "filed": "2026-11-16",
+      "age_days": 49,
+      "stale": false,
+      "total_value": 4542594933.0,
+      "positions": 38,
+      "top": [
+        {
+          "cusip": "30303M102",
+          "name": "META PLATFORMS INC",
+          "value": 474992900.0,
+          "weight": 0.10456422089264017,
+          "change": "NUEVA"
+        },
+        {
+          "cusip": "91529Y106",
+          "name": "UNUM GROUP",
+          "value": 438650000.0,
+          "weight": 0.09656374967827228,
+          "change": "NUEVA"
+        },
+        {
+          "cusip": "67066G104",
+          "name": "NVIDIA CORPORATION",
+          "value": 342570000.0,
+          "weight": 0.07541284333132504,
+          "change": "NUEVA"
+        },
+        {
+          "cusip": "G25508105",
+          "name": "CRH PLC",
+          "value": 235152000.0,
+          "weight": 0.05176600675788232,
+          "change": "+29%"
+        },
+        {
+          "cusip": "852234103",
+          "name": "BLOCK INC",
+          "value": 233825400.0,
+          "weight": 0.05147397103390376,
+          "change": "+24%"
+        },
+        {
+          "cusip": "594918104",
+          "name": "MICROSOFT CORP",
+          "value": 230805000.0,
+          "weight": 0.05080906473154823,
+          "change": "NUEVA"
+        },
+        {
+          "cusip": "Y2573F102",
+          "name": "FLEX LTD",
+          "value": 219980000.0,
+          "weight": 0.04842606555163874,
+          "change": "+94%"
+        },
+        {
+          "cusip": "14040H105",
+          "name": "CAPITAL ONE FINL CORP",
+          "value": 214307700.0,
+          "weight": 0.04717737398136617,
+          "change": "+35%"
+        },
+        {
+          "cusip": "49338L103",
+          "name": "KEYSIGHT TECHNOLOGIES INC",
+          "value": 207502800.0,
+          "weight": 0.04567935355463489,
+          "change": "-3%"
+        },
+        {
+          "cusip": "538034109",
+          "name": "LIVE NATION ENTERTAINMENT IN",
+          "value": 202313500.0,
+          "weight": 0.04453698887617722,
+          "change": "+5%"
+        }
+      ],
+      "closed": [
+        {
+          "name": "WARNER BROS DISCOVERY INC",
+          "value": 533200000.0
+        },
+        {
+          "name": "AMAZON COM INC",
+          "value": 417095000.0
+        },
+        {
+          "name": "NORFOLK SOUTHN CORP",
+          "value": 188754000.0
+        },
+        {
+          "name": "CARPENTER TECHNOLOGY CORP",
+          "value": 132620600.0
+        },
+        {
+          "name": "TRANSDIGM GROUP INC",
+          "value": 105231160.0
+        }
+      ],
+      "value_rescaled_from_thousands": false
+    },
+    {
+      "name": "Baupost Group",
+      "cik": 1061768,
+      "period": "2026-09-30",
+      "filed": "2026-11-13",
+      "age_days": 49,
+      "stale": false,
+      "total_value": 5045853000.0,
+      "positions": 21,
+      "top": [
+        {
+          "cusip": "023135106",
+          "name": "AMAZON COM INC",
+          "value": 932781000.0,
+          "weight": 0.18486091449750913,
+          "change": "="
+        },
+        {
+          "cusip": "036752103",
+          "name": "ELEVANCE HEALTH INC FORMERLY",
+          "value": 495805000.0,
+          "weight": 0.09825989778140584,
+          "change": "="
+        },
+        {
+          "cusip": "76131D103",
+          "name": "RESTAURANT BRANDS INTL INC",
+          "value": 480104000.0,
+          "weight": 0.09514823360886653,
+          "change": "="
+        },
+        {
+          "cusip": "372460105",
+          "name": "GENUINE PARTS CO",
+          "value": 389540000.0,
+          "weight": 0.07720002941029,
+          "change": "+10%"
+        },
+        {
+          "cusip": "31488V107",
+          "name": "FERGUSON ENTERPRISES INC",
+          "value": 349868000.0,
+          "weight": 0.06933773140041931,
+          "change": "+8%"
+        },
+        {
+          "cusip": "02079K107",
+          "name": "ALPHABET INC",
+          "value": 323679000.0,
+          "weight": 0.06414752867354638,
+          "change": "-31%"
+        },
+        {
+          "cusip": "95082P105",
+          "name": "WESCO INTL INC",
+          "value": 258374000.0,
+          "weight": 0.05120521743300885,
+          "change": "+8%"
+        },
+        {
+          "cusip": "92826C839",
+          "name": "VISA INC",
+          "value": 252018000.0,
+          "weight": 0.04994556916342985,
+          "change": "="
+        },
+        {
+          "cusip": "907818108",
+          "name": "UNION PAC CORP",
+          "value": 216451000.0,
+          "weight": 0.0428968105095412,
+          "change": "-33%"
+        },
+        {
+          "cusip": "G0403H108",
+          "name": "AON PLC",
+          "value": 186759000.0,
+          "weight": 0.03701237432006045,
+          "change": "-2%"
+        }
+      ],
+      "closed": [
+        {
+          "name": "TELEFLEX INCORPORATED",
+          "value": 178605000.0
+        },
+        {
+          "name": "NORWEGIAN CRUISE LINE HLDGS",
+          "value": 163180000.0
+        },
+        {
+          "name": "LIBERTY GLOBAL LTD",
+          "value": 93975000.0
+        },
+        {
+          "name": "DNOW INC",
+          "value": 36160000.0
+        }
+      ],
+      "value_rescaled_from_thousands": true
+    },
+    {
+      "name": "Duquesne Family Office",
+      "cik": 1536411,
+      "period": "2026-09-30",
+      "filed": "2026-11-16",
+      "age_days": 49,
+      "stale": false,
+      "total_value": 4148873000.0,
+      "positions": 60,
+      "top": [
+        {
+          "cusip": "632307104",
+          "name": "Natera Inc",
+          "value": 1306335000.0,
+          "weight": 0.31486502479106976,
+          "change": "="
+        },
+        {
+          "cusip": "G7997R103",
+          "name": "Seagate Technology Hldngs Pl",
+          "value": 315247000.0,
+          "weight": 0.07598376715797278,
+          "change": "+180%"
+        },
+        {
+          "cusip": "023135106",
+          "name": "Amazon Com Inc",
+          "value": 192493000.0,
+          "weight": 0.04639645513371945,
+          "change": "+43%"
+        },
+        {
+          "cusip": "35137L105",
+          "name": "Fox Corp",
+          "value": 190835000.0,
+          "weight": 0.04599682853632782,
+          "change": "+38%"
+        },
+        {
+          "cusip": "984245100",
+          "name": "Ypf Sociedad Anonima",
+          "value": 177555000.0,
+          "weight": 0.042795959288221164,
+          "change": "+13%"
+        },
+        {
+          "cusip": "91332U101",
+          "name": "Unity Software Inc",
+          "value": 161935000.0,
+          "weight": 0.03903108145272222,
+          "change": "+436%"
+        },
+        {
+          "cusip": "81141R100",
+          "name": "Sea Ltd",
+          "value": 155072000.0,
+          "weight": 0.03737689729234903,
+          "change": "+45%"
+        },
+        {
+          "cusip": "464286400",
+          "name": "Ishares Inc",
+          "value": 125814000.0,
+          "weight": 0.03032486171545863,
+          "change": "-2%"
+        },
+        {
+          "cusip": "457669307",
+          "name": "Insmed Inc",
+          "value": 124715000.0,
+          "weight": 0.030059970502832937,
+          "change": "-23%"
+        },
+        {
+          "cusip": "76155X100",
+          "name": "Revolution Medicines Inc",
+          "value": 89552000.0,
+          "weight": 0.021584656845364994,
+          "change": "+9%"
+        }
+      ],
+      "closed": [
+        {
+          "name": "Alphabet Inc",
+          "value": 120184000.0
+        },
+        {
+          "name": "United Airls Hldgs Inc",
+          "value": 108084000.0
+        },
+        {
+          "name": "Sandisk Corp",
+          "value": 79353000.0
+        },
+        {
+          "name": "Delta Air Lines Inc",
+          "value": 56477000.0
+        },
+        {
+          "name": "D R Horton Inc",
+          "value": 48701000.0
+        }
+      ],
+      "value_rescaled_from_thousands": true
+    },
+    {
+      "name": "Himalaya Capital",
+      "cik": 1709323,
+      "period": "2026-09-30",
+      "filed": "2026-11-16",
+      "age_days": 49,
+      "stale": false,
+      "total_value": 3781431260.0,
+      "positions": 8,
+      "top": [
+        {
+          "cusip": "722304102",
+          "name": "PDD HOLDINGS INC",
+          "value": 916661615.0,
+          "weight": 0.2424112860906534,
+          "change": "+9%"
+        },
+        {
+          "cusip": "02079K305",
+          "name": "ALPHABET INC",
+          "value": 875098664.0,
+          "weight": 0.23141995816684502,
+          "change": "="
+        },
+        {
+          "cusip": "02079K107",
+          "name": "ALPHABET INC",
+          "value": 835255962.0,
+          "weight": 0.2208835503200447,
+          "change": "="
+        },
+        {
+          "cusip": "084670702",
+          "name": "BERKSHIRE HATHAWAY INC DEL",
+          "value": 551886948.0,
+          "weight": 0.14594657685249052,
+          "change": "="
+        },
+        {
+          "cusip": "27579R104",
+          "name": "EAST WEST BANCORP INC",
+          "value": 344073179.0,
+          "weight": 0.09099019798127972,
+          "change": "="
+        },
+        {
+          "cusip": "88034P109",
+          "name": "TENCENT MUSIC ENTERTAINM",
+          "value": 117558000.0,
+          "weight": 0.031088228746487912,
+          "change": "+125%"
+        },
+        {
+          "cusip": "227046109",
+          "name": "CROCS INC",
+          "value": 104064880.0,
+          "weight": 0.02751997136660895,
+          "change": "="
+        },
+        {
+          "cusip": "037833100",
+          "name": "APPLE INC",
+          "value": 36832012.0,
+          "weight": 0.009740230475589817,
+          "change": "="
+        }
+      ],
+      "closed": [],
+      "value_rescaled_from_thousands": false
+    },
+    {
+      "name": "Trian Fund Management",
+      "cik": 1345471,
+      "period": "2026-09-30",
+      "filed": "2026-11-16",
+      "age_days": 49,
+      "stale": false,
+      "total_value": 2595775908.0,
+      "positions": 8,
+      "top": [
+        {
+          "cusip": "369604301",
+          "name": "GE Aerospace",
+          "value": 1258767602.0,
+          "weight": 0.4849292260246989,
+          "change": "="
+        },
+        {
+          "cusip": "83444M101",
+          "name": "Solventum Corporation",
+          "value": 726069777.0,
+          "weight": 0.2797120409209068,
+          "change": "="
+        },
+        {
+          "cusip": "36266G107",
+          "name": "GE HealthCare Technologies Inc.",
+          "value": 201688937.0,
+          "weight": 0.07769890165726895,
+          "change": "="
+        },
+        {
+          "cusip": "95058W100",
+          "name": "Wendys Co.",
+          "value": 194388609.0,
+          "weight": 0.07488651404803777,
+          "change": "="
+        },
+        {
+          "cusip": "31488V107",
+          "name": "Ferguson Enterprises Inc.",
+          "value": 190343439.0,
+          "weight": 0.07332814763145572,
+          "change": "NUEVA"
+        },
+        {
+          "cusip": "760125104",
+          "name": "Rentokil Initial plc",
+          "value": 11787017.0,
+          "weight": 0.004540845364838019,
+          "change": "NUEVA"
+        },
+        {
+          "cusip": "G491BT108",
+          "name": "Invesco Ltd.",
+          "value": 8444800.0,
+          "weight": 0.0032532854527132777,
+          "change": "-83%"
+        },
+        {
+          "cusip": "N5505D105",
+          "name": "Magnum Ice Cream Co NV",
+          "value": 4285727.0,
+          "weight": 0.0016510389000805844,
+          "change": "="
+        }
+      ],
+      "closed": [
+        {
+          "name": "Janus Henderson Group plc",
+          "value": 1334027864.0
+        },
+        {
+          "name": "Ferguson Plc New",
+          "value": 257825107.0
+        }
+      ],
+      "value_rescaled_from_thousands": false
+    }
+  ],
   "macro": {
     "DGS10": {
       "label": "Tasa Treasury 10 años (%)",
