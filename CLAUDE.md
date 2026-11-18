@@ -10,6 +10,7 @@ Informe diario (lun-vie) y revisión semanal (sáb) con: señales con respaldo a
 - Señales con respaldo: tendencia 12-1 meses; compras *oportunistas* de insiders (Form 4; las rutinarias rinden ~0; Cohen, Malloy y Pomorski, NBER w16454); posiciones de alta convicción de gestores con historial público (13F).
 - Señales descartadas: finfluencers (56% con habilidad negativa) y carteras de congresistas.
 - Cálculos: tendencia 12-1, volatilidad, probabilidad de subida a 21 días con intervalo, clasificación rutinario/oportunista, backtest sin sesgo de anticipación (con precios sin tendencia el Sharpe debe ser ≈ 0).
+- Rigor del backtest (`rigor.py`, `evaluate.py`): IC del Sharpe con asimetría/curtosis, PSR, DSR (corrige por probar varios tickers), bootstrap circular por bloques pareado contra comprar y mantener, corrección de Holm y walk-forward (lookback elegido solo con datos pasados). Verificado contra scipy, statsmodels y el test analítico de Memmel; las pruebas incluyen cobertura del IC (~95%), tasa de falsos positivos del bootstrap y ausencia de anticipación en walk-forward.
 - Toda predicción se registra en `data/predictions.csv` y se evalúa a su vencimiento.
 
 ## Fuentes de datos

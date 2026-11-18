@@ -55,6 +55,27 @@ def render(res: dict) -> str:
               f"(error estándar {nc['std_error']:.2f}, z={nc['z']:.1f}, {nc['seeds']} series); "
               f"|z|<2 indica que no hay anticipación en el código.", ""]
 
+    # Rigor estadístico
+    rg = res.get("rigor")
+    if rg and rg["tickers"]:
+        L += ["## Rigor estadístico de la estrategia", "",
+              "| Ticker | Sharpe [IC95%] | PSR(>0) | DSR | Δ Sharpe vs comprar y mantener [IC95%] | p (Holm) | Walk-forward: Sharpe fuera de muestra vs B&H |",
+              "|---|---|---|---|---|---|---|"]
+        f2 = lambda v: f"{v:+.2f}"  # noqa: E731
+        for t, r in rg["tickers"].items():
+            wf = r["walk_forward"]
+            wftxt = "n/d" if not wf else f"{wf['sharpe_oos']:.2f} vs {wf['sharpe_hold']:.2f} (Δ {f2(wf['diff'])}, p={wf['p_beat']:.2f})"
+            v = r["vs_hold"]
+            L.append(f"| {t} | {r['sharpe']:.2f} [{r['sharpe_ci'][0]:.2f}, {r['sharpe_ci'][1]:.2f}] | {r['psr0']:.2f} | "
+                     f"{r['dsr']:.2f} | {f2(v['diff'])} [{f2(v['ci'][0])}, {f2(v['ci'][1])}] | {v['p_holm']:.2f} | {wftxt} |")
+        L += ["", f"**Veredicto:** {rg['verdict']}", "",
+              "_Sharpe sobre retorno total (sin tasa libre), períodos mensuales no solapados, costo 0.1% por cambio. "
+              "PSR: probabilidad de que el Sharpe verdadero sea >0. DSR: igual, corregido por probar "
+              f"{rg['n_trials']} tickers (si DSR es bajo, el mejor resultado puede ser suerte de selección). "
+              "Δ y p vienen de un bootstrap por bloques pareado contra comprar y mantener; p es unilateral "
+              "(H0: la estrategia no supera) y se ajusta por Holm entre tickers. Walk-forward: el lookback "
+              "(126/189/252) se elige solo con datos pasados._", ""]
+
     # Insiders
     if res["insiders"]:
         L += ["## Insiders (Form 4, compras de mercado abierto)", "",

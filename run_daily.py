@@ -14,7 +14,7 @@ from pathlib import Path
 
 import yaml
 
-from trading_lab import backtest, fred, insiders, predictions, prices, report, sec, signals
+from trading_lab import backtest, evaluate, fred, insiders, predictions, prices, report, sec, signals
 
 ROOT = Path(__file__).parent
 
@@ -59,6 +59,7 @@ def main(argv: list[str] | None = None) -> int:
     res["sources"]["Precios"] = (f"OK ({', '.join(sorted(srcs))}), {len(series)}/{len(tickers)} tickers"
                                  if series else "FALLÓ")
     res["null_check"] = backtest.null_check()
+    res["rigor"] = evaluate.evaluate({t: [p for _, p in d] for t, d in series.items()})
 
     # Macro
     res["macro"] = fred.snapshot()

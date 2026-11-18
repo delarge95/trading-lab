@@ -143,7 +143,9 @@ def test_insider_routine_vs_opportunistic():
 # ---------------------------------------------------------------- informe
 def test_report_renders_and_has_disclaimer():
     s = signals.summarize(_series(TREND))
-    res = {"date": "2026-11-18", "sources": {"Precios": "OK"}, "errors": [], "tickers": {"AAA": s},
+    from trading_lab import evaluate
+    rg = evaluate.evaluate({"AAA": backtest.random_walk(3000, 5), "BBB": backtest.random_walk(3000, 6)}, n_boot=200)
+    res = {"date": "2026-11-18", "sources": {"Precios": "OK"}, "errors": [], "tickers": {"AAA": s}, "rigor": rg,
            "backtest": {"AAA": backtest.momentum_backtest(TREND)}, "null_check": backtest.null_check(1500, 20),
            "insiders": {}, "managers": [], "macro": {}, "scoreboard": {"closed": 0, "open": 1}}
     md = report.render(res)

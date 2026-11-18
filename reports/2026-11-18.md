@@ -15,7 +15,7 @@
 | AAPL | 351.91 | 26.2% | positiva | 22% | 61% [51%–70%] (92) | 65% [56%–74%] (107) |
 | MSFT | 506.24 | 5.4% | positiva | 27% | 61% [51%–71%] (88) | 61% [51%–69%] (107) |
 | NVDA | 155.46 | 14.4% | positiva | 43% | 58% [48%–68%] (86) | 59% [49%–68%] (107) |
-| AMZN | 257.89 | 11.8% | positiva | 31% | 65% [55%–75%] (84) | 64% [55%–73%] (107) |
+| AMZN | 257.89 | 11.8% | positiva | 32% | 65% [55%–75%] (84) | 64% [55%–73%] (107) |
 | GOOGL | 280.20 | 24.8% | positiva | 36% | 59% [48%–69%] (85) | 62% [52%–70%] (107) |
 | BRK-B | 586.76 | 4.6% | positiva | 14% | 62% [52%–72%] (87) | 63% [53%–71%] (107) |
 
@@ -26,15 +26,32 @@ _Las probabilidades usan ventanas no solapadas; el intervalo es amplio a propós
 | Ticker | Períodos | Sharpe estrategia | Sharpe comprar y mantener | Exposición |
 |---|---|---|---|---|
 | SPY | 107 | 0.81 | 0.93 | 90% |
-| QQQ | 107 | 0.80 | 0.97 | 89% |
-| AAPL | 107 | 0.60 | 0.99 | 92% |
-| MSFT | 107 | 0.80 | 1.05 | 84% |
+| QQQ | 107 | 0.79 | 0.96 | 89% |
+| AAPL | 107 | 0.60 | 0.98 | 92% |
+| MSFT | 107 | 0.80 | 1.04 | 84% |
 | NVDA | 107 | 0.89 | 1.11 | 82% |
-| AMZN | 107 | 0.93 | 0.67 | 86% |
+| AMZN | 107 | 0.92 | 0.67 | 86% |
 | GOOGL | 107 | 0.57 | 0.79 | 83% |
-| BRK-B | 107 | 0.53 | 0.78 | 90% |
+| BRK-B | 107 | 0.52 | 0.78 | 90% |
 
 Control: con precios sin tendencia el Sharpe medio es 0.00 (error estándar 0.02, z=0.1, 200 series); |z|<2 indica que no hay anticipación en el código.
+
+## Rigor estadístico de la estrategia
+
+| Ticker | Sharpe [IC95%] | PSR(>0) | DSR | Δ Sharpe vs comprar y mantener [IC95%] | p (Holm) | Walk-forward: Sharpe fuera de muestra vs B&H |
+|---|---|---|---|---|---|---|
+| SPY | 0.81 [0.06, 1.57] | 0.98 | 0.94 | -0.12 [-0.30, +0.09] | 1.00 | 1.10 vs 1.15 (Δ -0.05, p=0.63) |
+| QQQ | 0.79 [0.12, 1.47] | 0.99 | 0.95 | -0.17 [-0.41, +0.05] | 1.00 | 1.13 vs 0.88 (Δ +0.25, p=0.18) |
+| AAPL | 0.60 [-0.04, 1.24] | 0.97 | 0.88 | -0.38 [-0.71, -0.12] | 1.00 | 0.22 vs 0.91 (Δ -0.70, p=1.00) |
+| MSFT | 0.80 [0.13, 1.46] | 0.99 | 0.95 | -0.25 [-0.61, +0.10] | 1.00 | 0.40 vs 0.77 (Δ -0.37, p=0.92) |
+| NVDA | 0.89 [0.24, 1.54] | 1.00 | 0.98 | -0.22 [-0.55, +0.09] | 1.00 | 1.06 vs 1.19 (Δ -0.13, p=0.69) |
+| AMZN | 0.92 [0.30, 1.54] | 1.00 | 0.99 | +0.26 [-0.14, +0.68] | 1.00 | 0.71 vs 0.39 (Δ +0.32, p=0.15) |
+| GOOGL | 0.57 [-0.08, 1.23] | 0.96 | 0.85 | -0.21 [-0.52, +0.08] | 1.00 | 0.70 vs 0.79 (Δ -0.09, p=0.70) |
+| BRK-B | 0.52 [-0.16, 1.21] | 0.93 | 0.81 | -0.25 [-0.54, -0.00] | 1.00 | 0.78 vs 0.96 (Δ -0.18, p=0.86) |
+
+**Veredicto:** Ningún ticker muestra que la estrategia supere a comprar y mantener (Holm, α=0.05, 8 pruebas). En AAPL, BRK-B es significativamente peor.
+
+_Sharpe sobre retorno total (sin tasa libre), períodos mensuales no solapados, costo 0.1% por cambio. PSR: probabilidad de que el Sharpe verdadero sea >0. DSR: igual, corregido por probar 8 tickers (si DSR es bajo, el mejor resultado puede ser suerte de selección). Δ y p vienen de un bootstrap por bloques pareado contra comprar y mantener; p es unilateral (H0: la estrategia no supera) y se ajusta por Holm entre tickers. Walk-forward: el lookback (126/189/252) se elige solo con datos pasados._
 
 ## Insiders (Form 4, compras de mercado abierto)
 
