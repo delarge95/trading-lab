@@ -1,0 +1,6 @@
+# Gestores a seguir vía 13F. Completar los CIK verificados en SEC EDGAR
+# (en la sesión anterior se verificaron 8; esa lista vive en el zip trading-lab de la sesión en la nube).
+managers: []
+# - name: Pershing Square
+#   cik: ""
+tickers: []

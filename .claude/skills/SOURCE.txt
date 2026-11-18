@@ -1,0 +1,5 @@
+Source: https://github.com/tradermonty/claude-trading-skills
+Commit: a627d17dd1d8fde1c8fa73b3cc69ffe83b33cb71 (2026-11-17)
+License: MIT (see LICENSE-tradermonty)
+Reviewed: no subprocess/eval/exec/base64 in non-test code; network hosts limited to financialmodelingprep.com, sec.gov, dataroma.com, whalewisdom.com, tradermonty.github.io.
+Installed: institutional-flow-tracker, backtest-expert, macro-regime-detector, market-breadth-analyzer, position-sizer, signal-postmortem, market-environment-analysis
