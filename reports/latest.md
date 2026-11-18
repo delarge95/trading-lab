@@ -49,7 +49,7 @@ Control: con precios sin tendencia el Sharpe medio es 0.00 (error estándar 0.02
 | GOOGL | 0.57 [-0.08, 1.23] | 0.96 | 0.85 | -0.21 [-0.52, +0.08] | 1.00 | 0.70 vs 0.79 (Δ -0.09, p=0.70) |
 | BRK-B | 0.52 [-0.16, 1.21] | 0.93 | 0.81 | -0.25 [-0.54, -0.00] | 1.00 | 0.78 vs 0.96 (Δ -0.18, p=0.86) |
 
-**Veredicto:** Ningún ticker muestra que la estrategia supere a comprar y mantener (Holm, α=0.05, 8 pruebas). En AAPL, BRK-B es significativamente peor.
+**Veredicto:** Ningún ticker muestra que la estrategia supere a comprar y mantener (Holm, α=0.05, 8 pruebas). Significativamente peor que comprar y mantener: AAPL, BRK-B.
 
 _Sharpe sobre retorno total (sin tasa libre), períodos mensuales no solapados, costo 0.1% por cambio. PSR: probabilidad de que el Sharpe verdadero sea >0. DSR: igual, corregido por probar 8 tickers (si DSR es bajo, el mejor resultado puede ser suerte de selección). Δ y p vienen de un bootstrap por bloques pareado contra comprar y mantener; p es unilateral (H0: la estrategia no supera) y se ajusta por Holm entre tickers. Walk-forward: el lookback (126/189/252) se elige solo con datos pasados._
 
