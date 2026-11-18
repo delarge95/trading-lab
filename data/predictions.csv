@@ -1,0 +1,9 @@
+date,ticker,horizon_days,target_date,p_up,p_lo,p_hi,basis,price,status,outcome_price,went_up,brier
+2026-11-18,SPY,21,2026-12-17,0.6882,0.5881,0.7733,condicional_momentum,732.4400,abierta,,,
+2026-11-18,QQQ,21,2026-12-17,0.6667,0.5659,0.7542,condicional_momentum,656.9500,abierta,,,
+2026-11-18,AAPL,21,2026-12-17,0.6087,0.5065,0.7021,condicional_momentum,351.9100,abierta,,,
+2026-11-18,MSFT,21,2026-12-17,0.6136,0.5092,0.7086,condicional_momentum,506.2400,abierta,,,
+2026-11-18,NVDA,21,2026-12-17,0.5814,0.4758,0.6800,condicional_momentum,155.4600,abierta,,,
+2026-11-18,AMZN,21,2026-12-17,0.6548,0.5483,0.7476,condicional_momentum,257.8900,abierta,,,
+2026-11-18,GOOGL,21,2026-12-17,0.5882,0.4820,0.6868,condicional_momentum,280.2000,abierta,,,
+2026-11-18,BRK-B,21,2026-12-17,0.6207,0.5157,0.7155,condicional_momentum,586.7600,abierta,,,

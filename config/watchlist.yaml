@@ -1,6 +1,15 @@
-# Gestores a seguir vía 13F. Completar los CIK verificados en SEC EDGAR
-# (en la sesión anterior se verificaron 8; esa lista vive en el zip trading-lab de la sesión en la nube).
-managers: []
-# - name: Pershing Square
-#   cik: ""
-tickers: []
+# Gestores a seguir vía 13F (CIK verificados en SEC EDGAR el 2026-11-17).
+# Descartados: Scion (13F inactivo desde 2025-11), Greenlight (sin 13F desde 2024-02).
+managers:
+  - {name: Berkshire Hathaway, cik: 1067983}
+  - {name: Pershing Square, cik: 1336528}
+  - {name: Appaloosa, cik: 1656456}
+  - {name: Third Point, cik: 1040273}
+  - {name: Baupost Group, cik: 1061768}
+  - {name: Duquesne Family Office, cik: 1536411}
+  - {name: Himalaya Capital, cik: 1709323}
+  - {name: Trian Fund Management, cik: 1345471}
+# Tickers para señales de tendencia, probabilidad e insiders (editar libremente).
+tickers: [SPY, QQQ, AAPL, MSFT, NVDA, AMZN, GOOGL, BRK-B]
+# Un 13F con más días que este desde el cierre del trimestre se marca como atrasado.
+stale_13f_days: 140

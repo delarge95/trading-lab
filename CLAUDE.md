@@ -19,7 +19,18 @@ SEC EDGAR (Form 4, 13F; requiere `SEC_USER_AGENT`), FRED (macro), Yahoo Finance 
 institutional-flow-tracker (13F), backtest-expert, macro-regime-detector, market-breadth-analyzer (sin API key), position-sizer, signal-postmortem, market-environment-analysis. Procedencia y revisión en `.claude/skills/SOURCE.txt`.
 Skill de cuenta complementaria: `/analisis-trading` (plugin guardado en la cuenta de claude.ai).
 
+## Cómo correrlo
+```
+python -m venv .venv && .venv\Scripts\pip install -r requirements.txt   # una vez
+$env:SEC_USER_AGENT = "trading-lab tu_correo"                              # o en .env
+.venv\Scripts\python run_daily.py            # genera reports/latest.md y latest.json
+.venv\Scripts\python -m pytest tests -q
+```
+Primera corrida ~15 min (descarga ~700 Form 4 con límite de 10 req/s de la SEC); luego usa caché en `data/raw` (ignorada por git) y tarda ~20 s.
+GitHub Actions (`.github/workflows/daily-report.yml`) lo corre lun-vie 5:10 a. m. y sáb 6:40 a. m. (Bogotá) y hace commit de `reports/` y `data/predictions.csv`; requiere el secreto `SEC_USER_AGENT`.
+
 ## Estructura
+- `trading_lab/` código: `sec.py` (13F, Form 4), `prices.py`, `fred.py`, `signals.py`, `insiders.py`, `backtest.py`, `predictions.py`, `report.py`; `run_daily.py` es el punto de entrada.
 - `reports/` informes generados (`latest.md`, `latest.json`, histórico por fecha)
 - `data/` datos descargados y `predictions.csv`
 - `config/watchlist.yaml` gestores (CIK) y tickers a seguir
