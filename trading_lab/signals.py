@@ -5,7 +5,7 @@ Todas las funciones usan solo datos hasta el último punto recibido (sin anticip
 from __future__ import annotations
 
 import math
-from statistics import NormalDist, pstdev
+from statistics import NormalDist, stdev
 
 LOOKBACK = 252   # ~12 meses de ruedas
 SKIP = 21        # se omite el último mes (reversión de corto plazo)
@@ -24,7 +24,7 @@ def annual_vol(prices: list[float], window: int = 63) -> float | None:
     if len(prices) < window + 1:
         return None
     rets = [math.log(prices[i] / prices[i - 1]) for i in range(len(prices) - window, len(prices))]
-    return pstdev(rets) * math.sqrt(252)
+    return stdev(rets) * math.sqrt(252)  # desviación muestral (n-1)
 
 
 def wilson(k: int, n: int, conf: float = 0.95) -> tuple[float, float]:
