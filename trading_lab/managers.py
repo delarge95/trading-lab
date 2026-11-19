@@ -25,7 +25,8 @@ from . import http, sec
 
 DATA = Path("data")
 FIGI_URL = "https://api.openfigi.com/v3/mapping"
-Z_ALPHA, Z_POWER = 1.645, 0.8416   # unilateral 5%, potencia 80%
+Z_ALPHA = NormalDist().inv_cdf(0.95)   # unilateral 5%
+Z_POWER = NormalDist().inv_cdf(0.80)   # potencia 80%
 
 
 # ---------------------------------------------------------------- historial 13F
