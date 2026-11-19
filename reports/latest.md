@@ -25,14 +25,14 @@ _Las probabilidades usan ventanas no solapadas; el intervalo es amplio a propós
 
 | Ticker | Períodos | Sharpe estrategia | Sharpe comprar y mantener | Exposición |
 |---|---|---|---|---|
-| SPY | 107 | 0.81 | 0.93 | 90% |
-| QQQ | 107 | 0.79 | 0.96 | 89% |
-| AAPL | 107 | 0.60 | 0.98 | 92% |
-| MSFT | 107 | 0.80 | 1.04 | 84% |
-| NVDA | 107 | 0.89 | 1.11 | 82% |
+| SPY | 107 | 0.84 | 0.94 | 90% |
+| QQQ | 107 | 0.86 | 0.97 | 89% |
+| AAPL | 107 | 0.66 | 0.99 | 93% |
+| MSFT | 107 | 0.85 | 1.05 | 85% |
+| NVDA | 107 | 0.88 | 1.11 | 82% |
 | AMZN | 107 | 0.92 | 0.67 | 86% |
-| GOOGL | 107 | 0.57 | 0.79 | 83% |
-| BRK-B | 107 | 0.52 | 0.78 | 90% |
+| GOOGL | 107 | 0.59 | 0.78 | 86% |
+| BRK-B | 107 | 0.55 | 0.77 | 90% |
 
 Control: con precios sin tendencia el Sharpe medio es 0.00 (error estándar 0.02, z=0.1, 200 series); |z|<2 indica que no hay anticipación en el código.
 
@@ -40,14 +40,14 @@ Control: con precios sin tendencia el Sharpe medio es 0.00 (error estándar 0.02
 
 | Ticker | Sharpe [IC95%] | PSR(>0) | DSR | Δ Sharpe vs comprar y mantener [IC95%] | p (Holm) | Walk-forward: Sharpe fuera de muestra vs B&H |
 |---|---|---|---|---|---|---|
-| SPY | 0.81 [0.06, 1.57] | 0.98 | 0.94 | -0.12 [-0.30, +0.09] | 1.00 | 1.10 vs 1.15 (Δ -0.05, p=0.63) |
-| QQQ | 0.79 [0.12, 1.47] | 0.99 | 0.95 | -0.17 [-0.41, +0.05] | 1.00 | 1.13 vs 0.88 (Δ +0.25, p=0.18) |
-| AAPL | 0.60 [-0.04, 1.24] | 0.97 | 0.88 | -0.38 [-0.71, -0.12] | 1.00 | 0.22 vs 0.91 (Δ -0.70, p=1.00) |
-| MSFT | 0.80 [0.13, 1.46] | 0.99 | 0.95 | -0.25 [-0.61, +0.10] | 1.00 | 0.40 vs 0.77 (Δ -0.37, p=0.92) |
-| NVDA | 0.89 [0.24, 1.54] | 1.00 | 0.98 | -0.22 [-0.55, +0.09] | 1.00 | 1.06 vs 1.19 (Δ -0.13, p=0.69) |
-| AMZN | 0.92 [0.30, 1.54] | 1.00 | 0.99 | +0.26 [-0.14, +0.68] | 1.00 | 0.71 vs 0.39 (Δ +0.32, p=0.15) |
-| GOOGL | 0.57 [-0.08, 1.23] | 0.96 | 0.85 | -0.21 [-0.52, +0.08] | 1.00 | 0.70 vs 0.79 (Δ -0.09, p=0.70) |
-| BRK-B | 0.52 [-0.16, 1.21] | 0.93 | 0.81 | -0.25 [-0.54, -0.00] | 1.00 | 0.78 vs 0.96 (Δ -0.18, p=0.86) |
+| SPY | 0.84 [0.12, 1.56] | 0.99 | 0.96 | -0.10 [-0.30, +0.15] | 1.00 | 1.15 vs 1.10 (Δ +0.05, p=0.44) |
+| QQQ | 0.86 [0.18, 1.54] | 0.99 | 0.97 | -0.11 [-0.37, +0.14] | 1.00 | 0.92 vs 0.87 (Δ +0.05, p=0.41) |
+| AAPL | 0.66 [0.00, 1.32] | 0.98 | 0.91 | -0.33 [-0.63, -0.07] | 1.00 | 0.22 vs 0.91 (Δ -0.69, p=1.00) |
+| MSFT | 0.85 [0.18, 1.52] | 0.99 | 0.97 | -0.20 [-0.54, +0.12] | 1.00 | 0.72 vs 0.77 (Δ -0.06, p=0.57) |
+| NVDA | 0.88 [0.22, 1.54] | 1.00 | 0.98 | -0.23 [-0.56, +0.08] | 1.00 | 0.94 vs 1.20 (Δ -0.26, p=0.89) |
+| AMZN | 0.92 [0.30, 1.55] | 1.00 | 0.99 | +0.25 [-0.14, +0.68] | 1.00 | 0.70 vs 0.40 (Δ +0.30, p=0.16) |
+| GOOGL | 0.59 [-0.07, 1.25] | 0.96 | 0.87 | -0.19 [-0.52, +0.10] | 1.00 | 0.69 vs 0.79 (Δ -0.11, p=0.74) |
+| BRK-B | 0.55 [-0.13, 1.22] | 0.94 | 0.83 | -0.23 [-0.48, -0.02] | 1.00 | 0.85 vs 0.94 (Δ -0.10, p=0.77) |
 
 **Veredicto:** Ningún ticker muestra que la estrategia supere a comprar y mantener (Holm, α=0.05, 8 pruebas). Significativamente peor que comprar y mantener: AAPL, BRK-B.
 
@@ -57,7 +57,7 @@ _Sharpe sobre retorno total (sin tasa libre), períodos mensuales no solapados, 
 
 | Ticker | Compras 90d | Oportunistas | Rutinarias | Sin clasificar | Valor comprado | Valor vendido |
 |---|---|---|---|---|---|---|
-| AAPL | 0 | 0 | 0 | 0 | $0 | $97.0M |
+| AAPL | 0 | 0 | 0 | 0 | $0 | $128.8M |
 | MSFT | 0 | 0 | 0 | 0 | $0 | $74.8M |
 | NVDA | 0 | 0 | 0 | 0 | $0 | $967.6M |
 | AMZN | 0 | 0 | 0 | 0 | $0 | $18.5M |
@@ -177,15 +177,34 @@ Valor total $2.6B, 8 posiciones.
 
 Cerradas: Janus Henderson Group plc, Ferguson Plc New
 
+## Track record de gestores (replicar su 13F desde la fecha de presentación)
+
+_Calculado la semana 2026-W47; top 15 posiciones por valor; compra al primer cierre posterior a la presentación y mantiene hasta la siguiente. Referencia: SPY._
+
+| Gestor | Trimestres | Cobertura | CAGR replicado | CAGR SPY | Exceso anual | IR | Aciertos | IC95% exceso/trim. | p (Holm) | Años necesarios* |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Berkshire Hathaway | 19 (4.8 a) | 100% | 9.9% | 12.5% | -2.4 pp | -0.36 | 58% | [-2.1, +0.9] pp | 1.00 | 30 |
+| Pershing Square | 19 (4.7 a) | 92% | 11.0% | 12.9% | -1.2 pp | -0.13 | 53% | [-2.3, +1.8] pp | 1.00 | 60 |
+| Appaloosa | 19 (4.8 a) | 100% | 16.2% | 12.5% | +4.2 pp | 0.39 | 53% | [-1.3, +3.4] pp | 1.00 | 80 |
+| Third Point | 19 (4.8 a) | 95% | 1.1% | 12.5% | -9.8 pp | -0.85 | 32% | [-4.9, +0.1] pp | 1.00 | 91 |
+| Baupost Group | 13 (3.2 a) | 90% | 10.5% | 13.5% | -2.5 pp | -0.29 | 38% | [-2.9, +1.7] pp | 1.00 | 51 |
+| Duquesne Family Office | 19 (4.8 a) | 95% | 22.9% | 12.5% | +11.5 pp | 0.61 | 63% | [-1.2, +7.0] pp | 0.86 | 245 |
+| Himalaya Capital | 19 (4.8 a) | 100% | 8.7% | 12.5% | -2.5 pp | -0.21 | 42% | [-3.2, +2.0] pp | 1.00 | 102 |
+| Trian Fund Management | 18 (4.5 a) | 59% | 8.9% | 13.7% | -3.7 pp | -0.25 | 50% | [-4.2, +2.3] pp | 1.00 | 143 |
+
+**Veredicto:** Ningún gestor supera a SPY con significancia estadística (Holm 5%, 8 gestores).
+
+_*Años de historia necesarios para detectar con 80% de potencia un alfa de 3% anual dado el error de seguimiento observado: con menos años que eso, un resultado bueno o malo no distingue habilidad de azar. p: prueba de inversión de signos unilateral (H0: no supera a SPY), ajustada por Holm entre gestores. Limitaciones: el 13F solo muestra largos en acciones de EE. UU. con ~45 días de retraso; 33 de 278 tickers sin precios (deslistados) quedan fuera (sesgo de supervivencia hacia arriba)._
+
 ## Macro (FRED)
 
 | Serie | Fecha | Valor | Δ 21 obs. |
 |---|---|---|---|
-| Tasa Treasury 10 años (%) | 2026-11-16 | 5.12 | +0.02 |
-| Tasa Treasury 2 años (%) | 2026-11-16 | 4.83 | +0.06 |
-| Pendiente curva 10a-2a (pp) | 2026-11-17 | 0.3 | -0.05 |
-| VIX | 2026-11-16 | 22.91 | +2.92 |
-| Spread high yield (pp) | 2026-11-16 | 3.34 | +0.03 |
+| Tasa Treasury 10 años (%) | 2026-11-17 | 5.1 | +0.01 |
+| Tasa Treasury 2 años (%) | 2026-11-17 | 4.8 | +0.06 |
+| Pendiente curva 10a-2a (pp) | 2026-11-18 | 0.27 | -0.11 |
+| VIX | 2026-11-17 | 25.46 | +7.02 |
+| Spread high yield (pp) | 2026-11-17 | 3.43 | +0.14 |
 
 ## Seguimiento de predicciones
 

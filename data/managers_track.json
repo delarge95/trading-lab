@@ -1,0 +1,172 @@
+{
+  "week": "2026-W47",
+  "computed": "2026-11-18",
+  "top_n": 15,
+  "managers": {
+    "Berkshire Hathaway": {
+      "periods": 19,
+      "years": 4.7529089664613275,
+      "coverage": 0.9951346233947109,
+      "cagr": 0.0994607211771148,
+      "cagr_bench": 0.12485901575892888,
+      "excess_per_period": -0.005988784639927734,
+      "excess_ci": [
+        -0.020652340624633343,
+        0.00860185374033223
+      ],
+      "annual_excess": -0.02394047707657747,
+      "tracking_error": 0.06571235424864359,
+      "info_ratio": -0.3643223158006341,
+      "hit_rate": 0.5789473684210527,
+      "p_beat": 0.7807609619519024,
+      "years_needed_3pct": 29.66630126280016,
+      "p_holm": 1.0
+    },
+    "Pershing Square": {
+      "periods": 19,
+      "years": 4.744695414099931,
+      "coverage": 0.9186975199336216,
+      "cagr": 0.11047821759494747,
+      "cagr_bench": 0.12858507334100122,
+      "excess_per_period": -0.0030305060814491192,
+      "excess_ci": [
+        -0.02298026987601874,
+        0.018150305751910928
+      ],
+      "annual_excess": -0.012135576790961642,
+      "tracking_error": 0.09355461381103901,
+      "info_ratio": -0.12971649709840072,
+      "hit_rate": 0.5263157894736842,
+      "p_beat": 0.6056197190140493,
+      "years_needed_3pct": 60.131186022005124,
+      "p_holm": 1.0
+    },
+    "Appaloosa": {
+      "periods": 19,
+      "years": 4.7529089664613275,
+      "coverage": 0.9980944958110806,
+      "cagr": 0.1615228545981029,
+      "cagr_bench": 0.12485901575892888,
+      "excess_per_period": 0.010485636146204796,
+      "excess_ci": [
+        -0.013021204180688787,
+        0.03364890641996136
+      ],
+      "annual_excess": 0.04191687410462255,
+      "tracking_error": 0.10786272789720051,
+      "info_ratio": 0.3886131467449236,
+      "hit_rate": 0.5263157894736842,
+      "p_beat": 0.20443977801109944,
+      "years_needed_3pct": 79.93042982265392,
+      "p_holm": 1.0
+    },
+    "Third Point": {
+      "periods": 19,
+      "years": 4.7529089664613275,
+      "coverage": 0.9454436096171412,
+      "cagr": 0.010630862756153547,
+      "cagr_bench": 0.12485901575892888,
+      "excess_per_period": -0.02450443758667779,
+      "excess_ci": [
+        -0.049304391658992884,
+        0.0011021005147387071
+      ],
+      "annual_excess": -0.097957759644094,
+      "tracking_error": 0.11506875767377461,
+      "info_ratio": -0.8512976208695057,
+      "hit_rate": 0.3157894736842105,
+      "p_beat": 0.9621018949052548,
+      "years_needed_3pct": 90.96706816957413,
+      "p_holm": 1.0
+    },
+    "Baupost Group": {
+      "periods": 13,
+      "years": 3.247091033538672,
+      "coverage": 0.8951612307087056,
+      "cagr": 0.10513198567163262,
+      "cagr_bench": 0.13494736322881562,
+      "excess_per_period": -0.006348582751864238,
+      "excess_ci": [
+        -0.028706662146765385,
+        0.01690492777455757
+      ],
+      "annual_excess": -0.025417080987807227,
+      "tracking_error": 0.08647445740258491,
+      "info_ratio": -0.29392587997953085,
+      "hit_rate": 0.38461538461538464,
+      "p_beat": 0.7046147692615369,
+      "years_needed_3pct": 51.374196260228764,
+      "p_holm": 1.0
+    },
+    "Duquesne Family Office": {
+      "periods": 19,
+      "years": 4.7529089664613275,
+      "coverage": 0.9480153081796202,
+      "cagr": 0.22900352513548672,
+      "cagr_bench": 0.12485901575892866,
+      "excess_per_period": 0.02871290491270297,
+      "excess_ci": [
+        -0.012217332013154952,
+        0.07025163493140721
+      ],
+      "annual_excess": 0.11478132596078942,
+      "tracking_error": 0.18881711131344311,
+      "info_ratio": 0.6078968434711849,
+      "hit_rate": 0.631578947368421,
+      "p_beat": 0.10754462276886155,
+      "years_needed_3pct": 244.93567642554072,
+      "p_holm": 0.8603569821508924
+    },
+    "Himalaya Capital": {
+      "periods": 19,
+      "years": 4.7501711156741955,
+      "coverage": 1.0,
+      "cagr": 0.08738525184784951,
+      "cagr_bench": 0.12467011211657408,
+      "excess_per_period": -0.006309053804850065,
+      "excess_ci": [
+        -0.032097316329066906,
+        0.020008129970475626
+      ],
+      "annual_excess": -0.025235306133837603,
+      "tracking_error": 0.12176262628751569,
+      "info_ratio": -0.207250015076465,
+      "hit_rate": 0.42105263157894735,
+      "p_beat": 0.6734663266836658,
+      "years_needed_3pct": 101.85852027127453,
+      "p_holm": 1.0
+    },
+    "Trian Fund Management": {
+      "periods": 18,
+      "years": 4.514715947980835,
+      "coverage": 0.5931678435988983,
+      "cagr": 0.08924451562822333,
+      "cagr_bench": 0.1372008645906002,
+      "excess_per_period": -0.009221967647188982,
+      "excess_ci": [
+        -0.041659680829488656,
+        0.022886243372508927
+      ],
+      "annual_excess": -0.03676763268432017,
+      "tracking_error": 0.14450024857507035,
+      "info_ratio": -0.25444684730226436,
+      "hit_rate": 0.5,
+      "p_beat": 0.7078146092695365,
+      "years_needed_3pct": 143.45197688503677,
+      "p_holm": 1.0
+    }
+  },
+  "windows": {
+    "Berkshire Hathaway": 19,
+    "Pershing Square": 19,
+    "Appaloosa": 19,
+    "Third Point": 19,
+    "Baupost Group": 13,
+    "Duquesne Family Office": 19,
+    "Himalaya Capital": 19,
+    "Trian Fund Management": 18
+  },
+  "tickers_without_prices": 33,
+  "tickers_total": 278,
+  "verdict": "Ning\u00fan gestor supera a SPY con significancia estad\u00edstica (Holm 5%, 8 gestores)."
+}

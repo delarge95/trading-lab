@@ -11,6 +11,7 @@ Informe diario (lun-vie) y revisión semanal (sáb) con: señales con respaldo a
 - Señales descartadas: finfluencers (56% con habilidad negativa) y carteras de congresistas.
 - Cálculos: tendencia 12-1, volatilidad, probabilidad de subida a 21 días con intervalo, clasificación rutinario/oportunista, backtest sin sesgo de anticipación (con precios sin tendencia el Sharpe debe ser ≈ 0).
 - Rigor del backtest (`rigor.py`, `evaluate.py`): IC del Sharpe con asimetría/curtosis, PSR, DSR (corrige por probar varios tickers), bootstrap circular por bloques pareado contra comprar y mantener, corrección de Holm y walk-forward (lookback elegido solo con datos pasados). Verificado contra scipy, statsmodels y el test analítico de Memmel; las pruebas incluyen cobertura del IC (~95%), tasa de falsos positivos del bootstrap y ausencia de anticipación en walk-forward.
+- Track record de gestores (`managers.py`): replica el top-15 de cada 13F desde el primer cierre posterior a la *presentación* (sin anticipación) hasta la siguiente y compara con SPY; CUSIP/CINS a ticker vía OpenFIGI; prueba de inversión de signos + Holm; calcula los años de historia necesarios para detectar un alfa de 3%. Se recalcula una vez por semana ISO (`data/managers_track.json`). Limitaciones: solo largos de EE. UU. con ~45 días de retraso; sesgo de supervivencia por tickers deslistados.
 - Toda predicción se registra en `data/predictions.csv` y se evalúa a su vencimiento.
 
 ## Fuentes de datos

@@ -14,7 +14,8 @@ from pathlib import Path
 
 import yaml
 
-from trading_lab import backtest, evaluate, fred, insiders, predictions, prices, report, sec, signals
+from trading_lab import (backtest, evaluate, fred, insiders, managers, predictions, prices, report, sec,
+                         signals)
 
 ROOT = Path(__file__).parent
 
@@ -32,6 +33,7 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-sec", action="store_true", help="omitir 13F e insiders")
     ap.add_argument("--no-insiders", action="store_true")
+    ap.add_argument("--no-managers", action="store_true", help="omitir el track record de gestores")
     ap.add_argument("--tickers", help="lista separada por comas (sobrescribe la watchlist)")
     args = ap.parse_args(argv)
 
@@ -95,6 +97,21 @@ def main(argv: list[str] | None = None) -> int:
         except Exception as exc:  # noqa: BLE001
             res["sources"]["SEC"] = f"FALLÓ: {exc}"
             res["errors"].append(f"SEC: {exc}")
+
+    # Track record de gestores (pesado: se recalcula una vez por semana ISO y se guarda)
+    track_path = ROOT / "data" / "managers_track.json"
+    cached = json.loads(track_path.read_text(encoding="utf-8")) if track_path.exists() else None
+    if args.no_sec or args.no_managers:
+        res["manager_track"] = cached
+    elif cached and cached.get("week") == managers.iso_week(today):
+        res["manager_track"] = cached
+    else:
+        try:
+            res["manager_track"] = managers.track_record(cfg["managers"])
+            track_path.write_text(json.dumps(res["manager_track"], indent=2, default=str), encoding="utf-8")
+        except Exception as exc:  # noqa: BLE001 - se conserva el cálculo previo si existe
+            res["errors"].append(f"track record gestores: {exc}")
+            res["manager_track"] = cached
 
     # Predicciones: evaluar vencidas y registrar las de hoy
     pred_path = ROOT / "data" / "predictions.csv"

@@ -111,6 +111,28 @@ def render(res: dict) -> str:
                 L.append("Cerradas: " + ", ".join(c["name"] for c in m["closed"][:3]))
             L.append("")
 
+    # Track record de gestores
+    mt = res.get("manager_track")
+    if mt and mt.get("managers"):
+        L += ["## Track record de gestores (replicar su 13F desde la fecha de presentación)", "",
+              f"_Calculado la semana {mt['week']}; top {mt['top_n']} posiciones por valor; compra al primer cierre posterior "
+              "a la presentación y mantiene hasta la siguiente. Referencia: SPY._", "",
+              "| Gestor | Trimestres | Cobertura | CAGR replicado | CAGR SPY | Exceso anual | IR | Aciertos | IC95% exceso/trim. | p (Holm) | Años necesarios* |",
+              "|---|---|---|---|---|---|---|---|---|---|---|"]
+        for name, m in mt["managers"].items():
+            yn = "n/d" if m["years_needed_3pct"] is None else f"{m['years_needed_3pct']:.0f}"
+            ir = "n/d" if m["info_ratio"] is None else f"{m['info_ratio']:.2f}"
+            L.append(f"| {name} | {m['periods']} ({m['years']:.1f} a) | {_pct(m['coverage'], 0)} | {_pct(m['cagr'])} | "
+                     f"{_pct(m['cagr_bench'])} | {m['annual_excess'] * 100:+.1f} pp | {ir} | {_pct(m['hit_rate'], 0)} | "
+                     f"[{m['excess_ci'][0] * 100:+.1f}, {m['excess_ci'][1] * 100:+.1f}] pp | {m['p_holm']:.2f} | {yn} |")
+        L += ["", f"**Veredicto:** {mt['verdict']}", "",
+              "_*Años de historia necesarios para detectar con 80% de potencia un alfa de 3% anual dado el error de "
+              "seguimiento observado: con menos años que eso, un resultado bueno o malo no distingue habilidad de azar. "
+              "p: prueba de inversión de signos unilateral (H0: no supera a SPY), ajustada por Holm entre gestores. "
+              f"Limitaciones: el 13F solo muestra largos en acciones de EE. UU. con ~45 días de retraso; "
+              f"{mt['tickers_without_prices']} de {mt['tickers_total']} tickers sin precios (deslistados) quedan fuera "
+              "(sesgo de supervivencia hacia arriba)._", ""]
+
     # Macro
     if res["macro"]:
         L += ["## Macro (FRED)", "", "| Serie | Fecha | Valor | Δ 21 obs. |", "|---|---|---|---|"]
