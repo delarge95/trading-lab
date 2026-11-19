@@ -1,4 +1,4 @@
-# Informe de trading — 2026-11-18
+# Informe de trading — 2026-11-19
 
 ## Estado de las fuentes
 
@@ -10,14 +10,14 @@
 
 | Ticker | Precio | Mom. 12-1 | Tendencia | Vol 63d | P(sube) cond. [IC95%] (n) | P(sube) base [IC95%] (n) |
 |---|---|---|---|---|---|---|
-| SPY | 732.44 | 15.3% | positiva | 15% | 69% [59%–77%] (93) | 68% [59%–76%] (107) |
-| QQQ | 656.95 | 18.5% | positiva | 24% | 67% [57%–75%] (93) | 65% [56%–74%] (107) |
-| AAPL | 351.91 | 26.2% | positiva | 22% | 61% [51%–70%] (92) | 65% [56%–74%] (107) |
-| MSFT | 506.24 | 5.4% | positiva | 27% | 61% [51%–71%] (88) | 61% [51%–69%] (107) |
-| NVDA | 155.46 | 14.4% | positiva | 43% | 58% [48%–68%] (86) | 59% [49%–68%] (107) |
-| AMZN | 257.89 | 11.8% | positiva | 32% | 65% [55%–75%] (84) | 64% [55%–73%] (107) |
-| GOOGL | 280.20 | 24.8% | positiva | 36% | 59% [48%–69%] (85) | 62% [52%–70%] (107) |
-| BRK-B | 586.76 | 4.6% | positiva | 14% | 62% [52%–72%] (87) | 63% [53%–71%] (107) |
+| SPY | 720.22 | 18.4% | positiva | 15% | 71% [61%–80%] (91) | 71% [62%–79%] (107) |
+| QQQ | 649.67 | 22.2% | positiva | 24% | 63% [53%–73%] (93) | 64% [55%–73%] (107) |
+| AAPL | 349.36 | 29.0% | positiva | 22% | 60% [50%–70%] (91) | 64% [55%–73%] (107) |
+| MSFT | 503.10 | 8.8% | positiva | 27% | 62% [52%–72%] (88) | 64% [54%–72%] (107) |
+| NVDA | 148.46 | 22.7% | positiva | 44% | 63% [53%–73%] (87) | 64% [54%–72%] (107) |
+| AMZN | 259.42 | 17.9% | positiva | 33% | 62% [52%–72%] (87) | 63% [53%–71%] (107) |
+| GOOGL | 279.25 | 18.1% | positiva | 36% | 58% [47%–68%] (85) | 61% [51%–69%] (107) |
+| BRK-B | 570.37 | 6.9% | positiva | 15% | 66% [56%–76%] (83) | 64% [54%–72%] (107) |
 
 _Las probabilidades usan ventanas no solapadas; el intervalo es amplio a propósito. Si el IC condicional incluye la base, la tendencia no aporta información medible._
 
@@ -69,7 +69,7 @@ _Solo las compras oportunistas tienen respaldo académico (rutinarias ≈ 0)._
 
 ## Gestores (13F, último trimestre disponible)
 
-### Berkshire Hathaway — trimestre 2026-09-30 (presentado 2026-11-16, 49 días)
+### Berkshire Hathaway — trimestre 2026-09-30 (presentado 2026-11-16, 50 días)
 Valor total $304.2B, 30 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -81,7 +81,7 @@ Valor total $304.2B, 30 posiciones.
 | BANK OF AMER CORP | 8.2% | -6% |
 | CHEVRON CORPORATION | 5.7% | = |
 
-### Pershing Square — trimestre 2026-03-31 (presentado 2026-05-15, 232 días) ⚠ **13F atrasado**
+### Pershing Square — trimestre 2026-03-31 (presentado 2026-05-15, 233 días) ⚠ **13F atrasado**
 Valor total $13.7B, 11 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -95,7 +95,7 @@ Valor total $13.7B, 11 posiciones.
 
 Cerradas: HILTON WORLDWIDE HLDGS INC
 
-### Appaloosa — trimestre 2026-09-30 (presentado 2026-11-16, 49 días)
+### Appaloosa — trimestre 2026-09-30 (presentado 2026-11-16, 50 días)
 Valor total $7.6B, 24 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -109,7 +109,7 @@ Valor total $7.6B, 24 posiciones.
 
 Cerradas: ADVANCED MICRO DEVICES INC, BROADCOM INC, QUALCOMM INC
 
-### Third Point — trimestre 2026-09-30 (presentado 2026-11-16, 49 días)
+### Third Point — trimestre 2026-09-30 (presentado 2026-11-16, 50 días)
 Valor total $4.5B, 38 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -123,7 +123,7 @@ Valor total $4.5B, 38 posiciones.
 
 Cerradas: WARNER BROS DISCOVERY INC, AMAZON COM INC, NORFOLK SOUTHN CORP
 
-### Baupost Group — trimestre 2026-09-30 (presentado 2026-11-13, 49 días)
+### Baupost Group — trimestre 2026-09-30 (presentado 2026-11-13, 50 días)
 Valor total $5.0B, 21 posiciones. _(valores declarados en miles; reescalados)_
 
 | Posición | Peso | Cambio acciones |
@@ -137,7 +137,7 @@ Valor total $5.0B, 21 posiciones. _(valores declarados en miles; reescalados)_
 
 Cerradas: TELEFLEX INCORPORATED, NORWEGIAN CRUISE LINE HLDGS, LIBERTY GLOBAL LTD
 
-### Duquesne Family Office — trimestre 2026-09-30 (presentado 2026-11-16, 49 días)
+### Duquesne Family Office — trimestre 2026-09-30 (presentado 2026-11-16, 50 días)
 Valor total $4.1B, 60 posiciones. _(valores declarados en miles; reescalados)_
 
 | Posición | Peso | Cambio acciones |
@@ -151,7 +151,7 @@ Valor total $4.1B, 60 posiciones. _(valores declarados en miles; reescalados)_
 
 Cerradas: Alphabet Inc, United Airls Hldgs Inc, Sandisk Corp
 
-### Himalaya Capital — trimestre 2026-09-30 (presentado 2026-11-16, 49 días)
+### Himalaya Capital — trimestre 2026-09-30 (presentado 2026-11-16, 50 días)
 Valor total $3.8B, 8 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -163,7 +163,7 @@ Valor total $3.8B, 8 posiciones.
 | EAST WEST BANCORP INC | 9.1% | = |
 | TENCENT MUSIC ENTERTAINM | 3.1% | +125% |
 
-### Trian Fund Management — trimestre 2026-09-30 (presentado 2026-11-16, 49 días)
+### Trian Fund Management — trimestre 2026-09-30 (presentado 2026-11-16, 50 días)
 Valor total $2.6B, 8 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -203,12 +203,12 @@ _*Años de historia necesarios para detectar con 80% de potencia un alfa de 3% a
 | Tasa Treasury 10 años (%) | 2026-11-17 | 5.1 | +0.01 |
 | Tasa Treasury 2 años (%) | 2026-11-17 | 4.8 | +0.06 |
 | Pendiente curva 10a-2a (pp) | 2026-11-18 | 0.27 | -0.11 |
-| VIX | 2026-11-17 | 25.46 | +7.02 |
-| Spread high yield (pp) | 2026-11-17 | 3.43 | +0.14 |
+| VIX | 2026-11-18 | 24.56 | +7.25 |
+| Spread high yield (pp) | 2026-11-18 | 3.47 | +0.14 |
 
 ## Seguimiento de predicciones
 
-Sin predicciones cerradas aún (8 abiertas). Cada predicción se evalúa a su vencimiento en `data/predictions.csv`.
+Sin predicciones cerradas aún (16 abiertas). Cada predicción se evalúa a su vencimiento en `data/predictions.csv`.
 
 ---
 _Herramienta de investigación, no asesoría financiera._
