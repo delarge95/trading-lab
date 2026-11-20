@@ -14,8 +14,8 @@ from pathlib import Path
 
 import yaml
 
-from trading_lab import (backtest, evaluate, fred, insiders, managers, predictions, prices, report, sec,
-                         signals)
+from trading_lab import (alerts, backtest, evaluate, forecast, fred, insiders, lab, managers, predictions, prices,
+                         report, sec, signals, site, universe)
 
 ROOT = Path(__file__).parent
 
@@ -29,11 +29,55 @@ def load_env(path: Path = ROOT / ".env") -> None:
                 os.environ.setdefault(k.strip(), v.strip())
 
 
+def _previous_snapshot(history: dict, asof: str) -> dict | None:
+    """Última foto diaria anterior a `asof` (así una segunda corrida el mismo día no borra las alertas de cambio)."""
+    older = [d for d in history if d < asof]
+    return history[max(older)] if older else None
+
+
+def run_engine(res: dict, today) -> dict:
+    ucfg = universe.load_config()
+    upx, failed = universe.load_prices(ucfg["tickers"] + [ucfg["benchmark"]], today=today)
+    bench = ucfg["benchmark"]
+    fc = forecast.run(upx, bench)
+    P = forecast.price_frame(upx, bench)
+    lab_res = lab.run(P, bench)
+    ledger = lab.update_ledger(ROOT / "data" / "picks_ledger.json", P, bench, today)
+
+    cmap_path = ROOT / "data" / "cusip_map.json"
+    cmap = json.loads(cmap_path.read_text(encoding="utf-8")) if cmap_path.exists() else {}
+    hist_path = ROOT / "data" / "forecast_history.json"
+    history = json.loads(hist_path.read_text(encoding="utf-8")) if hist_path.exists() else {}
+    snap = alerts.snapshot(fc, res.get("macro"))
+    al = alerts.build(fc, _previous_snapshot(history, fc["asof"]), res.get("macro"), res.get("insiders"),
+                      res.get("managers"), cmap, today.isoformat())
+    history[fc["asof"]] = snap
+    for d in sorted(history)[:-30]:           # se conservan 30 fotos diarias
+        history.pop(d)
+    hist_path.write_text(json.dumps(history), encoding="utf-8")
+
+    dash = site.build_dashboard(fc, lab_res, ledger, al, res.get("macro"), {"date": today.isoformat()})
+    site.write(dash, ROOT / "docs" / "data" / "dashboard.json")
+
+    risk_table = []
+    for t, v in fc["tickers"].items():
+        r = v["risk"].get(21)
+        if r:
+            risk_table.append({"ticker": t, "dd21": r.get("dd_cal", r["dd"]["10"]), "p10": r["p10"], "p50": r["p50"],
+                               "p90": r["p90"], "vol63": v.get("vol63")})
+    risk_table.sort(key=lambda r: r["dd21"], reverse=True)
+    res["sources"]["Motor v2"] = (f"OK ({fc['n_stocks']} acciones" + (f"; sin precios: {', '.join(failed)}" if failed else "")
+                                  + f"; {al['counts']['alta']} alertas altas)")
+    return {"asof": fc["asof"], "n_stocks": fc["n_stocks"], "eval": fc["eval"], "risk_validation": fc["risk_validation"],
+            "risk_table": risk_table[:15], "lab": lab_res, "ledger": ledger, "alerts": al}
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-sec", action="store_true", help="omitir 13F e insiders")
     ap.add_argument("--no-insiders", action="store_true")
     ap.add_argument("--no-managers", action="store_true", help="omitir el track record de gestores")
+    ap.add_argument("--no-universe", action="store_true", help="omitir el motor de probabilidades del S&P 100")
     ap.add_argument("--tickers", help="lista separada por comas (sobrescribe la watchlist)")
     args = ap.parse_args(argv)
 
@@ -112,6 +156,14 @@ def main(argv: list[str] | None = None) -> int:
         except Exception as exc:  # noqa: BLE001 - se conserva el cálculo previo si existe
             res["errors"].append(f"track record gestores: {exc}")
             res["manager_track"] = cached
+
+    # Motor v2: probabilidades calibradas, riesgo, laboratorio de reglas, libro de picks, alertas y panel (S&P 100)
+    if not args.no_universe:
+        try:
+            res["engine"] = run_engine(res, today)
+        except Exception as exc:  # noqa: BLE001 - el informe base sigue saliendo aunque el motor falle
+            res["errors"].append(f"motor v2: {exc}")
+            res["sources"]["Motor v2"] = f"FALLÓ: {exc}"
 
     # Predicciones: evaluar vencidas y registrar las de hoy
     pred_path = ROOT / "data" / "predictions.csv"

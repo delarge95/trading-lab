@@ -17,6 +17,68 @@ def _usd(x):
     return f"${x:,.0f}"
 
 
+DASHBOARD_URL = "https://delarge95.github.io/trading-lab/"
+_TARGETS = {"up5": "Sube en 1 semana", "up21": "Sube en 1 mes", "up63": "Sube en 3 meses", "rel21": "Supera a SPY en 1 mes"}
+
+
+def _engine_section(eng: dict) -> list[str]:
+    """Sección del motor v2 a partir de res['engine'] (ver docs/contratos-datos.md)."""
+    L = ["## Predicciones por probabilidad (S&P 100)", "",
+         f"Panel interactivo: {DASHBOARD_URL} · {eng.get('n_stocks', '?')} acciones · datos al {eng.get('asof', '?')}.", ""]
+    ev = eng.get("eval") or {}
+    if ev:
+        L += ["### ¿Hay ventaja estadística? (validación fuera de muestra, walk-forward con purga)", "",
+              "| Objetivo | Tasa base | Brier skill [IC95%] | AUC | IC de rango [IC95%] | Veredicto |", "|---|---|---|---|---|---|"]
+        for k, e in ev.items():
+            L.append(f"| {_TARGETS.get(k, k)} | {_pct(e['base_rate'], 0)} | {e['bss'] * 100:+.2f}% "
+                     f"[{e['bss_ci'][0] * 100:+.2f}, {e['bss_ci'][1] * 100:+.2f}] | {e['auc']:.3f} | "
+                     f"{e['ic']:+.3f} [{e['ic_ci'][0]:+.3f}, {e['ic_ci'][1]:+.3f}] | {e['verdict']} |")
+        L += ["", "_Brier skill > 0 con IC que excluye 0 = el modelo supera a la tasa base. Si no, la probabilidad "
+              "calibrada se reduce a la tasa base (que además está inflada por sesgo de supervivencia: el universo son los "
+              "miembros actuales del índice)._", ""]
+    rv = eng.get("risk_validation") or {}
+    if rv:
+        parts = []
+        for h, v in rv.items():
+            parts.append(f"{h} ruedas: el rango P10–P90 cubrió {v['coverage80'] * 100:.1f}% de los casos reales "
+                         f"(IC95% {v['coverage80_ci'][0] * 100:.1f}–{v['coverage80_ci'][1] * 100:.1f}%, objetivo 80%)")
+        L += ["### Rangos de retorno y riesgo de caída (lo que sí se puede estimar)", "", "- " + "\n- ".join(parts), ""]
+    risk = eng.get("risk_table") or []
+    if risk:
+        L += ["| Mayor riesgo de caída >10% a 1 mes | Prob. | Rango 1m (P10 / P50 / P90) | Vol. 63d |", "|---|---|---|---|"]
+        for r in risk[:8]:
+            L.append(f"| {r['ticker']} | {_pct(r['dd21'], 0)} | {_pct(r['p10'])} / {_pct(r['p50'])} / {_pct(r['p90'])} | {_pct(r['vol63'], 0)} |")
+        L.append("")
+    lab = eng.get("lab")
+    if lab and lab.get("rules"):
+        L += ["### Laboratorio de reglas de selección (backtest histórico vs igual ponderado)", "",
+              "| Regla | Sharpe [IC95%] | Exceso anual vs EW | p (Holm) | DSR | Máx. drawdown |", "|---|---|---|---|---|---|"]
+        for name, r in lab["rules"].items():
+            L.append(f"| {r.get('label', name)} | {r['sharpe']:.2f} [{r['sharpe_ci'][0]:.2f}, {r['sharpe_ci'][1]:.2f}] | "
+                     f"{r['annual_excess_vs_ew'] * 100:+.1f}% | {r['p_holm']:.2f} | {r['dsr']:.2f} | "
+                     f"{_pct(r['max_drawdown'], 0)} |")
+        L += ["", f"**Veredicto:** {lab.get('verdict', '')}", ""]
+        for c in lab.get("caveats", []):
+            L.append(f"- _{c}_")
+        L.append("")
+    led = eng.get("ledger")
+    if led and led.get("rules"):
+        L += ["### Libro de picks hacia adelante (simulado, sin dinero real)", "",
+              "| Regla | Cerradas | Abierta desde | Exceso medio vs EW | Aciertos | Nota |", "|---|---|---|---|---|---|"]
+        for name, r in led["rules"].items():
+            ex = "n/d" if r.get("mean_excess_vs_ew") is None else f"{r['mean_excess_vs_ew'] * 100:+.2f}%"
+            hr = "n/d" if r.get("hit_rate") is None else _pct(r["hit_rate"], 0)
+            L.append(f"| {name} | {r['closed']} | {r.get('open_since') or '—'} | {ex} | {hr} | {r.get('note', '')} |")
+        L.append("")
+    al = eng.get("alerts")
+    if al and al.get("alerts"):
+        L += ["### Alertas", ""]
+        for a in al["alerts"][:12]:
+            L.append(f"- **[{a['severity']}]** {a['title']} — {a['detail']}")
+        L.append("")
+    return L
+
+
 def render(res: dict) -> str:
     L: list[str] = [f"# Informe de trading — {res['date']}", ""]
 
@@ -75,6 +137,11 @@ def render(res: dict) -> str:
               "Δ y p vienen de un bootstrap por bloques pareado contra comprar y mantener; p es unilateral "
               "(H0: la estrategia no supera) y se ajusta por Holm entre tickers. Walk-forward: el lookback "
               "(126/189/252) se elige solo con datos pasados._", ""]
+
+    # Motor v2: probabilidades, riesgo, laboratorio de reglas, libro de picks y alertas (S&P 100)
+    eng = res.get("engine")
+    if eng:
+        L += _engine_section(eng)
 
     # Insiders
     if res["insiders"]:

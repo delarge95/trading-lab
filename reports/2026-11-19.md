@@ -5,19 +5,20 @@
 - **Precios**: OK (yahoo), 8/8 tickers
 - **FRED**: OK (5/5 series)
 - **SEC**: OK (8/8 gestores, 6 emisores); 13F atrasado: Pershing Square
+- **Motor v2**: OK (100 acciones; sin precios: BK; 0 alertas altas)
 
 ## Tendencia y probabilidades (horizonte 21 ruedas)
 
 | Ticker | Precio | Mom. 12-1 | Tendencia | Vol 63d | P(sube) cond. [IC95%] (n) | P(sube) base [IC95%] (n) |
 |---|---|---|---|---|---|---|
-| SPY | 720.22 | 18.4% | positiva | 15% | 71% [61%–80%] (91) | 71% [62%–79%] (107) |
-| QQQ | 649.67 | 22.2% | positiva | 24% | 63% [53%–73%] (93) | 64% [55%–73%] (107) |
-| AAPL | 349.36 | 29.0% | positiva | 22% | 60% [50%–70%] (91) | 64% [55%–73%] (107) |
-| MSFT | 503.10 | 8.8% | positiva | 27% | 62% [52%–72%] (88) | 64% [54%–72%] (107) |
-| NVDA | 148.46 | 22.7% | positiva | 44% | 63% [53%–73%] (87) | 64% [54%–72%] (107) |
-| AMZN | 259.42 | 17.9% | positiva | 33% | 62% [52%–72%] (87) | 63% [53%–71%] (107) |
-| GOOGL | 279.25 | 18.1% | positiva | 36% | 58% [47%–68%] (85) | 61% [51%–69%] (107) |
-| BRK-B | 570.37 | 6.9% | positiva | 15% | 66% [56%–76%] (83) | 64% [54%–72%] (107) |
+| SPY | 715.87 | 18.4% | positiva | 16% | 71% [61%–80%] (91) | 71% [62%–79%] (107) |
+| QQQ | 645.04 | 22.2% | positiva | 25% | 63% [53%–73%] (93) | 64% [55%–73%] (107) |
+| AAPL | 349.21 | 29.0% | positiva | 22% | 60% [50%–70%] (91) | 64% [55%–73%] (107) |
+| MSFT | 498.30 | 8.8% | positiva | 28% | 62% [52%–72%] (88) | 64% [54%–72%] (107) |
+| NVDA | 145.98 | 22.7% | positiva | 44% | 63% [53%–73%] (87) | 64% [54%–72%] (107) |
+| AMZN | 257.37 | 17.9% | positiva | 33% | 62% [52%–72%] (87) | 63% [53%–71%] (107) |
+| GOOGL | 272.66 | 18.1% | positiva | 37% | 58% [47%–68%] (85) | 61% [51%–69%] (107) |
+| BRK-B | 572.04 | 6.9% | positiva | 15% | 66% [56%–76%] (83) | 64% [54%–72%] (107) |
 
 _Las probabilidades usan ventanas no solapadas; el intervalo es amplio a propósito. Si el IC condicional incluye la base, la tendencia no aporta información medible._
 
@@ -53,11 +54,80 @@ Control: con precios sin tendencia el Sharpe medio es 0.00 (error estándar 0.02
 
 _Sharpe sobre retorno total (sin tasa libre), períodos mensuales no solapados, costo 0.1% por cambio. PSR: probabilidad de que el Sharpe verdadero sea >0. DSR: igual, corregido por probar 8 tickers (si DSR es bajo, el mejor resultado puede ser suerte de selección). Δ y p vienen de un bootstrap por bloques pareado contra comprar y mantener; p es unilateral (H0: la estrategia no supera) y se ajusta por Holm entre tickers. Walk-forward: el lookback (126/189/252) se elige solo con datos pasados._
 
+## Predicciones por probabilidad (S&P 100)
+
+Panel interactivo: https://delarge95.github.io/trading-lab/ · 100 acciones · datos al 2026-11-19.
+
+### ¿Hay ventaja estadística? (validación fuera de muestra, walk-forward con purga)
+
+| Objetivo | Tasa base | Brier skill [IC95%] | AUC | IC de rango [IC95%] | Veredicto |
+|---|---|---|---|---|---|
+| Sube en 1 semana | 54% | +0.19% [-0.16, +0.56] | 0.503 | -0.007 [-0.028, +0.012] | Sin ventaja demostrada: usar la tasa base como referencia |
+| Sube en 1 mes | 56% | +0.58% [-0.42, +1.72] | 0.482 | -0.032 [-0.073, +0.011] | Sin ventaja demostrada: usar la tasa base como referencia |
+| Sube en 3 meses | 60% | +1.42% [-1.17, +3.80] | 0.478 | -0.054 [-0.123, +0.010] | Sin ventaja demostrada: usar la tasa base como referencia |
+| Supera a SPY en 1 mes | 48% | +0.35% [-0.09, +0.75] | 0.509 | +0.009 [-0.026, +0.044] | Sin ventaja demostrada: usar la tasa base como referencia |
+
+_Brier skill > 0 con IC que excluye 0 = el modelo supera a la tasa base. Si no, la probabilidad calibrada se reduce a la tasa base (que además está inflada por sesgo de supervivencia: el universo son los miembros actuales del índice)._
+
+### Rangos de retorno y riesgo de caída (lo que sí se puede estimar)
+
+- 21 ruedas: el rango P10–P90 cubrió 78.7% de los casos reales (IC95% 76.2–81.2%, objetivo 80%)
+- 63 ruedas: el rango P10–P90 cubrió 77.6% de los casos reales (IC95% 73.6–81.0%, objetivo 80%)
+
+| Mayor riesgo de caída >10% a 1 mes | Prob. | Rango 1m (P10 / P50 / P90) | Vol. 63d |
+|---|---|---|---|
+| INTC | 35% | -35.0% / 3.6% / 55.7% | 96% |
+| AMD | 33% | -27.2% / 5.5% / 69.6% | 83% |
+| NOW | 32% | -24.9% / 6.3% / 40.1% | 80% |
+| ORCL | 28% | -21.1% / 3.0% / 35.7% | 62% |
+| QCOM | 28% | -18.1% / 1.4% / 29.5% | 53% |
+| CHTR | 27% | -21.3% / 1.2% / 27.3% | 58% |
+| CVS | 26% | -20.3% / 0.7% / 21.4% | 40% |
+| UNH | 25% | -16.0% / 3.9% / 24.8% | 35% |
+
+### Laboratorio de reglas de selección (backtest histórico vs igual ponderado)
+
+| Regla | Sharpe [IC95%] | Exceso anual vs EW | p (Holm) | DSR | Máx. drawdown |
+|---|---|---|---|---|---|
+| Momentum 12-1 (mayor retorno de 12 a 1 meses) | 1.21 [0.60, 1.81] | +9.8% | 1.00 | 1.00 | -27% |
+| Baja volatilidad (menor volatilidad de 63 ruedas) | 1.01 [0.35, 1.66] | -4.3% | 1.00 | 1.00 | -16% |
+| Reversión 1 mes (peor retorno de 21 ruedas) | 1.10 [0.46, 1.75] | +3.3% | 1.00 | 1.00 | -20% |
+| Cerca del máximo (menor distancia al máximo de 252 ruedas) | 0.97 [0.32, 1.61] | -2.6% | 1.00 | 1.00 | -19% |
+
+**Veredicto:** Ninguna de las 4 reglas supera al igual ponderado del universo con significancia estadística (Holm, alfa 5%). La mejor diferencia de Sharpe es +0.04 (mom12_1, p Holm 1.00); la diferencia no se distingue del azar.
+
+- _Sesgo de supervivencia: el universo son los miembros ACTUALES del S&P 100, lo que infla todos los retornos históricos (también los del EW y los de las reglas); las diferencias entre reglas y EW están menos sesgadas, pero no libres de sesgo._
+- _Sin impuestos ni deslizamiento más allá del costo fijo por rotación; el EW y SPY se muestran sin costo (sesgo conservador contra las reglas)._
+- _Resultado histórico no garantiza resultado futuro. Se probaron varias reglas: el DSR y la corrección de Holm descuentan parte, no todo, del sesgo de selección._
+- _Herramienta de investigación, no asesoría financiera._
+
+### Libro de picks hacia adelante (simulado, sin dinero real)
+
+| Regla | Cerradas | Abierta desde | Exceso medio vs EW | Aciertos | Nota |
+|---|---|---|---|---|---|
+| mom12_1 | 0 | 2026-11-19 | n/d | n/d | muestra insuficiente (n=0); no concluir |
+| lowvol | 0 | 2026-11-19 | n/d | n/d | muestra insuficiente (n=0); no concluir |
+| reversal1m | 0 | 2026-11-19 | n/d | n/d | muestra insuficiente (n=0); no concluir |
+| near_high | 0 | 2026-11-19 | n/d | n/d | muestra insuficiente (n=0); no concluir |
+
+### Alertas
+
+- **[info]** Mayor riesgo de caída >10% a 21 ruedas: INTC, AMD, NOW — Probabilidad calibrada de caída mayor a 10% a 21 ruedas (y P(sube) a 21 ruedas entre paréntesis): INTC 35.4% (P(sube) 56.2%); AMD 33% (P(sube) 56.2%); NOW 32.3% (P(sube) 56.2%).
+- **[info]** AMZN: en el top de 4 gestores — AMAZON COM INC aparece en el top 10 de Pershing Square, Appaloosa, Baupost Group y Duquesne Family Office (peso medio 13.8%).
+- **[info]** FERG: posición nueva en el top de 1 gestor (13F al 2026-09-30) — Trian Fund Management abrió FERGUSON ENTERPRISES INC en su top 10 en el trimestre al 2026-09-30. Los datos del 13F tienen hasta ~45 días de retraso.
+- **[info]** GOOG: en el top de 5 gestores — ALPHABET INC aparece en el top 10 de Berkshire Hathaway, Pershing Square, Appaloosa, Baupost Group y Himalaya Capital (peso medio 7.3%).
+- **[info]** META: en el top de 3 gestores — META PLATFORMS INC aparece en el top 10 de Pershing Square, Appaloosa y Third Point (peso medio 8.9%).
+- **[info]** META: posición nueva en el top de 1 gestor (13F al 2026-09-30) — Third Point abrió META PLATFORMS INC en su top 10 en el trimestre al 2026-09-30. Los datos del 13F tienen hasta ~45 días de retraso.
+- **[info]** MSFT: posición nueva en el top de 1 gestor (13F al 2026-09-30) — Third Point abrió MICROSOFT CORP en su top 10 en el trimestre al 2026-09-30. Los datos del 13F tienen hasta ~45 días de retraso.
+- **[info]** NVDA: posición nueva en el top de 1 gestor (13F al 2026-09-30) — Third Point abrió NVIDIA CORPORATION en su top 10 en el trimestre al 2026-09-30. Los datos del 13F tienen hasta ~45 días de retraso.
+- **[info]** RTO: posición nueva en el top de 1 gestor (13F al 2026-09-30) — Trian Fund Management abrió Rentokil Initial plc en su top 10 en el trimestre al 2026-09-30. Los datos del 13F tienen hasta ~45 días de retraso.
+- **[info]** UNUM GROUP: posición nueva en el top de 1 gestor (13F al 2026-09-30) — Third Point abrió UNUM GROUP en su top 10 en el trimestre al 2026-09-30. Los datos del 13F tienen hasta ~45 días de retraso.
+
 ## Insiders (Form 4, compras de mercado abierto)
 
 | Ticker | Compras 90d | Oportunistas | Rutinarias | Sin clasificar | Valor comprado | Valor vendido |
 |---|---|---|---|---|---|---|
-| AAPL | 0 | 0 | 0 | 0 | $0 | $128.8M |
+| AAPL | 0 | 0 | 0 | 0 | $0 | $129.7M |
 | MSFT | 0 | 0 | 0 | 0 | $0 | $74.8M |
 | NVDA | 0 | 0 | 0 | 0 | $0 | $967.6M |
 | AMZN | 0 | 0 | 0 | 0 | $0 | $18.5M |
@@ -200,9 +270,9 @@ _*Años de historia necesarios para detectar con 80% de potencia un alfa de 3% a
 
 | Serie | Fecha | Valor | Δ 21 obs. |
 |---|---|---|---|
-| Tasa Treasury 10 años (%) | 2026-11-17 | 5.1 | +0.01 |
-| Tasa Treasury 2 años (%) | 2026-11-17 | 4.8 | +0.06 |
-| Pendiente curva 10a-2a (pp) | 2026-11-18 | 0.27 | -0.11 |
+| Tasa Treasury 10 años (%) | 2026-11-18 | 5.07 | -0.08 |
+| Tasa Treasury 2 años (%) | 2026-11-18 | 4.8 | +0.03 |
+| Pendiente curva 10a-2a (pp) | 2026-11-19 | 0.28 | -0.05 |
 | VIX | 2026-11-18 | 24.56 | +7.25 |
 | Spread high yield (pp) | 2026-11-18 | 3.47 | +0.14 |
 

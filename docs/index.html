@@ -1,0 +1,791 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Trading Lab - panel de investigación</title>
+<meta name="description" content="Panel de investigación: probabilidades con incertidumbre, rangos de retorno y riesgo de caída. No es asesoría financiera.">
+<style>
+:root{
+  --bg:#f4f6f9; --surface:#ffffff; --surface2:#eef1f5; --text:#14181f; --muted:#556070;
+  --border:#d5dbe3; --accent:#1c5bc8; --accent-text:#ffffff;
+  --ok:#14663a; --ok-bg:#e3f4ea; --warn:#7a4f00; --warn-bg:#fdf0d5; --none:#4a5563; --none-bg:#e9edf2;
+  --danger:#a8231b; --danger-bg:#fbe6e4; --info:#1c5bc8; --info-bg:#e5eefb;
+  --track:#dfe4eb; --bar:#7aa2dd; --focus:#1c5bc8;
+  --radius:10px; --gutter:16px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0e1116; --surface:#171b22; --surface2:#1e232c; --text:#e8ebf0; --muted:#a2acba;
+    --border:#2c333e; --accent:#7ba8ff; --accent-text:#0e1116;
+    --ok:#6fd99a; --ok-bg:#12281b; --warn:#f2bd55; --warn-bg:#2e2410; --none:#b4bdca; --none-bg:#232932;
+    --danger:#ff9087; --danger-bg:#331816; --info:#8db4ff; --info-bg:#16233a;
+    --track:#2a313c; --bar:#4f78b8; --focus:#8db4ff;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  overflow-x:hidden}
+.wrap{max-width:1100px;margin:0 auto;padding:0 var(--gutter) 48px}
+h1{font-size:1.35rem;line-height:1.25;margin:0}
+h2{font-size:1.1rem;margin:0 0 4px}
+h3{font-size:1rem;margin:16px 0 6px}
+p{margin:0 0 8px}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+header.top{padding:18px 0 8px}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:4px;font-size:.88rem;color:var(--muted)}
+.aviso{display:block;margin-top:10px;padding:8px 12px;border:1px solid var(--border);border-left:4px solid var(--warn);
+  background:var(--surface);border-radius:var(--radius);font-size:.9rem;font-weight:600}
+section.panel{margin-top:22px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px}
+.cards{display:grid;gap:10px;grid-template-columns:1fr}
+@media(min-width:700px){.cards{grid-template-columns:1fr 1fr}}
+.vcard{border-left:5px solid var(--none)}
+.vcard.ok{border-left-color:var(--ok)} .vcard.warn{border-left-color:var(--warn)}
+.vcard.none{border-left-color:var(--none)} .vcard.info{border-left-color:var(--info)}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  padding:1px 8px;border-radius:999px;margin-bottom:4px}
+.tag.ok{background:var(--ok-bg);color:var(--ok)} .tag.warn{background:var(--warn-bg);color:var(--warn)}
+.tag.none{background:var(--none-bg);color:var(--none)} .tag.info{background:var(--info-bg);color:var(--info)}
+.tag.alta{background:var(--danger-bg);color:var(--danger)} .tag.media{background:var(--warn-bg);color:var(--warn)}
+.vtitle{font-weight:700;display:block}
+#estado{margin-top:16px;padding:12px 14px;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface)}
+#estado.error{border-color:var(--danger);background:var(--danger-bg);color:var(--text)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:8px 0}
+label.lbl{font-weight:600;font-size:.9rem}
+input[type=search],input[type=text]{font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:9px 11px;min-height:44px;width:100%}
+.toolbar input[type=search]{max-width:260px}
+button{font:inherit;cursor:pointer}
+.btn{background:var(--accent);color:var(--accent-text);border:0;border-radius:8px;padding:10px 16px;min-height:44px;font-weight:700}
+.btn.sec{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);max-width:100%}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:.9rem}
+th,td{padding:8px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--border);vertical-align:middle}
+th:first-child,td:first-child{text-align:left}
+td.txt,th.txt{text-align:left;white-space:normal}
+#tabla-eval td.txt:first-child,#tabla-lab td.txt:first-child,#tabla-ledger td.txt:first-child{min-width:150px}
+thead th{background:var(--surface2);position:sticky;top:0;z-index:1;font-weight:700}
+tbody tr:last-child td{border-bottom:0}
+th button.sort{all:unset;cursor:pointer;display:inline-flex;gap:4px;align-items:center;padding:4px 2px;min-height:32px;font-weight:700}
+th button.sort:focus-visible{outline:3px solid var(--focus);border-radius:4px}
+th button.sort .arr{font-size:.7rem;color:var(--muted)}
+#tabla tbody tr{cursor:pointer}
+#tabla tbody tr:hover td{background:var(--surface2)}
+#tabla th:first-child,#tabla td:first-child{position:sticky;left:0;background:var(--surface);z-index:2;box-shadow:1px 0 0 var(--border)}
+#tabla thead th:first-child{background:var(--surface2);z-index:3}
+#tabla tbody tr:hover td:first-child{background:var(--surface2)}
+button.tk{all:unset;cursor:pointer;font-weight:700;color:var(--accent);padding:6px 2px;min-height:32px;display:inline-block}
+button.tk:focus-visible{outline:3px solid var(--focus);border-radius:4px}
+.rng{display:block;font-size:.75rem;color:var(--muted)}
+.rb{position:relative;height:10px;background:var(--track);border-radius:5px;min-width:120px;margin:6px 0 3px}
+.rb .b{position:absolute;top:0;bottom:0;background:var(--bar);border-radius:5px}
+.rb .m{position:absolute;top:-3px;bottom:-3px;width:3px;background:var(--text);border-radius:1px}
+.rb .z{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--muted)}
+.neg{color:var(--danger)}
+dialog{border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--text);
+  width:min(640px,calc(100vw - 2*var(--gutter)));max-height:calc(100vh - 32px);padding:0;overflow:auto}
+dialog::backdrop{background:rgba(0,0,0,.55)}
+.dlg-in{padding:16px}
+.dlg-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.close{background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;min-width:44px;min-height:44px;font-size:1.2rem}
+.kv{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.kv div{background:var(--surface2);border-radius:8px;padding:8px 10px}
+.kv b{display:block;font-size:.78rem;color:var(--muted);font-weight:600}
+.flags{margin:6px 0 0;padding-left:20px}
+.nota{border-left:4px solid var(--info);background:var(--info-bg);padding:8px 12px;border-radius:6px;font-size:.9rem;margin-top:12px}
+.alert{display:grid;gap:2px;border-left:6px solid var(--none);padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-left-width:6px;border-radius:var(--radius);margin-bottom:8px}
+.alert.alta{border-left-color:var(--danger)} .alert.media{border-left-color:var(--warn)} .alert.info{border-left-color:var(--info)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.chip{background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.85rem;font-weight:600}
+form.calc{display:grid;gap:12px;grid-template-columns:1fr}
+@media(min-width:600px){form.calc{grid-template-columns:1fr 1fr}}
+form.calc .full{grid-column:1/-1}
+.field{display:grid;gap:4px}
+.field .hint{font-size:.8rem;color:var(--muted)}
+.result{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+.result div{background:var(--surface2);border-radius:8px;padding:10px}
+.result b{display:block;font-size:.78rem;color:var(--muted);font-weight:600}
+.result output{font-size:1.15rem;font-weight:700}
+.errmsg{color:var(--danger);font-weight:600;min-height:1.4em}
+footer{margin-top:28px;padding-top:14px;border-top:1px solid var(--border);font-size:.85rem;color:var(--muted)}
+footer ul{padding-left:20px;margin:6px 0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+[hidden]{display:none !important}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <h1>Trading Lab: panel de investigación</h1>
+  <div class="meta">
+    <span>Datos al: <strong id="asof">cargando…</strong></span>
+    <span>Generado: <span id="generated">-</span></span>
+    <span>Universo: <span id="universo">-</span> acciones</span>
+  </div>
+  <span class="aviso" id="aviso">Herramienta de investigación, no asesoría financiera.</span>
+</header>
+
+<div id="estado" role="status" aria-live="polite">Cargando datos…</div>
+
+<main id="contenido" hidden>
+
+<section class="panel" id="titulares" aria-labelledby="h-titulares">
+  <h2 id="h-titulares">Lo que dicen los datos</h2>
+  <p class="muted small">Titulares calculados de la validación fuera de muestra. Son hechos estadísticos, no recomendaciones.</p>
+  <div class="cards" id="verdicts"></div>
+</section>
+
+<section class="panel" id="acciones" aria-labelledby="h-acciones">
+  <h2 id="h-acciones">Acciones</h2>
+  <p class="muted small">Toca un encabezado para ordenar y una fila para ver el detalle. P(sube) es la probabilidad calibrada con su intervalo; sin ventaja estadística equivale a la tasa base.</p>
+  <div class="toolbar">
+    <label class="lbl" for="buscar">Buscar ticker</label>
+    <input type="search" id="buscar" placeholder="Ej.: NVDA" autocomplete="off" autocapitalize="characters" spellcheck="false">
+    <span class="muted small" id="conteo" aria-live="polite"></span>
+  </div>
+  <div class="tscroll" id="tscroll" tabindex="0" role="region" aria-label="Tabla de acciones, desplazable horizontalmente">
+    <table id="tabla">
+      <caption class="sr">Probabilidades, rango de retorno y riesgo por acción</caption>
+      <thead><tr id="thead-row"></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="panel" id="validacion" aria-labelledby="h-validacion">
+  <h2 id="h-validacion">Validación fuera de muestra</h2>
+  <p class="muted small">BSS: mejora del Brier frente a la tasa base (positivo y con IC que excluye 0 = ventaja). AUC 0,50 = azar.</p>
+  <div class="tscroll" tabindex="0" role="region" aria-label="Tabla de validación, desplazable horizontalmente">
+    <table id="tabla-eval"><thead id="eval-head"></thead><tbody id="eval-body"></tbody></table>
+  </div>
+  <div id="rv-wrap" class="small muted" style="margin-top:8px"></div>
+</section>
+
+<section class="panel" id="alertas" aria-labelledby="h-alertas">
+  <h2 id="h-alertas">Alertas</h2>
+  <div id="alertas-lista"></div>
+</section>
+
+<section class="panel" id="macro" aria-labelledby="h-macro" hidden>
+  <h2 id="h-macro">Contexto macro</h2>
+  <div class="kv" id="macro-kv"></div>
+</section>
+
+<section class="panel" id="lab" aria-labelledby="h-lab" hidden>
+  <h2 id="h-lab">Laboratorio de reglas</h2>
+  <p class="muted small">Reglas mecánicas probadas con corrección por pruebas múltiples. Comparación contra el portafolio igual ponderado del universo.</p>
+  <div class="tscroll" tabindex="0" role="region" aria-label="Tabla de reglas, desplazable horizontalmente">
+    <table id="tabla-lab"><thead id="lab-head"></thead><tbody id="lab-body"></tbody></table>
+  </div>
+  <div id="lab-extra"></div>
+</section>
+
+<section class="panel" id="ledger" aria-labelledby="h-ledger" hidden>
+  <h2 id="h-ledger">Libro de picks hacia adelante</h2>
+  <p class="muted small">Registro de selecciones hechas antes de conocer el resultado; es la prueba más honesta de una regla.</p>
+  <div id="ledger-resumen"></div>
+  <div class="tscroll" tabindex="0" role="region" aria-label="Tabla del libro de picks, desplazable horizontalmente">
+    <table id="tabla-ledger"><thead id="ledger-head"></thead><tbody id="ledger-body"></tbody></table>
+  </div>
+</section>
+
+<section class="panel" id="calculadora" aria-labelledby="h-calc">
+  <h2 id="h-calc">Calculadora de tamaño de posición por riesgo fijo</h2>
+  <p class="muted small">Cálculo educativo, no una recomendación. Posición larga: el stop debe estar por debajo de la entrada. Acepta coma o punto decimal.</p>
+  <div class="card">
+    <form class="calc" id="calc-form" novalidate autocomplete="off">
+      <div class="field"><label class="lbl" for="c-capital">Capital (USD)</label>
+        <input type="text" id="c-capital" inputmode="decimal" value="10000"></div>
+      <div class="field"><label class="lbl" for="c-riesgo">Riesgo por operación (% del capital)</label>
+        <input type="text" id="c-riesgo" inputmode="decimal" value="1"></div>
+      <div class="field"><label class="lbl" for="c-entrada">Precio de entrada (USD)</label>
+        <input type="text" id="c-entrada" inputmode="decimal" placeholder="Ej.: 100"></div>
+      <div class="field"><label class="lbl" for="c-stop">Precio de stop (USD)</label>
+        <input type="text" id="c-stop" inputmode="decimal" placeholder="Ej.: 95"></div>
+      <div class="full"><button type="submit" class="btn">Calcular</button></div>
+    </form>
+    <p class="errmsg" id="calc-error" role="alert"></p>
+    <div class="result" id="calc-result" aria-live="polite" hidden>
+      <div><b>Acciones</b><output id="r-acciones" for="c-capital c-riesgo c-entrada c-stop"></output></div>
+      <div><b>Valor de la posición</b><output id="r-valor"></output></div>
+      <div><b>Pérdida máxima si toca el stop</b><output id="r-perdida"></output></div>
+      <div><b>% del capital en la posición</b><output id="r-pct"></output></div>
+    </div>
+    <p class="muted small" id="calc-nota" style="margin-top:8px"></p>
+  </div>
+</section>
+
+<footer id="pie">
+  <strong id="pie-aviso">Herramienta de investigación, no asesoría financiera.</strong>
+  <ul id="caveats"></ul>
+</footer>
+
+</main>
+</div>
+
+<dialog id="detalle" aria-labelledby="d-titulo">
+  <div class="dlg-in">
+    <div class="dlg-head">
+      <div><h2 id="d-titulo">-</h2><div class="muted" id="d-sub"></div></div>
+      <button type="button" class="close" id="d-cerrar" aria-label="Cerrar detalle">×</button>
+    </div>
+    <div id="d-cuerpo"></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <button type="button" class="btn sec" id="d-calc">Usar precio en la calculadora</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  "use strict";
+
+  // ------------------------------------------------------------------ utilidades
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined && text !== null) n.textContent = String(text);
+    return n;
+  }
+  function clear(n) { while (n.firstChild) n.removeChild(n.firstChild); }
+  function isNum(x) { return typeof x === "number" && isFinite(x); }
+  function pct(x, d) {
+    if (!isNum(x)) return "s/d";
+    return (x * 100).toFixed(d === undefined ? 0 : d).replace(".", ",") + "%";
+  }
+  function spct(x, d) {
+    if (!isNum(x)) return "s/d";
+    return (x > 0 ? "+" : "") + pct(x, d);
+  }
+  function num(x, d) {
+    if (!isNum(x)) return "s/d";
+    return x.toFixed(d === undefined ? 2 : d).replace(".", ",");
+  }
+  function money(x) {
+    if (!isNum(x)) return "s/d";
+    return x.toLocaleString("es", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function range(lo, hi) {
+    return (isNum(lo) && isNum(hi)) ? pct(lo) + " a " + pct(hi) : "s/d";
+  }
+
+  var DATA = null;
+  var sortKey = "ticker", sortDir = 1, filtro = "";
+  var lastFocus = null, selTicker = null;
+
+  // ------------------------------------------------------------------ carga
+  function showError(msg) {
+    var e = $("estado");
+    e.className = "error";
+    e.setAttribute("role", "alert");
+    e.textContent = msg;
+    e.hidden = false;
+    $("contenido").hidden = true;
+  }
+
+  function load() {
+    fetch("data/dashboard.json", { cache: "no-cache" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("respuesta HTTP " + r.status);
+        return r.json();
+      })
+      .then(function (d) {
+        DATA = d;
+        try { render(); }
+        catch (err) { showError("Los datos se cargaron pero tienen un formato inesperado (" + err.message + ")."); }
+      })
+      .catch(function (err) {
+        showError("No se pudieron cargar los datos (data/dashboard.json): " + err.message +
+          ". Si abriste el archivo directamente desde el disco, sirve la carpeta docs con un servidor local " +
+          "(por ejemplo: python -m http.server) o recarga la página más tarde.");
+      });
+  }
+
+  // ------------------------------------------------------------------ render general
+  function render() {
+    var d = DATA;
+    $("asof").textContent = d.asof || "s/d";
+    $("generated").textContent = d.generated ? String(d.generated).replace("T", " ").replace("Z", " UTC") : "s/d";
+    $("universo").textContent = isNum(d.universe) ? d.universe : "s/d";
+    if (d.disclaimer) { $("aviso").textContent = d.disclaimer; $("pie-aviso").textContent = d.disclaimer; }
+    $("estado").hidden = true;
+    $("contenido").hidden = false;
+
+    renderVerdicts();
+    buildHead();
+    renderTable();
+    renderEval();
+    renderAlerts();
+    renderMacro();
+    renderLab();
+    renderLedger();
+    renderCaveats();
+  }
+
+  // ------------------------------------------------------------------ titulares
+  var LEVEL_TXT = { ok: "Validado", warn: "Con reservas", none: "Sin ventaja", info: "Alcance" };
+  function renderVerdicts() {
+    var box = $("verdicts");
+    clear(box);
+    var v = DATA.verdicts || {}, lv = DATA.verdict_levels || {};
+    Object.keys(v).forEach(function (k) {
+      if (/_detalle$/.test(k)) return;
+      var text = String(v[k]);
+      var lvl = lv[k] || "info";
+      var card = el("div", "card vcard " + lvl);
+      card.appendChild(el("span", "tag " + lvl, LEVEL_TXT[lvl] || lvl));
+      var i = text.indexOf(": ");
+      if (i > 0 && i < 60) {
+        card.appendChild(el("span", "vtitle", text.slice(0, i)));
+        card.appendChild(el("span", "", text.slice(i + 2)));
+      } else {
+        card.appendChild(el("span", "", text));
+      }
+      var det = v[k + "_detalle"];
+      if (det) card.appendChild(el("p", "muted small", det));
+      box.appendChild(card);
+    });
+  }
+
+  // ------------------------------------------------------------------ tabla de acciones
+  function r21(t) { return t.ret21 || [null, null, null]; }
+  var COLS = [
+    { key: "ticker", label: "Ticker", get: function (t) { return t.ticker; }, cell: function (t, td) {
+        var b = el("button", "tk", t.ticker); b.type = "button";
+        b.setAttribute("data-t", t.ticker);
+        b.setAttribute("aria-label", "Ver detalle de " + t.ticker);
+        td.appendChild(b);
+        if (t.flags && t.flags.length) {
+          var s = el("span", "rng", t.flags.length + (t.flags.length === 1 ? " aviso" : " avisos"));
+          td.appendChild(s);
+        }
+      } },
+    { key: "price", label: "Precio", get: function (t) { return t.price; }, cell: function (t, td) {
+        td.textContent = isNum(t.price) ? money(t.price) : "s/d"; } },
+    { key: "p21", label: "P(sube) 1m", get: function (t) { return t.p21; }, cell: function (t, td) {
+        td.appendChild(document.createTextNode(pct(t.p21, 1)));
+        td.appendChild(el("span", "rng", range(t.lo21, t.hi21))); } },
+    { key: "rel21", label: "P(supera SPY) 1m", get: function (t) { return t.rel21; }, cell: function (t, td) {
+        td.appendChild(document.createTextNode(pct(t.rel21, 1)));
+        td.appendChild(el("span", "rng", range(t.lo_rel21, t.hi_rel21))); } },
+    { key: "ret21", label: "Retorno 1m (P10 · P50 · P90)", get: function (t) { return r21(t)[1]; }, cell: function (t, td) {
+        td.className = "txt";
+        td.appendChild(rangeBar(r21(t)));
+        td.appendChild(el("span", "rng", spct(r21(t)[0]) + " · " + spct(r21(t)[1]) + " · " + spct(r21(t)[2]))); } },
+    { key: "dd21_10", label: "Caída >10% 1m", get: function (t) { return t.dd21_10; }, cell: function (t, td) {
+        td.textContent = pct(t.dd21_10); } },
+    { key: "dd63_10", label: "Caída >10% 3m", get: function (t) { return t.dd63_10; }, cell: function (t, td) {
+        td.textContent = pct(t.dd63_10); } },
+    { key: "vol63", label: "Volatilidad 63d", get: function (t) { return t.vol63; }, cell: function (t, td) {
+        td.textContent = pct(t.vol63); } }
+  ];
+
+  var SCALE = { min: -0.3, max: 0.4 };
+  function computeScale() {
+    var lo = Infinity, hi = -Infinity;
+    (DATA.tickers || []).forEach(function (t) {
+      var r = r21(t);
+      if (isNum(r[0]) && r[0] < lo) lo = r[0];
+      if (isNum(r[2]) && r[2] > hi) hi = r[2];
+    });
+    if (!isFinite(lo) || !isFinite(hi) || hi <= lo) { lo = -0.3; hi = 0.4; }
+    lo = Math.min(lo, 0); hi = Math.max(hi, 0);
+    var pad = (hi - lo) * 0.03;
+    SCALE = { min: lo - pad, max: hi + pad };
+  }
+  function pos(v) {
+    var p = (v - SCALE.min) / (SCALE.max - SCALE.min) * 100;
+    return Math.max(0, Math.min(100, p));
+  }
+  function rangeBar(r) {
+    var box = el("div", "rb");
+    box.setAttribute("role", "img");
+    box.setAttribute("aria-label", "Retorno a 1 mes: P10 " + spct(r[0]) + ", mediana " + spct(r[1]) + ", P90 " + spct(r[2]));
+    if (isNum(r[0]) && isNum(r[2])) {
+      var z = el("span", "z"); z.style.left = pos(0) + "%"; box.appendChild(z);
+      var b = el("span", "b"); b.style.left = pos(r[0]) + "%"; b.style.width = Math.max(1, pos(r[2]) - pos(r[0])) + "%";
+      box.appendChild(b);
+      if (isNum(r[1])) { var m = el("span", "m"); m.style.left = "calc(" + pos(r[1]) + "% - 1px)"; box.appendChild(m); }
+    }
+    return box;
+  }
+
+  function buildHead() {
+    computeScale();
+    var tr = $("thead-row");
+    clear(tr);
+    COLS.forEach(function (c) {
+      var th = el("th");
+      if (c.key === "ret21") th.className = "txt";
+      th.setAttribute("scope", "col");
+      th.setAttribute("aria-sort", "none");
+      th.setAttribute("data-k", c.key);
+      var b = el("button", "sort"); b.type = "button";
+      b.appendChild(el("span", "", c.label));
+      b.appendChild(el("span", "arr", ""));
+      b.addEventListener("click", function () {
+        if (sortKey === c.key) sortDir = -sortDir; else { sortKey = c.key; sortDir = (c.key === "ticker") ? 1 : -1; }
+        renderTable();
+      });
+      th.appendChild(b);
+      tr.appendChild(th);
+    });
+  }
+
+  function renderTable() {
+    var rows = (DATA.tickers || []).filter(function (t) {
+      return !filtro || t.ticker.toUpperCase().indexOf(filtro) !== -1;
+    });
+    var col = COLS.filter(function (c) { return c.key === sortKey; })[0] || COLS[0];
+    rows = rows.slice().sort(function (a, b) {
+      var x = col.get(a), y = col.get(b);
+      var nx = (x === null || x === undefined), ny = (y === null || y === undefined);
+      if (nx && ny) return 0;
+      if (nx) return 1;
+      if (ny) return -1;
+      if (typeof x === "string") return x.localeCompare(y) * sortDir;
+      return (x - y) * sortDir;
+    });
+    // encabezados
+    Array.prototype.forEach.call($("thead-row").children, function (th) {
+      var k = th.getAttribute("data-k");
+      var arr = th.querySelector(".arr");
+      if (k === sortKey) {
+        th.setAttribute("aria-sort", sortDir === 1 ? "ascending" : "descending");
+        arr.textContent = sortDir === 1 ? "▲" : "▼";
+      } else { th.setAttribute("aria-sort", "none"); arr.textContent = ""; }
+    });
+    var tb = $("tbody");
+    clear(tb);
+    rows.forEach(function (t) {
+      var tr = el("tr");
+      tr.setAttribute("data-t", t.ticker);
+      COLS.forEach(function (c) { var td = el("td"); c.cell(t, td); tr.appendChild(td); });
+      tb.appendChild(tr);
+    });
+    if (!rows.length) {
+      var tr0 = el("tr"); var td0 = el("td", "txt", "Ningún ticker coincide con la búsqueda."); td0.colSpan = COLS.length;
+      tr0.appendChild(td0); tb.appendChild(tr0);
+    }
+    var total = (DATA.tickers || []).length;
+    $("conteo").textContent = rows.length + " de " + total + " acciones";
+  }
+
+  // ------------------------------------------------------------------ detalle
+  function dRow(label, a, b) {
+    var tr = el("tr");
+    tr.appendChild(el("td", "txt", label));
+    tr.appendChild(el("td", "", a));
+    tr.appendChild(el("td", "", b));
+    return tr;
+  }
+  function miniTable(headers, rows) {
+    var wrap = el("div", "tscroll");
+    var t = el("table");
+    var th = el("thead"), hr = el("tr");
+    headers.forEach(function (h, i) { var c = el("th", i === 0 ? "txt" : "", h); c.setAttribute("scope", "col"); hr.appendChild(c); });
+    th.appendChild(hr); t.appendChild(th);
+    var tb = el("tbody");
+    rows.forEach(function (r) { tb.appendChild(r); });
+    t.appendChild(tb); wrap.appendChild(t);
+    return wrap;
+  }
+
+  function openDetail(ticker) {
+    var t = (DATA.tickers || []).filter(function (x) { return x.ticker === ticker; })[0];
+    if (!t) return;
+    selTicker = t;
+    $("d-titulo").textContent = t.ticker;
+    $("d-sub").textContent = "Precio " + (isNum(t.price) ? money(t.price) : "s/d") + " · datos al " + (DATA.asof || "s/d");
+    var body = $("d-cuerpo");
+    clear(body);
+
+    body.appendChild(el("h3", "", "Probabilidades (con intervalo)"));
+    body.appendChild(miniTable(["Evento", "Probabilidad", "Intervalo"], [
+      dRow("Sube en 1 semana (5 ruedas)", pct(t.p5, 1), range(t.lo5, t.hi5)),
+      dRow("Sube en 1 mes (21 ruedas)", pct(t.p21, 1), range(t.lo21, t.hi21)),
+      dRow("Sube en 3 meses (63 ruedas)", pct(t.p63, 1), range(t.lo63, t.hi63)),
+      dRow("Supera a SPY en 1 mes", pct(t.rel21, 1), range(t.lo_rel21, t.hi_rel21))
+    ]));
+
+    body.appendChild(el("h3", "", "Rango de retorno (P10 · mediana · P90)"));
+    body.appendChild(miniTable(["Horizonte", "P10", "Mediana", "P90"], [
+      (function () { var tr = el("tr"); tr.appendChild(el("td", "txt", "1 mes")); (t.ret21 || [null, null, null]).forEach(function (v) { tr.appendChild(el("td", "", spct(v, 1))); }); return tr; })(),
+      (function () { var tr = el("tr"); tr.appendChild(el("td", "txt", "3 meses")); (t.ret63 || [null, null, null]).forEach(function (v) { tr.appendChild(el("td", "", spct(v, 1))); }); return tr; })()
+    ]));
+
+    body.appendChild(el("h3", "", "Riesgo de caída"));
+    body.appendChild(miniTable(["Caída mayor a", "1 mes", "3 meses"], [
+      dRow("10% (calibrada)", pct(t.dd21_10, 1), pct(t.dd63_10, 1)),
+      dRow("10% (modelo sin calibrar)", pct(t.dd21_10_raw, 1), pct(t.dd63_10_raw, 1)),
+      dRow("20% (modelo sin calibrar)", pct(t.dd21_20, 1), pct(t.dd63_20, 1))
+    ]));
+
+    body.appendChild(el("h3", "", "Momentum y volatilidad"));
+    var kv = el("div", "kv");
+    [["Momentum 12-1 meses", spct(t.mom12_1, 1)], ["Retorno último mes", spct(t.r1m, 1)],
+     ["Volatilidad 63d (anual.)", pct(t.vol63, 1)], ["Distancia al máximo 52 sem.", spct(t.dist_high, 1)]]
+      .forEach(function (p) { var d = el("div"); d.appendChild(el("b", "", p[0])); d.appendChild(document.createTextNode(p[1])); kv.appendChild(d); });
+    body.appendChild(kv);
+
+    body.appendChild(el("h3", "", "Avisos (hechos, no recomendaciones)"));
+    if (t.flags && t.flags.length) {
+      var ul = el("ul", "flags");
+      t.flags.forEach(function (f) { ul.appendChild(el("li", "", f)); });
+      body.appendChild(ul);
+    } else { body.appendChild(el("p", "muted", "Ningún aviso para este ticker.")); }
+
+    body.appendChild(el("p", "nota",
+      "Si no hay ventaja estadística fuera de muestra, la probabilidad mostrada es la tasa base histórica " +
+      "del universo y no distingue a esta acción de las demás. Los rangos de retorno y el riesgo de caída son " +
+      "el contenido con respaldo de validación."));
+
+    lastFocus = document.activeElement;
+    var dlg = $("detalle");
+    if (typeof dlg.showModal === "function") { if (!dlg.open) dlg.showModal(); }
+    else { dlg.setAttribute("open", ""); }
+    $("d-cerrar").focus();
+  }
+  function closeDetail() {
+    var dlg = $("detalle");
+    if (typeof dlg.close === "function") dlg.close(); else dlg.removeAttribute("open");
+  }
+
+  // ------------------------------------------------------------------ validación
+  function renderEval() {
+    var hd = $("eval-head"), bd = $("eval-body");
+    clear(hd); clear(bd);
+    var tr = el("tr");
+    ["Objetivo", "Tasa base", "BSS (IC95%)", "AUC", "IC de rango (IC95%)", "Veredicto"].forEach(function (h, i) {
+      var th = el("th", (i === 0 || i === 5) ? "txt" : "", h); th.setAttribute("scope", "col"); tr.appendChild(th);
+    });
+    hd.appendChild(tr);
+    var ev = DATA.eval || {};
+    Object.keys(ev).forEach(function (k) {
+      var e = ev[k], r = el("tr");
+      r.appendChild(el("td", "txt", e.label || k));
+      r.appendChild(el("td", "", pct(e.base_rate, 1)));
+      r.appendChild(el("td", "", num(e.bss, 3) + " (" + num((e.bss_ci || [])[0], 3) + " a " + num((e.bss_ci || [])[1], 3) + ")"));
+      r.appendChild(el("td", "", num(e.auc, 3)));
+      r.appendChild(el("td", "", num(e.ic, 3) + " (" + num((e.ic_ci || [])[0], 3) + " a " + num((e.ic_ci || [])[1], 3) + ")"));
+      var td = el("td", "txt");
+      td.appendChild(el("span", "tag " + (e.has_edge ? "warn" : "none"), e.has_edge ? "Con ventaja" : "Sin ventaja"));
+      if (e.verdict) td.appendChild(el("span", "rng", e.verdict));
+      r.appendChild(td);
+      bd.appendChild(r);
+    });
+    var w = $("rv-wrap");
+    clear(w);
+    var rv = DATA.risk_validation || {};
+    Object.keys(rv).forEach(function (h) {
+      var v = rv[h];
+      var txt = "Rango P10-P90 a " + (h === "21" ? "1 mes" : h === "63" ? "3 meses" : h + " ruedas") + ": cubrió " + pct(v.coverage80, 1) +
+        " (IC95% " + range((v.coverage80_ci || [])[0], (v.coverage80_ci || [])[1]) + "; objetivo 80%). " +
+        "Cayó bajo P10 en " + pct(v.below_p10, 1) + " y superó P90 en " + pct(v.above_p90, 1) + " de los casos. " +
+        "Habilidad Brier del riesgo de caída: " + spct(v.dd_skill, 1) + " (n = " + (isNum(v.n) ? v.n : "s/d") + ").";
+      w.appendChild(el("p", "", txt));
+    });
+  }
+
+  // ------------------------------------------------------------------ alertas
+  var SEV = { alta: "Alta", media: "Media", info: "Info" };
+  function renderAlerts() {
+    var box = $("alertas-lista");
+    clear(box);
+    var al = DATA.alerts || [];
+    if (!al.length) { box.appendChild(el("p", "muted", "Sin alertas en esta corrida.")); return; }
+    var order = { alta: 0, media: 1, info: 2 };
+    al.slice().sort(function (a, b) { return (order[a.severity] === undefined ? 3 : order[a.severity]) - (order[b.severity] === undefined ? 3 : order[b.severity]); })
+      .forEach(function (a) {
+        var sev = SEV[a.severity] ? a.severity : "info";
+        var c = el("div", "alert " + sev);
+        var h = el("div");
+        h.appendChild(el("span", "tag " + sev, "Severidad " + SEV[sev]));
+        h.appendChild(document.createTextNode(" "));
+        if (a.ticker) h.appendChild(el("span", "chip", a.ticker));
+        c.appendChild(h);
+        c.appendChild(el("strong", "", a.title || a.kind || "Alerta"));
+        if (a.detail) c.appendChild(el("span", "muted", a.detail));
+        box.appendChild(c);
+      });
+  }
+
+  // ------------------------------------------------------------------ macro
+  function renderMacro() {
+    var m = DATA.macro, sec = $("macro");
+    if (!m || typeof m !== "object" || !Object.keys(m).length) { sec.hidden = true; return; }
+    var kv = $("macro-kv"); clear(kv);
+    function add(label, val) {
+      var d = el("div"); d.appendChild(el("b", "", label));
+      d.appendChild(document.createTextNode(isNum(val) ? num(val, 2) : String(val)));
+      kv.appendChild(d);
+    }
+    Object.keys(m).forEach(function (k) {
+      var v = m[k];
+      if (v && typeof v === "object") Object.keys(v).forEach(function (kk) { add(k + " · " + kk, v[kk]); });
+      else add(k, v);
+    });
+    sec.hidden = false;
+  }
+
+  // ------------------------------------------------------------------ laboratorio y libro
+  function renderLab() {
+    var lab = DATA.lab, sec = $("lab");
+    if (!lab || typeof lab !== "object" || !lab.rules) { sec.hidden = true; return; }
+    var hd = $("lab-head"), bd = $("lab-body"), ex = $("lab-extra");
+    clear(hd); clear(bd); clear(ex);
+    var tr = el("tr");
+    ["Regla", "Sharpe (IC95%)", "Exceso anual vs igual pond.", "p (Holm)", "Máx. caída"].forEach(function (h, i) {
+      var th = el("th", i === 0 ? "txt" : "", h); th.setAttribute("scope", "col"); tr.appendChild(th);
+    });
+    hd.appendChild(tr);
+    Object.keys(lab.rules).forEach(function (k) {
+      var r = lab.rules[k], row = el("tr");
+      row.appendChild(el("td", "txt", r.label || k));
+      var ci = r.sharpe_ci || [];
+      row.appendChild(el("td", "", num(r.sharpe, 2) + " (" + num(ci[0], 2) + " a " + num(ci[1], 2) + ")"));
+      row.appendChild(el("td", "", spct(r.annual_excess_vs_ew, 1)));
+      row.appendChild(el("td", "", num(r.p_holm, 3)));
+      row.appendChild(el("td", "", pct(r.max_drawdown, 1)));
+      bd.appendChild(row);
+    });
+    var base = [];
+    if (lab.ew) base.push("Igual ponderado: Sharpe " + num(lab.ew.sharpe, 2));
+    if (lab.bench) base.push("SPY: Sharpe " + num(lab.bench.sharpe, 2));
+    if (base.length) ex.appendChild(el("p", "muted small", base.join(" · ")));
+    if (lab.verdict) {
+      var v = el("div", "card vcard none"); v.style.marginTop = "10px";
+      v.appendChild(el("span", "tag none", "Veredicto"));
+      v.appendChild(el("span", "", lab.verdict));
+      ex.appendChild(v);
+    }
+    if (lab.picks_now && typeof lab.picks_now === "object") {
+      Object.keys(lab.picks_now).forEach(function (k) {
+        var list = lab.picks_now[k] || [];
+        if (!list.length) return;
+        var name = (lab.rules[k] && lab.rules[k].label) || k;
+        ex.appendChild(el("h3", "", "Selección actual: " + name));
+        var chips = el("div", "chips");
+        list.forEach(function (tk) { chips.appendChild(el("span", "chip", tk)); });
+        ex.appendChild(chips);
+      });
+      ex.appendChild(el("p", "muted small", "Es la salida mecánica de la regla, registrada para evaluarla hacia adelante; no es una recomendación."));
+    }
+    if (lab.caveats && lab.caveats.length) {
+      var ul = el("ul", "small muted");
+      lab.caveats.forEach(function (c) { ul.appendChild(el("li", "", c)); });
+      ex.appendChild(ul);
+    }
+    sec.hidden = false;
+  }
+
+  function renderLedger() {
+    var lg = DATA.ledger, sec = $("ledger");
+    if (!lg || typeof lg !== "object") { sec.hidden = true; return; }
+    var res = $("ledger-resumen"), hd = $("ledger-head"), bd = $("ledger-body");
+    clear(res); clear(hd); clear(bd);
+    res.appendChild(el("p", "small", "Al " + (lg.as_of || "s/d") + " · " + (isNum(lg.entries_total) ? lg.entries_total : 0) + " registros en total."));
+    var tr = el("tr");
+    ["Regla", "Cerrados", "Abierto desde", "Exceso medio vs igual pond.", "Aciertos", "Nota"].forEach(function (h, i) {
+      var th = el("th", (i === 0 || i === 5) ? "txt" : "", h); th.setAttribute("scope", "col"); tr.appendChild(th);
+    });
+    hd.appendChild(tr);
+    var rules = lg.rules || {};
+    Object.keys(rules).forEach(function (k) {
+      var r = rules[k], row = el("tr");
+      var label = (DATA.lab && DATA.lab.rules && DATA.lab.rules[k] && DATA.lab.rules[k].label) || k;
+      row.appendChild(el("td", "txt", label));
+      row.appendChild(el("td", "", isNum(r.closed) ? r.closed : "0"));
+      row.appendChild(el("td", "", r.open_since || "-"));
+      row.appendChild(el("td", "", spct(r.mean_excess_vs_ew, 2)));
+      row.appendChild(el("td", "", pct(r.hit_rate, 0)));
+      row.appendChild(el("td", "txt", r.note || ""));
+      bd.appendChild(row);
+    });
+    sec.hidden = false;
+  }
+
+  function renderCaveats() {
+    var ul = $("caveats"); clear(ul);
+    (DATA.caveats || []).forEach(function (c) { ul.appendChild(el("li", "", c)); });
+  }
+
+  // ------------------------------------------------------------------ calculadora
+  function parseNum(s) {
+    s = String(s).replace(/\s+/g, "").replace(/^\$/, "");
+    if (!s) return NaN;
+    if (s.indexOf(",") !== -1 && s.indexOf(".") !== -1) {
+      // el último separador es el decimal
+      if (s.lastIndexOf(",") > s.lastIndexOf(".")) s = s.replace(/\./g, "").replace(",", ".");
+      else s = s.replace(/,/g, "");
+    } else if (s.indexOf(",") !== -1) s = s.replace(",", ".");
+    if (!/^\d*\.?\d+$|^\d+\.$/.test(s)) return NaN;
+    return parseFloat(s);
+  }
+  function calc(ev) {
+    if (ev) ev.preventDefault();
+    var err = $("calc-error"), out = $("calc-result"), nota = $("calc-nota");
+    err.textContent = ""; nota.textContent = "";
+    var cap = parseNum($("c-capital").value), rp = parseNum($("c-riesgo").value),
+        en = parseNum($("c-entrada").value), st = parseNum($("c-stop").value);
+    function fail(m) { err.textContent = m; out.hidden = true; }
+    if (!(cap > 0)) return fail("El capital debe ser un número mayor que 0.");
+    if (!(rp > 0) || rp > 100) return fail("El riesgo por operación debe ser mayor que 0 y no superar 100%.");
+    if (!(en > 0)) return fail("El precio de entrada debe ser un número mayor que 0.");
+    if (!(st > 0)) return fail("El precio de stop debe ser un número mayor que 0.");
+    if (!(st < en)) return fail("El stop debe estar por debajo del precio de entrada (posición larga).");
+    var riskPerShare = en - st;
+    var budget = cap * rp / 100;
+    var shares = Math.floor(budget / riskPerShare);
+    var capped = false;
+    if (shares * en > cap) { shares = Math.floor(cap / en); capped = true; }
+    if (shares < 1) return fail("Con estos datos no alcanza para comprar ni una acción entera (presupuesto de riesgo " + money(budget) + ", riesgo por acción " + money(riskPerShare) + ").");
+    var value = shares * en, loss = shares * riskPerShare;
+    $("r-acciones").textContent = String(shares);
+    $("r-valor").textContent = money(value);
+    $("r-perdida").textContent = money(loss) + " (" + (loss / cap * 100).toFixed(2).replace(".", ",") + "% del capital)";
+    $("r-pct").textContent = (value / cap * 100).toFixed(1).replace(".", ",") + "%";
+    out.hidden = false;
+    nota.textContent = (capped ? "La posición se limitó al capital disponible (sin apalancamiento). " : "") +
+      "No incluye comisiones ni deslizamiento; un gap puede cerrar por debajo del stop. Cálculo educativo, no una recomendación.";
+  }
+
+  // ------------------------------------------------------------------ eventos
+  function init() {
+    $("buscar").addEventListener("input", function (e) { filtro = e.target.value.trim().toUpperCase(); if (DATA) renderTable(); });
+    $("tbody").addEventListener("click", function (e) {
+      var n = e.target;
+      while (n && n !== this && !(n.getAttribute && n.getAttribute("data-t"))) n = n.parentNode;
+      if (n && n.getAttribute && n.getAttribute("data-t")) openDetail(n.getAttribute("data-t"));
+    });
+    $("d-cerrar").addEventListener("click", closeDetail);
+    $("detalle").addEventListener("click", function (e) { if (e.target === this) closeDetail(); });
+    $("detalle").addEventListener("close", function () { if (lastFocus && lastFocus.focus) { try { lastFocus.focus(); } catch (x) { /* nada */ } } });
+    $("d-calc").addEventListener("click", function () {
+      if (selTicker && isNum(selTicker.price)) $("c-entrada").value = String(Math.round(selTicker.price * 100) / 100).replace(".", ",");
+      closeDetail();
+      $("calculadora").scrollIntoView({ behavior: "smooth", block: "start" });
+      $("c-stop").focus();
+    });
+    $("calc-form").addEventListener("submit", calc);
+    ["c-capital", "c-riesgo", "c-entrada", "c-stop"].forEach(function (id) {
+      $(id).addEventListener("input", function () {
+        if ($("c-entrada").value && $("c-stop").value) calc(null);
+      });
+    });
+    load();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
