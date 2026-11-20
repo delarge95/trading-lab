@@ -11,14 +11,14 @@
 
 | Ticker | Precio | Mom. 12-1 | Tendencia | Vol 63d | P(sube) cond. [IC95%] (n) | P(sube) base [IC95%] (n) |
 |---|---|---|---|---|---|---|
-| SPY | 715.87 | 18.4% | positiva | 16% | 71% [61%–80%] (91) | 71% [62%–79%] (107) |
-| QQQ | 645.04 | 22.2% | positiva | 25% | 63% [53%–73%] (93) | 64% [55%–73%] (107) |
-| AAPL | 349.21 | 29.0% | positiva | 22% | 60% [50%–70%] (91) | 64% [55%–73%] (107) |
-| MSFT | 498.30 | 8.8% | positiva | 28% | 62% [52%–72%] (88) | 64% [54%–72%] (107) |
-| NVDA | 145.98 | 22.7% | positiva | 44% | 63% [53%–73%] (87) | 64% [54%–72%] (107) |
-| AMZN | 257.37 | 17.9% | positiva | 33% | 62% [52%–72%] (87) | 63% [53%–71%] (107) |
-| GOOGL | 272.66 | 18.1% | positiva | 37% | 58% [47%–68%] (85) | 61% [51%–69%] (107) |
-| BRK-B | 572.04 | 6.9% | positiva | 15% | 66% [56%–76%] (83) | 64% [54%–72%] (107) |
+| SPY | 701.82 | 16.5% | positiva | 16% | 70% [60%–79%] (91) | 72% [63%–80%] (107) |
+| QQQ | 622.16 | 18.0% | positiva | 25% | 61% [51%–70%] (92) | 62% [52%–70%] (107) |
+| AAPL | 345.89 | 30.0% | positiva | 22% | 59% [49%–68%] (90) | 62% [52%–70%] (107) |
+| MSFT | 490.55 | 7.9% | positiva | 28% | 61% [51%–71%] (88) | 63% [53%–71%] (107) |
+| NVDA | 136.03 | 14.0% | positiva | 46% | 61% [51%–71%] (85) | 64% [54%–72%] (107) |
+| AMZN | 250.77 | 12.4% | positiva | 33% | 65% [54%–74%] (85) | 62% [52%–70%] (107) |
+| GOOGL | 273.59 | 11.0% | positiva | 37% | 57% [46%–67%] (86) | 59% [49%–68%] (107) |
+| BRK-B | 571.59 | 9.1% | positiva | 15% | 57% [46%–67%] (84) | 61% [51%–69%] (107) |
 
 _Las probabilidades usan ventanas no solapadas; el intervalo es amplio a propósito. Si el IC condicional incluye la base, la tendencia no aporta información medible._
 
@@ -273,8 +273,8 @@ _*Años de historia necesarios para detectar con 80% de potencia un alfa de 3% a
 | Tasa Treasury 10 años (%) | 2026-11-18 | 5.07 | -0.08 |
 | Tasa Treasury 2 años (%) | 2026-11-18 | 4.8 | +0.03 |
 | Pendiente curva 10a-2a (pp) | 2026-11-19 | 0.28 | -0.05 |
-| VIX | 2026-11-18 | 24.56 | +7.25 |
-| Spread high yield (pp) | 2026-11-18 | 3.47 | +0.14 |
+| VIX | 2026-11-19 | 28.44 | +11.76 |
+| Spread high yield (pp) | 2026-11-19 | 3.52 | +0.25 |
 
 ## Seguimiento de predicciones
 
