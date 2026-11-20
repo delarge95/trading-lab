@@ -14,14 +14,14 @@ GitHub Actions corre antes: lun-vie 5:10 a. m. y sáb 6:40 a. m. (Bogotá), para
 - Modelo: `claude-sonnet-5-5`. Entorno: el predeterminado de Anthropic Cloud.
 - Repo: `https://github.com/delarge95/trading-lab` (público; no necesita token).
 - Conectores adjuntos al crearlas: Claude Docs, Gmail, Claude Code Remote y Wolfram.
-- Para: la cuenta Gmail conectada. **Copia (CC):** el texto de cada tarea trae una línea `COPIA_CC=` vacía. La dirección
-  se escribe en esa línea desde claude.ai/code/routines (nunca en el repo, que es público).
+- Para: la cuenta Gmail conectada. **Copia (CC):** la dirección va en la línea `COPIA_CC=` del texto de cada tarea
+  (ya configurada en las dos). Se edita desde claude.ai/code/routines; nunca se escribe en el repo, que es público.
 - Si Gmail pide aprobación para enviar, la tarea deja un borrador. Para envío automático, en los permisos del
   conector Gmail poner "Enviar correo" en "Permitir siempre".
 
 ## Tareas anteriores (creadas desde el chat del proyecto "Trading")
-`trig_01RXE1epMfD9iGpJn9yhBSaZ` (diaria) y `trig_0131SuUnRf1TkCewCqSwSkZX` (semanal) siguen activas pero sin Gmail ni
-acceso al repo. Conviene pausarlas o borrarlas en claude.ai/code/routines para no duplicar informes.
+`trig_01RXE1epMfD9iGpJn9yhBSaZ` (diaria) y `trig_0131SuUnRf1TkCewCqSwSkZX` (semanal) quedaron **pausadas** el
+2026-11-20 (sin Gmail ni acceso al repo). Se pueden borrar desde claude.ai/code/routines.
 
 ## Verificación
 1. Abrir cada tarea y pulsar "Run now" una vez; confirmar el correo.
