@@ -69,7 +69,8 @@ def run_engine(res: dict, today) -> dict:
     res["sources"]["Motor v2"] = (f"OK ({fc['n_stocks']} acciones" + (f"; sin precios: {', '.join(failed)}" if failed else "")
                                   + f"; {al['counts']['alta']} alertas altas)")
     return {"asof": fc["asof"], "n_stocks": fc["n_stocks"], "eval": fc["eval"], "risk_validation": fc["risk_validation"],
-            "risk_table": risk_table[:15], "lab": lab_res, "ledger": ledger, "alerts": al}
+            "risk_table": risk_table[:15], "lab": lab_res, "ledger": ledger, "alerts": al,
+            "push": alerts.push_text(al)}
 
 
 def main(argv: list[str] | None = None) -> int:
