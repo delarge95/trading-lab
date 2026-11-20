@@ -1,54 +1,29 @@
-# Tareas programadas (claude.ai/code/routines)
+# Tareas programadas (Claude Code, nube)
 
-Dos tareas en la nube. Ambas leen el informe que GitHub Actions deja en el repo `delarge95/trading-lab`
-(`reports/latest.md` y `reports/latest.json`). Actions corre antes: lun-vie 5:10 a. m. y sáb 6:40 a. m. (Bogotá).
+Dos tareas de Claude Code creadas el 2026-11-20. Cada ejecución clona este repo público y lee el informe que deja
+GitHub Actions (`reports/latest.md`, `reports/latest.json`, `data/predictions.csv`, `data/managers_track.json`).
 
-## Configuración común
-- Repositorio: `delarge95/trading-lab` (rama `main`).
-- Conector: **Gmail**, con "enviar" en "permitir siempre" (si no, la tarea solo deja un borrador).
-- Destinatarios: **Para** = el Gmail conectado. **Copia (CC)** = la segunda dirección. Escribir esa dirección
-  en el campo de la tarea en claude.ai, nunca en el repo.
-- Si Gmail no permite CC, enviar el mismo correo por separado a la segunda dirección.
+| Tarea | Horario (Bogotá) | Cron (UTC) | Enlace |
+|---|---|---|---|
+| Informe diario de trading | lun-vie 6:37 a. m. | `37 11 * * 1-5` | https://claude.ai/code/routines/trig_012ZWviUWMxCQpBovLFejmk3 |
+| Revisión semanal de trading | sáb 8:35 a. m. | `35 13 * * 6` | https://claude.ai/code/routines/trig_01PeSjegApFFNmuBA29ciG5h |
 
-## 1. Informe diario de trading — lun-vie 6:37 a. m. (UTC-5)
+GitHub Actions corre antes: lun-vie 5:10 a. m. y sáb 6:40 a. m. (Bogotá), para que el informe esté listo.
 
-```
-Eres el analista del proyecto Trading Lab (herramienta de investigación, no asesoría financiera).
+## Configuración
+- Modelo: `claude-sonnet-5-5`. Entorno: el predeterminado de Anthropic Cloud.
+- Repo: `https://github.com/delarge95/trading-lab` (público; no necesita token).
+- Conectores adjuntos al crearlas: Claude Docs, Gmail, Claude Code Remote y Wolfram.
+- Para: la cuenta Gmail conectada. **Copia (CC):** el texto de cada tarea trae una línea `COPIA_CC=` vacía. La dirección
+  se escribe en esa línea desde claude.ai/code/routines (nunca en el repo, que es público).
+- Si Gmail pide aprobación para enviar, la tarea deja un borrador. Para envío automático, en los permisos del
+  conector Gmail poner "Enviar correo" en "Permitir siempre".
 
-1. Lee reports/latest.md y reports/latest.json del repositorio. Si la fecha del informe no es de hoy
-   o de la última rueda hábil, di claramente que los datos están desactualizados.
-2. Redacta un resumen en español, máximo 350 palabras, con:
-   - Estado de las fuentes y cualquier incidencia (SEC, FRED, precios; 13F atrasado).
-   - Tendencia 12-1 y probabilidad de subida a 21 ruedas por ticker. Si el IC condicional incluye
-     la tasa base, di que la tendencia no aporta información medible. No prometas predicciones puntuales.
-   - Compras de insiders: solo las oportunistas son señal; las rutinarias no.
-   - Cambios relevantes de los gestores en el 13F (posiciones NUEVAS, aumentos o recortes grandes),
-     avisando de la antigüedad de cada 13F.
-   - Macro (curva, VIX, spread high yield) en una línea.
-   - Seguimiento: aciertos y Brier de las predicciones cerradas.
-3. Termina siempre con: "Herramienta de investigación, no asesoría financiera."
-4. Envía el resumen por Gmail (asunto: "Informe de trading — <fecha>") al destinatario y la copia
-   configurados, con el enlace al informe completo en el repo. No inventes datos que no estén en el informe.
-```
+## Tareas anteriores (creadas desde el chat del proyecto "Trading")
+`trig_01RXE1epMfD9iGpJn9yhBSaZ` (diaria) y `trig_0131SuUnRf1TkCewCqSwSkZX` (semanal) siguen activas pero sin Gmail ni
+acceso al repo. Conviene pausarlas o borrarlas en claude.ai/code/routines para no duplicar informes.
 
-## 2. Revisión semanal de trading — sábados 8:35 a. m. (UTC-5)
-
-```
-Eres el analista del proyecto Trading Lab (herramienta de investigación, no asesoría financiera).
-
-1. Lee reports/latest.md, los informes diarios de la semana (reports/AAAA-MM-DD.md) y data/predictions.csv.
-2. Redacta la revisión semanal en español, máximo 500 palabras:
-   - Qué cambió en la semana (tendencias, probabilidades, macro).
-   - Calibración: predicciones cerradas, acierto direccional, Brier frente a la tasa base. Si hay
-     pocas (<30) predicciones cerradas, di que la muestra es insuficiente para concluir.
-   - Gestores: nuevos 13F presentados y cambios frente al trimestre anterior.
-   - Insiders: compras oportunistas relevantes de la semana.
-   - Una sección "Qué mejorar en el sistema" con máximo 3 puntos concretos.
-3. Termina siempre con: "Herramienta de investigación, no asesoría financiera."
-4. Envía por Gmail (asunto: "Revisión semanal de trading — <fecha>") al destinatario y la copia
-   configurados.
-```
-
-## Verificación tras conectar Gmail
-1. Ejecutar cada tarea una vez con "Run now" y confirmar que llega el correo (al destinatario y a la copia).
-2. Si llega como borrador: poner "enviar" en "permitir siempre" en el conector.
+## Verificación
+1. Abrir cada tarea y pulsar "Run now" una vez; confirmar el correo.
+2. Si llega como borrador: revisar el permiso "Enviar correo" del conector Gmail.
+3. Si el correo dice que los datos del repo son de otra fecha, revisar la pestaña Actions del repo.
