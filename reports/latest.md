@@ -1,4 +1,4 @@
-# Informe de trading — 2026-11-19
+# Informe de trading — 2026-11-20
 
 ## Estado de las fuentes
 
@@ -92,7 +92,7 @@ _Brier skill > 0 con IC que excluye 0 = el modelo supera a la tasa base. Si no, 
 | Momentum 12-1 (mayor retorno de 12 a 1 meses) | 1.21 [0.60, 1.81] | +9.8% | 1.00 | 1.00 | -27% |
 | Baja volatilidad (menor volatilidad de 63 ruedas) | 1.01 [0.35, 1.66] | -4.3% | 1.00 | 1.00 | -16% |
 | Reversión 1 mes (peor retorno de 21 ruedas) | 1.10 [0.46, 1.75] | +3.3% | 1.00 | 1.00 | -20% |
-| Cerca del máximo (menor distancia al máximo de 252 ruedas) | 0.97 [0.32, 1.61] | -2.6% | 1.00 | 1.00 | -19% |
+| Cerca del máximo (menor distancia al máximo de 252 ruedas) | 0.96 [0.32, 1.61] | -2.6% | 1.00 | 1.00 | -19% |
 
 **Veredicto:** Ninguna de las 4 reglas supera al igual ponderado del universo con significancia estadística (Holm, alfa 5%). La mejor diferencia de Sharpe es +0.04 (mom12_1, p Holm 1.00); la diferencia no se distingue del azar.
 
@@ -130,7 +130,7 @@ _Brier skill > 0 con IC que excluye 0 = el modelo supera a la tasa base. Si no, 
 | AAPL | 0 | 0 | 0 | 0 | $0 | $129.7M |
 | MSFT | 0 | 0 | 0 | 0 | $0 | $74.8M |
 | NVDA | 0 | 0 | 0 | 0 | $0 | $967.6M |
-| AMZN | 0 | 0 | 0 | 0 | $0 | $18.5M |
+| AMZN | 0 | 0 | 0 | 0 | $0 | $4.1M |
 | GOOGL | 0 | 0 | 0 | 0 | $0 | $169.2K |
 | BRK-B | 2 | 0 | 0 | 2 | $250.2K | $20.0M |
 
@@ -139,7 +139,7 @@ _Solo las compras oportunistas tienen respaldo académico (rutinarias ≈ 0)._
 
 ## Gestores (13F, último trimestre disponible)
 
-### Berkshire Hathaway — trimestre 2026-09-30 (presentado 2026-11-16, 50 días)
+### Berkshire Hathaway — trimestre 2026-09-30 (presentado 2026-11-16, 51 días)
 Valor total $304.2B, 30 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -151,7 +151,7 @@ Valor total $304.2B, 30 posiciones.
 | BANK OF AMER CORP | 8.2% | -6% |
 | CHEVRON CORPORATION | 5.7% | = |
 
-### Pershing Square — trimestre 2026-03-31 (presentado 2026-05-15, 233 días) ⚠ **13F atrasado**
+### Pershing Square — trimestre 2026-03-31 (presentado 2026-05-15, 234 días) ⚠ **13F atrasado**
 Valor total $13.7B, 11 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -165,7 +165,7 @@ Valor total $13.7B, 11 posiciones.
 
 Cerradas: HILTON WORLDWIDE HLDGS INC
 
-### Appaloosa — trimestre 2026-09-30 (presentado 2026-11-16, 50 días)
+### Appaloosa — trimestre 2026-09-30 (presentado 2026-11-16, 51 días)
 Valor total $7.6B, 24 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -179,7 +179,7 @@ Valor total $7.6B, 24 posiciones.
 
 Cerradas: ADVANCED MICRO DEVICES INC, BROADCOM INC, QUALCOMM INC
 
-### Third Point — trimestre 2026-09-30 (presentado 2026-11-16, 50 días)
+### Third Point — trimestre 2026-09-30 (presentado 2026-11-16, 51 días)
 Valor total $4.5B, 38 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -193,7 +193,7 @@ Valor total $4.5B, 38 posiciones.
 
 Cerradas: WARNER BROS DISCOVERY INC, AMAZON COM INC, NORFOLK SOUTHN CORP
 
-### Baupost Group — trimestre 2026-09-30 (presentado 2026-11-13, 50 días)
+### Baupost Group — trimestre 2026-09-30 (presentado 2026-11-13, 51 días)
 Valor total $5.0B, 21 posiciones. _(valores declarados en miles; reescalados)_
 
 | Posición | Peso | Cambio acciones |
@@ -207,7 +207,7 @@ Valor total $5.0B, 21 posiciones. _(valores declarados en miles; reescalados)_
 
 Cerradas: TELEFLEX INCORPORATED, NORWEGIAN CRUISE LINE HLDGS, LIBERTY GLOBAL LTD
 
-### Duquesne Family Office — trimestre 2026-09-30 (presentado 2026-11-16, 50 días)
+### Duquesne Family Office — trimestre 2026-09-30 (presentado 2026-11-16, 51 días)
 Valor total $4.1B, 60 posiciones. _(valores declarados en miles; reescalados)_
 
 | Posición | Peso | Cambio acciones |
@@ -221,7 +221,7 @@ Valor total $4.1B, 60 posiciones. _(valores declarados en miles; reescalados)_
 
 Cerradas: Alphabet Inc, United Airls Hldgs Inc, Sandisk Corp
 
-### Himalaya Capital — trimestre 2026-09-30 (presentado 2026-11-16, 50 días)
+### Himalaya Capital — trimestre 2026-09-30 (presentado 2026-11-16, 51 días)
 Valor total $3.8B, 8 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -233,7 +233,7 @@ Valor total $3.8B, 8 posiciones.
 | EAST WEST BANCORP INC | 9.1% | = |
 | TENCENT MUSIC ENTERTAINM | 3.1% | +125% |
 
-### Trian Fund Management — trimestre 2026-09-30 (presentado 2026-11-16, 50 días)
+### Trian Fund Management — trimestre 2026-09-30 (presentado 2026-11-16, 51 días)
 Valor total $2.6B, 8 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -278,7 +278,7 @@ _*Años de historia necesarios para detectar con 80% de potencia un alfa de 3% a
 
 ## Seguimiento de predicciones
 
-Sin predicciones cerradas aún (16 abiertas). Cada predicción se evalúa a su vencimiento en `data/predictions.csv`.
+Sin predicciones cerradas aún (24 abiertas). Cada predicción se evalúa a su vencimiento en `data/predictions.csv`.
 
 ---
 _Herramienta de investigación, no asesoría financiera._
