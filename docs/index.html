@@ -65,7 +65,7 @@ input[type=search],input[type=text]{font:inherit;color:var(--text);background:va
 button{font:inherit;cursor:pointer}
 .btn{background:var(--accent);color:var(--accent-text);border:0;border-radius:8px;padding:10px 16px;min-height:44px;font-weight:700}
 .btn.sec{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
-.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);max-width:100%}
+.tscroll{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);max-width:100%}
 table{border-collapse:separate;border-spacing:0;width:100%;font-size:.9rem}
 th,td{padding:8px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--border);vertical-align:middle}
 th:first-child,td:first-child{text-align:left}
@@ -117,24 +117,61 @@ form.calc .full{grid-column:1/-1}
 footer{margin-top:28px;padding-top:14px;border-top:1px solid var(--border);font-size:.85rem;color:var(--muted)}
 footer ul{padding-left:20px;margin:6px 0}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+nav.nav{display:flex;flex-wrap:wrap;gap:6px;padding:12px 0 0}
+nav.nav a{display:inline-block;padding:10px 14px;min-height:44px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);text-decoration:none;font-weight:600}
+nav.nav a[aria-current="page"]{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
+.hoy{display:grid;gap:10px;grid-template-columns:1fr}
+@media(min-width:800px){.hoy{grid-template-columns:1fr 1fr}.hoy .span2{grid-column:1/-1}}
+.hoy h3{margin:0 0 6px}
+.sem{display:flex;gap:12px;align-items:flex-start}
+.sem .dot{flex:0 0 auto;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:1.2rem;color:#fff;background:var(--none)}
+.sem.verde .dot{background:#14663a} .sem.amarillo .dot{background:#b57b00} .sem.rojo .dot{background:#b3261e}
+ul.l{margin:6px 0;padding-left:20px}
+ul.l.plain{list-style:none;padding-left:0}
+.go{display:flex;flex-wrap:wrap;gap:8px}
+a.btn{display:inline-flex;align-items:center;text-decoration:none}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.tabs button{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 12px;min-height:44px;font-weight:600;text-align:left}
+.tabs button[aria-pressed="true"]{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
+.rkcols{display:grid;gap:10px;grid-template-columns:1fr}
+@media(min-width:700px){.rkcols{grid-template-columns:1fr 1fr}}
+.rkcols table td:last-child{font-weight:700}
 [hidden]{display:none !important}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header class="top">
-  <h1>Trading Lab: panel de investigación</h1>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="index.html" id="nav-panel" aria-current="page">Panel</a>
+    <a href="cartera.html" id="nav-cartera">Mi cartera</a>
+    <a href="diario.html" id="nav-diario">Diario</a>
+  </nav>
+  <h1 style="margin-top:14px">Trading Lab: panel de investigación</h1>
   <div class="meta">
     <span>Datos al: <strong id="asof">cargando…</strong></span>
     <span>Generado: <span id="generated">-</span></span>
     <span>Universo: <span id="universo">-</span> acciones</span>
   </div>
-  <span class="aviso" id="aviso">Herramienta de investigación, no asesoría financiera.</span>
+  <span class="aviso" id="aviso">Herramienta de investigación; los cálculos usan los datos y reglas que tú introduces; no es asesoría financiera.</span>
 </header>
 
 <div id="estado" role="status" aria-live="polite">Cargando datos…</div>
 
 <main id="contenido" hidden>
+
+<section class="panel" id="hoy" aria-labelledby="h-hoy">
+  <h2 id="h-hoy">Hoy en una pantalla</h2>
+  <div class="hoy">
+    <div class="card" id="hoy-regimen" aria-live="polite"></div>
+    <div class="card" id="hoy-eventos"></div>
+    <div class="card span2" id="hoy-alertas"></div>
+    <div class="go span2">
+      <a class="btn" href="cartera.html" id="go-cartera">Mi cartera y riesgo</a>
+      <a class="btn sec" href="diario.html" id="go-diario">Diario de decisiones</a>
+    </div>
+  </div>
+</section>
 
 <section class="panel" id="titulares" aria-labelledby="h-titulares">
   <h2 id="h-titulares">Lo que dicen los datos</h2>
@@ -157,6 +194,16 @@ footer ul{padding-left:20px;margin:6px 0}
       <tbody id="tbody"></tbody>
     </table>
   </div>
+</section>
+
+<section class="panel" id="ranking" aria-labelledby="h-ranking" hidden>
+  <h2 id="h-ranking">Ranking por criterio</h2>
+  <p class="muted small" id="rk-resumen"></p>
+  <p class="muted small">«Mejor perfil según este criterio» solo ordena el universo por el criterio elegido; no predice qué acción rendirá más. Mira siempre el nivel de evidencia de cada criterio.</p>
+  <div class="tabs" id="rk-tabs" role="group" aria-label="Criterios de ranking"></div>
+  <div id="rk-panel" aria-live="polite"></div>
+  <h3>Selecciones de las reglas hoy</h3>
+  <div id="rk-reglas"></div>
 </section>
 
 <section class="panel" id="validacion" aria-labelledby="h-validacion">
@@ -315,11 +362,13 @@ footer ul{padding-left:20px;margin:6px 0}
     $("asof").textContent = d.asof || "s/d";
     $("generated").textContent = d.generated ? String(d.generated).replace("T", " ").replace("Z", " UTC") : "s/d";
     $("universo").textContent = isNum(d.universe) ? d.universe : "s/d";
-    if (d.disclaimer) { $("aviso").textContent = d.disclaimer; $("pie-aviso").textContent = d.disclaimer; }
+    if (d.disclaimer) { $("pie-aviso").textContent = d.disclaimer; }
     $("estado").hidden = true;
     $("contenido").hidden = false;
 
+    renderToday();
     renderVerdicts();
+    renderRanking();
     buildHead();
     renderTable();
     renderEval();
@@ -328,6 +377,199 @@ footer ul{padding-left:20px;margin:6px 0}
     renderLab();
     renderLedger();
     renderCaveats();
+  }
+
+  // ------------------------------------------------------------------ utilidades v3
+  function anyTxt(v) {
+    if (isNum(v)) return num(v, 2);
+    if (Array.isArray(v)) return v.map(anyTxt).join(" / ");
+    if (v && typeof v === "object") return Object.keys(v).map(function (k) { return k + " " + anyTxt(v[k]); }).join(", ");
+    return v === null || v === undefined ? "s/d" : String(v);
+  }
+  function whenTxt(n) {
+    if (!isNum(n)) return "";
+    return n === 0 ? "hoy" : (n === 1 ? "mañana" : "en " + n + " días");
+  }
+  function eventList() {
+    return (DATA.events && Array.isArray(DATA.events.events)) ? DATA.events.events : null;
+  }
+  function managersFor(t) {
+    var conv = DATA.convergence;
+    if (!conv || typeof conv !== "object") return null;
+    var m = conv.by_ticker || conv.tickers || conv;
+    var item = m && m[t];
+    if (!item) return [];
+    var list = Array.isArray(item) ? item : (item.managers || item.gestores || []);
+    var out = list.map(function (x) {
+      if (typeof x === "string") return x;
+      var name = x.manager || x.gestor || x.name || x.fund || x.nombre || "?";
+      var w = x.weight !== undefined ? x.weight : (x.peso !== undefined ? x.peso : x.pct);
+      return isNum(w) ? name + " (" + pct(w, 1) + ")" : name;
+    });
+    if (out.length && !Array.isArray(item) && isNum(item.avg_weight)) out.push("peso medio entre ellos " + pct(item.avg_weight, 1));
+    return out;
+  }
+
+  // ------------------------------------------------------------------ hoy en una pantalla
+  function renderToday() {
+    // régimen
+    var box = $("hoy-regimen"); clear(box);
+    box.appendChild(el("h3", "", "Semáforo de régimen"));
+    var rg = DATA.regime;
+    if (!rg || !rg.state) {
+      box.appendChild(el("p", "muted", "El semáforo de régimen todavía no está en los datos de esta corrida."));
+    } else {
+      var st = String(rg.state);
+      var s = el("div", "sem " + st);
+      var dot = el("span", "dot", st === "verde" ? "●" : st === "amarillo" ? "▲" : "■");
+      dot.setAttribute("aria-hidden", "true");
+      s.appendChild(dot);
+      var tx = el("div");
+      tx.appendChild(el("strong", "", "Régimen " + st.toUpperCase()));
+      var rl = Array.isArray(rg.rules) ? rg.rules : [];
+      var bad = rl.filter(function (r) { return r.state && r.state !== "verde"; });
+      var lines = (bad.length ? bad : rl).slice(0, 2);
+      lines.forEach(function (r) {
+        tx.appendChild(el("div", "small muted", r.name + ": " + anyTxt(r.value) +
+          (r.threshold !== undefined && r.threshold !== null ? " (umbral " + anyTxt(r.threshold) + ")" : "") +
+          (r.state ? " · " + r.state : "")));
+      });
+      if (!lines.length && rg.verdict) tx.appendChild(el("div", "small muted", rg.verdict));
+      s.appendChild(tx);
+      box.appendChild(s);
+      box.appendChild(el("p", "muted small", "Reglas fijas y simples sobre volatilidad, caída desde máximos, tendencia y crédito; describe el contexto, no predice."));
+    }
+
+    // eventos 7 días
+    var eb = $("hoy-eventos"); clear(eb);
+    eb.appendChild(el("h3", "", "Próximos eventos de riesgo (7 días)"));
+    var ev = eventList();
+    if (!ev) eb.appendChild(el("p", "muted", "El calendario de eventos todavía no está en los datos de esta corrida."));
+    else {
+      var near = ev.filter(function (e) { return isNum(e.days_to) && e.days_to >= 0 && e.days_to <= 7; })
+        .sort(function (a, b) { return a.days_to - b.days_to || String(a.date).localeCompare(String(b.date)); });
+      if (!near.length) eb.appendChild(el("p", "muted", "Ningún evento en los próximos 7 días."));
+      else {
+        var ul = el("ul", "l");
+        near.slice(0, 8).forEach(function (e) {
+          ul.appendChild(el("li", "", (e.ticker ? e.ticker + ": " : "") + (e.label || e.kind) + " " + whenTxt(e.days_to) + " (" + e.date + ")"));
+        });
+        eb.appendChild(ul);
+        if (near.length > 8) eb.appendChild(el("p", "muted small", "y " + (near.length - 8) + " más en el calendario de 30 días."));
+      }
+    }
+
+    // alertas
+    var ab = $("hoy-alertas"); clear(ab);
+    ab.appendChild(el("h3", "", "Alertas altas y medias"));
+    var al = (DATA.alerts || []).filter(function (a) { return a.severity === "alta" || a.severity === "media"; })
+      .sort(function (a, b) { return (a.severity === "alta" ? 0 : 1) - (b.severity === "alta" ? 0 : 1); });
+    if (!al.length) ab.appendChild(el("p", "muted", "Sin alertas altas ni medias en esta corrida."));
+    else {
+      var u2 = el("ul", "l plain");
+      al.slice(0, 5).forEach(function (a) {
+        var li = el("li");
+        li.appendChild(el("span", "tag " + a.severity, a.severity === "alta" ? "Alta" : "Media"));
+        li.appendChild(document.createTextNode(" "));
+        if (a.ticker) { li.appendChild(el("span", "chip", a.ticker)); li.appendChild(document.createTextNode(" ")); }
+        li.appendChild(el("strong", "", a.title || a.kind || "Alerta"));
+        u2.appendChild(li);
+      });
+      ab.appendChild(u2);
+      if (al.length > 5) ab.appendChild(el("p", "small", "Mostrando 5 de " + al.length + "."));
+      var lk = el("a", "", "Ver todas las alertas"); lk.href = "#alertas"; ab.appendChild(lk);
+    }
+  }
+
+  // ------------------------------------------------------------------ ranking por criterio
+  var rkSel = null;
+  function evTagClass(e) { return e === "validado" ? "ok" : (e === "sin ventaja demostrada" ? "none" : "warn"); }
+  function rkFmt(v, fmt) {
+    if (!isNum(v)) return "s/d";
+    if (fmt === "pct") return pct(v, 1);
+    if (fmt === "count") return String(Math.round(v));
+    return num(v, 2);
+  }
+  function rkTable(title, list, fmt) {
+    var box = el("div");
+    box.appendChild(el("h3", "", title));
+    var wrap = el("div", "tscroll"); var t = el("table");
+    var hd = el("thead"), hr = el("tr");
+    ["Ticker", "Valor"].forEach(function (h, i) { var c = el("th", i === 0 ? "txt" : "", h); c.setAttribute("scope", "col"); hr.appendChild(c); });
+    hd.appendChild(hr); t.appendChild(hd);
+    var tb = el("tbody");
+    list.forEach(function (r) {
+      var tr = el("tr"); var td = el("td", "txt");
+      var b = el("button", "tk", r.ticker); b.type = "button"; b.setAttribute("data-t", r.ticker);
+      b.setAttribute("aria-label", "Ver detalle de " + r.ticker);
+      td.appendChild(b); tr.appendChild(td);
+      tr.appendChild(el("td", "", rkFmt(r.value, fmt)));
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb); wrap.appendChild(t); box.appendChild(wrap);
+    return box;
+  }
+  function renderRankPanel() {
+    var rk = DATA.ranking, p = $("rk-panel"); clear(p);
+    var c = (rk.criteria || []).filter(function (x) { return x.key === rkSel; })[0];
+    if (!c) return;
+    var head = el("div", "card");
+    head.appendChild(el("strong", "", c.label));
+    head.appendChild(document.createTextNode(" "));
+    head.appendChild(el("span", "tag " + evTagClass(c.evidence), "Evidencia: " + c.evidence));
+    head.appendChild(el("p", "muted small", c.note || ""));
+    head.appendChild(el("p", "muted small", "Acciones con dato: " + (isNum(c.n) ? c.n : "s/d") + ". " +
+      (c.direction === "alto" ? "Un valor más alto es mejor perfil según este criterio." : "Un valor más bajo es mejor perfil según este criterio.")));
+    p.appendChild(head);
+    if (c.degenerate) {
+      p.appendChild(el("div", "nota", "No se muestra la lista: no hay dispersión suficiente entre acciones para que el orden informe algo."));
+      return;
+    }
+    var cols = el("div", "rkcols");
+    cols.appendChild(rkTable("Mejor perfil según este criterio", c.favorable || [], c.format));
+    cols.appendChild(rkTable("Peor perfil según este criterio", c.desfavorable || [], c.format));
+    p.appendChild(cols);
+  }
+  function renderRanking() {
+    var rk = DATA.ranking, sec = $("ranking");
+    if (!rk || !Array.isArray(rk.criteria) || !rk.criteria.length) { sec.hidden = true; return; }
+    sec.hidden = false;
+    $("rk-resumen").textContent = rk.summary || "";
+    var tabs = $("rk-tabs"); clear(tabs);
+    if (!rkSel || !rk.criteria.some(function (c) { return c.key === rkSel; })) rkSel = rk.criteria[0].key;
+    rk.criteria.forEach(function (c) {
+      var b = el("button", "", c.label); b.type = "button";
+      b.setAttribute("data-k", c.key);
+      b.setAttribute("aria-pressed", c.key === rkSel ? "true" : "false");
+      b.addEventListener("click", function () {
+        rkSel = c.key;
+        Array.prototype.forEach.call(tabs.children, function (x) { x.setAttribute("aria-pressed", x.getAttribute("data-k") === rkSel ? "true" : "false"); });
+        renderRankPanel();
+      });
+      tabs.appendChild(b);
+    });
+    renderRankPanel();
+    var rb = $("rk-reglas"); clear(rb);
+    var rs = rk.rule_selections || [];
+    if (!rs.length) rb.appendChild(el("p", "muted", "Sin selecciones de reglas en esta corrida."));
+    rs.forEach(function (r) {
+      var card = el("div", "card"); card.style.marginBottom = "8px";
+      card.appendChild(el("strong", "", r.label || r.rule));
+      card.appendChild(document.createTextNode(" "));
+      card.appendChild(el("span", "tag " + evTagClass(r.evidence), "Evidencia: " + r.evidence));
+      var chips = el("div", "chips");
+      (r.tickers || []).forEach(function (t) {
+        var b = el("button", "chip tk", t); b.type = "button"; b.setAttribute("data-t", t); b.setAttribute("aria-label", "Ver detalle de " + t);
+        chips.appendChild(b);
+      });
+      card.appendChild(chips);
+      var info = [];
+      if (isNum(r.annual_excess_vs_ew)) info.push("exceso anual histórico vs igual ponderado: " + spct(r.annual_excess_vs_ew, 1));
+      if (isNum(r.p_holm)) info.push("p (Holm): " + num(r.p_holm, 3));
+      if (info.length) card.appendChild(el("p", "muted small", info.join(" · ")));
+      rb.appendChild(card);
+    });
+    rb.appendChild(el("p", "muted small", "Es la salida mecánica de cada regla, registrada para evaluarla hacia adelante; no es una recomendación."));
   }
 
   // ------------------------------------------------------------------ titulares
@@ -499,6 +741,57 @@ footer ul{padding-left:20px;margin:6px 0}
     return wrap;
   }
 
+  function bigMoney(x) {
+    if (!isNum(x)) return "s/d";
+    var a = Math.abs(x);
+    if (a >= 1e9) return "USD " + num(x / 1e9, 1) + " mil M";
+    if (a >= 1e6) return "USD " + num(x / 1e6, 0) + " M";
+    return "USD " + money(x);
+  }
+  function appendContext(body, tk) {
+    // fundamentales
+    var f = DATA.fundamentals && DATA.fundamentals.tickers ? DATA.fundamentals.tickers[tk] : null;
+    if (DATA.fundamentals) {
+      body.appendChild(el("h3", "", "Contexto fundamental"));
+      if (!f) body.appendChild(el("p", "muted", "Sin datos fundamentales para este ticker."));
+      else {
+        var kv = el("div", "kv");
+        [["Ingresos (12 meses)", bigMoney(f.revenue_ttm)], ["Crecimiento de ingresos interanual", spct(f.rev_growth_yoy, 1)],
+         ["Margen operativo", pct(f.op_margin_ttm, 1)], ["Margen neto", pct(f.net_margin_ttm, 1)],
+         ["Margen de flujo de caja libre", pct(f.fcf_margin_ttm, 1)], ["Deuda / patrimonio", num(f.debt_to_equity, 2)],
+         ["Cambio de acciones en circulación (interanual)", spct(f.shares_chg_yoy, 1)]]
+          .forEach(function (p) { var d = el("div"); d.appendChild(el("b", "", p[0])); d.appendChild(document.createTextNode(p[1])); kv.appendChild(d); });
+        body.appendChild(kv);
+        body.appendChild(el("p", "muted small", "Fuente: presentaciones a la SEC (XBRL)" + (f.period_end ? "; período al " + f.period_end : "") +
+          (f.filed ? ", presentado el " + f.filed : "") + ". Es contexto, no una señal validada."));
+      }
+    }
+    // eventos
+    var ev = eventList();
+    if (ev) {
+      body.appendChild(el("h3", "", "Eventos próximos"));
+      var mine = ev.filter(function (e) { return e.ticker === tk; }).sort(function (a, b) { return a.days_to - b.days_to; });
+      if (!mine.length) body.appendChild(el("p", "muted", "Sin eventos de este ticker en el calendario cargado."));
+      else {
+        var ul = el("ul", "flags");
+        mine.forEach(function (e) {
+          ul.appendChild(el("li", "", (e.label || e.kind) + " " + whenTxt(e.days_to) + " (" + e.date + (e.time ? ", " + e.time : "") + ")"));
+        });
+        body.appendChild(ul);
+      }
+    }
+    // convergencia de gestores
+    var ms = managersFor(tk);
+    if (ms !== null) {
+      body.appendChild(el("h3", "", "Gestores con esta acción en su top (13F)"));
+      if (!ms.length) body.appendChild(el("p", "muted", "Ninguno de los gestores seguidos la tiene en su top 10."));
+      else {
+        body.appendChild(el("p", "", ms.join(", ")));
+        body.appendChild(el("p", "muted small", "Datos de 13F con retraso de hasta 45 días y solo posiciones largas en EE. UU. Es información; replicar a los gestores no ha mostrado ventaja significativa en el proyecto."));
+      }
+    }
+  }
+
   function openDetail(ticker) {
     var t = (DATA.tickers || []).filter(function (x) { return x.ticker === ticker; })[0];
     if (!t) return;
@@ -535,6 +828,8 @@ footer ul{padding-left:20px;margin:6px 0}
      ["Volatilidad 63d (anual.)", pct(t.vol63, 1)], ["Distancia al máximo 52 sem.", spct(t.dist_high, 1)]]
       .forEach(function (p) { var d = el("div"); d.appendChild(el("b", "", p[0])); d.appendChild(document.createTextNode(p[1])); kv.appendChild(d); });
     body.appendChild(kv);
+
+    appendContext(body, t.ticker);
 
     body.appendChild(el("h3", "", "Avisos (hechos, no recomendaciones)"));
     if (t.flags && t.flags.length) {
@@ -766,6 +1061,13 @@ footer ul{padding-left:20px;margin:6px 0}
       while (n && n !== this && !(n.getAttribute && n.getAttribute("data-t"))) n = n.parentNode;
       if (n && n.getAttribute && n.getAttribute("data-t")) openDetail(n.getAttribute("data-t"));
     });
+    function tickClick(e) {
+      var n = e.target;
+      while (n && n !== this && !(n.getAttribute && n.getAttribute("data-t"))) n = n.parentNode;
+      if (n && n.getAttribute && n.getAttribute("data-t")) openDetail(n.getAttribute("data-t"));
+    }
+    $("rk-panel").addEventListener("click", tickClick);
+    $("rk-reglas").addEventListener("click", tickClick);
     $("d-cerrar").addEventListener("click", closeDetail);
     $("detalle").addEventListener("click", function (e) { if (e.target === this) closeDetail(); });
     $("detalle").addEventListener("close", function () { if (lastFocus && lastFocus.focus) { try { lastFocus.focus(); } catch (x) { /* nada */ } } });

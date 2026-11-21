@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Trading Lab - Mi cartera y riesgo</title>
+<meta name="description" content="Rango de resultados, probabilidad de pérdida y contribución al riesgo de la cartera que tú introduces. Se guarda solo en tu navegador. No es asesoría financiera.">
+<style>
+:root{
+  --bg:#f4f6f9; --surface:#ffffff; --surface2:#eef1f5; --text:#14181f; --muted:#556070;
+  --border:#d5dbe3; --accent:#1c5bc8; --accent-text:#ffffff;
+  --ok:#14663a; --ok-bg:#e3f4ea; --warn:#7a4f00; --warn-bg:#fdf0d5; --none:#4a5563; --none-bg:#e9edf2;
+  --danger:#a8231b; --danger-bg:#fbe6e4; --info:#1c5bc8; --info-bg:#e5eefb;
+  --track:#dfe4eb; --bar:#7aa2dd; --focus:#1c5bc8;
+  --radius:10px; --gutter:16px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0e1116; --surface:#171b22; --surface2:#1e232c; --text:#e8ebf0; --muted:#a2acba;
+    --border:#2c333e; --accent:#7ba8ff; --accent-text:#0e1116;
+    --ok:#6fd99a; --ok-bg:#12281b; --warn:#f2bd55; --warn-bg:#2e2410; --none:#b4bdca; --none-bg:#232932;
+    --danger:#ff9087; --danger-bg:#331816; --info:#8db4ff; --info-bg:#16233a;
+    --track:#2a313c; --bar:#4f78b8; --focus:#8db4ff;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;overflow-x:hidden}
+.wrap{max-width:1100px;margin:0 auto;padding:0 var(--gutter) 48px}
+h1{font-size:1.35rem;line-height:1.25;margin:0}
+h2{font-size:1.1rem;margin:0 0 4px}
+h3{font-size:1rem;margin:16px 0 6px}
+p{margin:0 0 8px}
+.muted{color:var(--muted)} .small{font-size:.85rem}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+nav.nav{display:flex;flex-wrap:wrap;gap:6px;padding:12px 0 0}
+nav.nav a{display:inline-block;padding:10px 14px;min-height:44px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);text-decoration:none;font-weight:600}
+nav.nav a[aria-current="page"]{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
+header.top{padding:10px 0 8px}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:4px;font-size:.88rem;color:var(--muted)}
+.aviso{display:block;margin-top:10px;padding:8px 12px;border:1px solid var(--border);border-left:4px solid var(--warn);background:var(--surface);border-radius:var(--radius);font-size:.9rem;font-weight:600}
+.priv{display:block;margin-top:8px;padding:8px 12px;border:1px solid var(--border);border-left:4px solid var(--info);background:var(--info-bg);border-radius:var(--radius);font-size:.9rem}
+section.panel{margin-top:22px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px}
+.grid2{display:grid;gap:10px;grid-template-columns:1fr}
+@media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1px 8px;border-radius:999px}
+.tag.ok{background:var(--ok-bg);color:var(--ok)} .tag.warn{background:var(--warn-bg);color:var(--warn)}
+.tag.none{background:var(--none-bg);color:var(--none)} .tag.info{background:var(--info-bg);color:var(--info)}
+.tag.bad{background:var(--danger-bg);color:var(--danger)}
+#estado{margin-top:16px;padding:12px 14px;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface)}
+#estado.error{border-color:var(--danger);background:var(--danger-bg)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin:8px 0}
+label.lbl{font-weight:600;font-size:.9rem}
+input[type=text],textarea,select{font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 11px;min-height:44px;width:100%}
+textarea{min-height:76px;resize:vertical}
+button{font:inherit;cursor:pointer}
+.btn{background:var(--accent);color:var(--accent-text);border:0;border-radius:8px;padding:10px 16px;min-height:44px;font-weight:700}
+.btn.sec{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn.danger{background:var(--danger-bg);color:var(--danger);border:1px solid var(--danger)}
+.tscroll{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);max-width:100%}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:.9rem}
+th,td{padding:8px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--border);vertical-align:middle}
+th:first-child,td:first-child{text-align:left}
+td.txt,th.txt{text-align:left;white-space:normal}
+thead th{background:var(--surface2);font-weight:700}
+tbody tr:last-child td{border-bottom:0}
+#tabla-pos td{padding:4px 6px}
+#tabla-pos input{min-width:78px}
+#tabla-pos td:first-child input{min-width:84px;text-transform:uppercase}
+.neg{color:var(--danger)}
+#res-contrib td:last-child{min-width:240px}
+.field{display:grid;gap:4px} .field .hint{font-size:.8rem;color:var(--muted)}
+form.rules{display:grid;gap:12px;grid-template-columns:1fr}
+@media(min-width:600px){form.rules{grid-template-columns:repeat(3,1fr)}}
+form.sizer{display:grid;gap:12px;grid-template-columns:1fr}
+@media(min-width:600px){form.sizer{grid-template-columns:1fr 1fr}}
+form.sizer .full{grid-column:1/-1}
+.kv{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media(min-width:700px){.kv.k3{grid-template-columns:repeat(3,1fr)}.kv.k4{grid-template-columns:repeat(4,1fr)}}
+.kv div{background:var(--surface2);border-radius:8px;padding:8px 10px}
+.kv b{display:block;font-size:.78rem;color:var(--muted);font-weight:600}
+.kv output,.kv span.v{font-size:1.1rem;font-weight:700}
+.nota{border-left:4px solid var(--info);background:var(--info-bg);padding:8px 12px;border-radius:6px;font-size:.9rem;margin:10px 0}
+.nota.warn{border-left-color:var(--warn);background:var(--warn-bg)}
+.nota.bad{border-left-color:var(--danger);background:var(--danger-bg)}
+.sem{display:flex;gap:12px;align-items:flex-start}
+.sem .dot{flex:0 0 auto;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:1.2rem;color:#fff;background:var(--none)}
+.sem.verde .dot{background:#14663a} .sem.amarillo .dot{background:#b57b00} .sem.rojo .dot{background:#b3261e}
+.hb{display:flex;align-items:center;gap:8px;margin:4px 0}
+.hb .lab{flex:0 0 190px;font-size:.88rem}
+.hb .track{flex:1;height:12px;background:var(--track);border-radius:6px;overflow:hidden}
+.hb .fill{display:block;height:100%;background:var(--bar)}
+.hb .val{flex:0 0 64px;text-align:right;font-weight:700;font-size:.88rem}
+@media(max-width:520px){.hb{flex-wrap:wrap}.hb .lab{flex:1 1 100%}}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.chip{background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.85rem;font-weight:600}
+ul.l{margin:6px 0;padding-left:20px}
+footer{margin-top:28px;padding-top:14px;border-top:1px solid var(--border);font-size:.85rem;color:var(--muted)}
+footer ul{padding-left:20px;margin:6px 0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+[hidden]{display:none !important}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="index.html" id="nav-panel">Panel</a>
+    <a href="cartera.html" id="nav-cartera" aria-current="page">Mi cartera</a>
+    <a href="diario.html" id="nav-diario">Diario</a>
+  </nav>
+  <h1 style="margin-top:14px">Mi cartera y riesgo</h1>
+  <div class="meta">
+    <span>Datos al: <strong id="asof">cargando…</strong></span>
+    <span>Muestras históricas: <span id="muestras">-</span></span>
+  </div>
+  <span class="aviso" id="aviso">Herramienta de investigación; los cálculos usan los datos y reglas que tú introduces; no es asesoría financiera.</span>
+  <span class="priv" id="privacidad"><strong>Privacidad:</strong> lo que escribes aquí se guarda solo en este navegador (localStorage). No se envía a ningún servidor. Puedes borrarlo con el botón «Borrar mi cartera».</span>
+</header>
+
+<div id="estado" role="status" aria-live="polite">Cargando datos…</div>
+
+<main id="contenido" hidden>
+
+<section class="panel" aria-labelledby="h-cartera">
+  <h2 id="h-cartera">1. Tu cartera</h2>
+  <p class="muted small">Escribe tickers con su peso (%) o su valor (USD), o pega un texto como «AAPL 40%, MSFT 30%, JPM 30%». Solo posiciones largas. Acepta coma o punto decimal. Los tickers deben estar en el universo del panel.</p>
+  <div class="card">
+    <div class="field">
+      <label class="lbl" for="paste">Pegar texto</label>
+      <textarea id="paste" placeholder="AAPL 40%, MSFT 30%, JPM 30%   (o valores: AAPL 4000, MSFT 3000)" spellcheck="false" autocomplete="off"></textarea>
+    </div>
+    <div class="toolbar">
+      <button type="button" class="btn" id="btn-paste">Cargar texto en la tabla</button>
+      <button type="button" class="btn sec" id="btn-ejemplo">Cargar ejemplo ilustrativo</button>
+    </div>
+    <div class="field" style="max-width:320px;margin-top:6px">
+      <label class="lbl" for="capital">Capital total (USD, opcional)</label>
+      <input type="text" id="capital" inputmode="decimal" autocomplete="off" placeholder="Ej.: 10000">
+      <span class="hint">Si lo dejas vacío y escribes valores, el capital es la suma de los valores.</span>
+    </div>
+    <h3>Posiciones</h3>
+    <div class="tscroll" tabindex="0" role="region" aria-label="Tabla editable de posiciones, desplazable horizontalmente">
+      <table id="tabla-pos">
+        <caption class="sr">Posiciones de la cartera: ticker, peso y valor</caption>
+        <thead><tr><th class="txt" scope="col">Ticker</th><th scope="col">Peso (%)</th><th scope="col">Valor (USD)</th><th class="txt" scope="col">Estado</th><th scope="col"><span class="sr">Quitar</span></th></tr></thead>
+        <tbody id="tbody-pos"></tbody>
+      </table>
+    </div>
+    <div class="toolbar">
+      <button type="button" class="btn sec" id="btn-add">Agregar fila</button>
+      <button type="button" class="btn danger" id="btn-borrar">Borrar mi cartera</button>
+      <span class="muted small" id="guardado" aria-live="polite"></span>
+    </div>
+    <p class="small" id="aviso-cartera" role="alert" style="font-weight:600;color:var(--warn);min-height:1.4em"></p>
+  </div>
+</section>
+
+<section class="panel" aria-labelledby="h-reglas">
+  <h2 id="h-reglas">2. Tus reglas</h2>
+  <p class="muted small">Las defines tú. La página solo compara los resultados con lo que escribiste; no recomienda ningún tamaño ni acción. Déjalas vacías si no quieres usarlas.</p>
+  <div class="card">
+    <form class="rules" id="reglas-form" novalidate autocomplete="off">
+      <div class="field"><label class="lbl" for="r-maxw">Peso máximo por posición (% del capital)</label>
+        <input type="text" id="r-maxw" inputmode="decimal" placeholder="Ej.: 25"></div>
+      <div class="field"><label class="lbl" for="r-maxrisk">Riesgo máximo por posición (% del capital)</label>
+        <input type="text" id="r-maxrisk" inputmode="decimal" placeholder="Ej.: 1">
+        <span class="hint">Para posiciones nuevas: pérdida si toca el stop. Para las que ya tienes: pérdida en el escenario adverso P10 a 1 mes.</span></div>
+      <div class="field"><label class="lbl" for="r-maxloss">Pérdida máxima aceptada de la cartera (% del capital)</label>
+        <input type="text" id="r-maxloss" inputmode="decimal" placeholder="Ej.: 10"></div>
+    </form>
+    <div id="res-reglas" style="margin-top:12px" aria-live="polite"></div>
+
+    <h3>Tamaño de posición que cumple tu regla</h3>
+    <p class="muted small">Con tu capital, tu riesgo máximo por posición, un precio de entrada y un stop (posición larga: el stop debe estar por debajo de la entrada). Es aritmética con tus datos, no una recomendación.</p>
+    <form class="sizer" id="sizer-form" novalidate autocomplete="off">
+      <div class="field"><label class="lbl" for="s-entry">Precio de entrada (USD)</label>
+        <input type="text" id="s-entry" inputmode="decimal" placeholder="Ej.: 100"></div>
+      <div class="field"><label class="lbl" for="s-stop">Precio de stop (USD)</label>
+        <input type="text" id="s-stop" inputmode="decimal" placeholder="Ej.: 95"></div>
+      <div class="full"><button type="submit" class="btn">Calcular tamaño</button></div>
+    </form>
+    <p class="errmsg small" id="s-error" role="alert" style="color:var(--danger);font-weight:600"></p>
+    <div id="s-out" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="panel" id="resultados" aria-labelledby="h-res">
+  <h2 id="h-res">3. Resultados con las muestras históricas conjuntas</h2>
+  <p class="muted small">Se reescalan 400 escenarios históricos reales (mismas fechas para todas las acciones, así se conserva la correlación) con la volatilidad actual de cada una. Son rangos estadísticos, no predicciones.</p>
+  <div id="fuera-universo" role="status"></div>
+  <div id="res-vacio" class="nota">Agrega al menos una posición con peso o valor para ver los resultados.</div>
+  <div id="res-cuerpo" hidden>
+    <h3>Contexto actual: régimen de mercado</h3>
+    <div class="card" id="res-regimen"></div>
+
+    <h3>Rango de resultados de la cartera (P10 · P50 · P90)</h3>
+    <div class="tscroll" tabindex="0" role="region" aria-label="Rango de resultados, desplazable horizontalmente"><div id="res-rangos"></div></div>
+
+    <h3>Probabilidad histórica de pérdida al final del horizonte</h3>
+    <div class="tscroll" tabindex="0" role="region" aria-label="Probabilidad de pérdida, desplazable horizontalmente"><div id="res-prob"></div></div>
+    <p class="muted small" id="prob-nota"></p>
+
+    <h3>Contribución de cada posición al riesgo (1 mes)</h3>
+    <p class="muted small">Pérdida en el escenario adverso: pérdida de la posición, en % del capital, en el nivel P10 de sus resultados a 1 mes. Contribución a la volatilidad: parte de la varianza de la cartera. Contribución a la cola: parte de la pérdida media en el 10% de peores escenarios de la cartera.</p>
+    <div class="tscroll" tabindex="0" role="region" aria-label="Contribución al riesgo, desplazable horizontalmente"><div id="res-contrib"></div></div>
+
+    <h3>Concentración</h3>
+    <div id="res-conc"></div>
+
+    <h3>Exposición por sector</h3>
+    <div id="res-sector"></div>
+
+    <h3>Solapamiento con gestores (13F)</h3>
+    <div id="res-gestores"></div>
+
+    <h3>Eventos próximos de tus posiciones</h3>
+    <div id="res-eventos"></div>
+  </div>
+</section>
+
+<footer id="pie">
+  <strong id="pie-aviso">Herramienta de investigación, no asesoría financiera.</strong>
+  <ul id="caveats"></ul>
+</footer>
+</main>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* @@PURE-BEGIN */
+  // Funciones puras (sin DOM): se prueban desde Node en tests/test_site.py.
+  function isNum(x) { return typeof x === "number" && isFinite(x); }
+
+  function parseNum(s) {
+    s = String(s === undefined || s === null ? "" : s).replace(/\s+/g, "").replace(/^\$/, "");
+    if (!s) return NaN;
+    if (s.indexOf(",") !== -1 && s.indexOf(".") !== -1) {
+      if (s.lastIndexOf(",") > s.lastIndexOf(".")) s = s.replace(/\./g, "").replace(",", ".");
+      else s = s.replace(/,/g, "");
+    } else if (/^\d{1,3}(,\d{3})+$/.test(s)) {
+      s = s.replace(/,/g, "");
+    } else if (s.indexOf(",") !== -1) {
+      s = s.replace(",", ".");
+    }
+    if (!/^\d*\.?\d+$|^\d+\.$/.test(s)) return NaN;
+    return parseFloat(s);
+  }
+
+  // percentil con interpolación lineal (igual que numpy.percentile por defecto); q en [0, 1]
+  function percentile(values, q) {
+    var a = values.slice().sort(function (x, y) { return x - y; });
+    var n = a.length;
+    if (!n) return NaN;
+    var pos = (n - 1) * q, lo = Math.floor(pos), hi = Math.ceil(pos);
+    return a[lo] + (a[hi] - a[lo]) * (pos - lo);
+  }
+
+  // "AAPL 40%, MSFT 30%, NVDA 5000" -> [{ticker, peso, valor}] (peso en %, valor en USD; NaN si no viene)
+  function parsePaste(text) {
+    var out = [];
+    var re = /([A-Za-z][A-Za-z0-9.\-]{0,9})\s*[:=]?\s*\$?\s*([0-9]+(?:[.,][0-9]+)*)\s*(%?)/g;
+    var m;
+    while ((m = re.exec(String(text || ""))) !== null) {
+      var v = parseNum(m[2]);
+      if (!isNum(v)) continue;
+      var item = { ticker: m[1].toUpperCase(), peso: NaN, valor: NaN };
+      if (m[3] === "%") item.peso = v; else item.valor = v;
+      out.push(item);
+    }
+    return out;
+  }
+
+  // filas [{ticker, peso (%), valor (USD)}] + capital (número o NaN) -> pesos como fracción del capital
+  function resolveWeights(rows, capital) {
+    var valSum = 0, anyVal = false;
+    rows.forEach(function (r) {
+      if (!isNum(r.peso) && isNum(r.valor) && r.valor > 0) { valSum += r.valor; anyVal = true; }
+    });
+    var cap = (isNum(capital) && capital > 0) ? capital : (anyVal ? valSum : null);
+    var weights = {}, per = [];
+    rows.forEach(function (r) {
+      var w = NaN;
+      if (isNum(r.peso) && r.peso >= 0) w = r.peso / 100;
+      else if (isNum(r.valor) && r.valor >= 0 && cap) w = r.valor / cap;
+      per.push(w);
+      if (isNum(w) && w > 0 && r.ticker) weights[r.ticker] = (weights[r.ticker] || 0) + w;
+    });
+    var total = 0;
+    Object.keys(weights).forEach(function (t) { total += weights[t]; });
+    return { weights: weights, capital: cap, total: total, cash: 1 - total, perRow: per };
+  }
+
+  function positionReturns(block, ticker) {
+    var j = block.tickers.indexOf(ticker), s = block.sigma_now[ticker];
+    if (j < 0 || !isNum(s)) return null;
+    var out = new Array(block.z.length);
+    for (var t = 0; t < block.z.length; t++) out[t] = Math.exp(s * block.z[t][j]) - 1;
+    return out;
+  }
+
+  // retornos de la cartera en cada escenario: suma w_i * (exp(sigma_i * z_it) - 1); lo no invertido rinde 0
+  function portfolioReturns(block, weights) {
+    var cols = [], ws = [], sg = [], used = [];
+    Object.keys(weights).forEach(function (t) {
+      var j = block.tickers.indexOf(t), s = block.sigma_now[t];
+      if (j >= 0 && weights[t] > 0 && isNum(s)) { cols.push(j); ws.push(weights[t]); sg.push(s); used.push(t); }
+    });
+    var n = block.z.length, out = new Array(n);
+    for (var t = 0; t < n; t++) {
+      var row = block.z[t], acc = 0;
+      for (var i = 0; i < cols.length; i++) acc += ws[i] * (Math.exp(sg[i] * row[cols[i]]) - 1);
+      out[t] = acc;
+    }
+    return { r: out, used: used };
+  }
+
+  // fracción de escenarios con pérdida mayor que x (x como fracción positiva, p. ej. 0.05)
+  function probLoss(returns, x) {
+    var c = 0;
+    for (var i = 0; i < returns.length; i++) if (returns[i] < -x) c++;
+    return returns.length ? c / returns.length : NaN;
+  }
+
+  // contribución de cada posición al riesgo: a la varianza y a la pérdida media de la cola (peor alpha)
+  function riskContributions(block, weights, alpha) {
+    alpha = (alpha === undefined) ? 0.10 : alpha;
+    var names = [], cols = [], ws = [], sg = [];
+    Object.keys(weights).forEach(function (t) {
+      var j = block.tickers.indexOf(t), s = block.sigma_now[t];
+      if (j >= 0 && weights[t] > 0 && isNum(s)) { names.push(t); cols.push(j); ws.push(weights[t]); sg.push(s); }
+    });
+    var n = block.z.length, k = names.length;
+    if (!n || !k) return null;
+    var C = [], p = new Array(n), own = [];
+    for (var i = 0; i < k; i++) own.push(new Array(n));
+    for (var t = 0; t < n; t++) {
+      var row = block.z[t], c = new Array(k), s = 0;
+      for (i = 0; i < k; i++) {
+        var r = Math.exp(sg[i] * row[cols[i]]) - 1;
+        own[i][t] = r;
+        c[i] = ws[i] * r;
+        s += c[i];
+      }
+      C.push(c); p[t] = s;
+    }
+    var thr = percentile(p, alpha), mean = 0, i2, t2;
+    for (t2 = 0; t2 < n; t2++) mean += p[t2];
+    mean /= n;
+    var varp = 0;
+    for (t2 = 0; t2 < n; t2++) varp += (p[t2] - mean) * (p[t2] - mean);
+    varp /= n;
+    var vol = [], tail = [], adverse = [];
+    var tailRows = [], es = 0;
+    for (t2 = 0; t2 < n; t2++) if (p[t2] <= thr) { tailRows.push(t2); es += p[t2]; }
+    es /= tailRows.length;
+    for (i2 = 0; i2 < k; i2++) {
+      var mc = 0, cov = 0, tc = 0;
+      for (t2 = 0; t2 < n; t2++) mc += C[t2][i2];
+      mc /= n;
+      for (t2 = 0; t2 < n; t2++) cov += (C[t2][i2] - mc) * (p[t2] - mean);
+      cov /= n;
+      for (var q = 0; q < tailRows.length; q++) tc += C[tailRows[q]][i2];
+      tc /= tailRows.length;
+      vol.push(varp > 0 ? cov / varp : null);
+      tail.push(es < 0 ? tc / es : null);
+      adverse.push(ws[i2] * percentile(own[i2], alpha));
+    }
+    return { tickers: names, weights: ws, vol: vol, tail: tail, adverse: adverse, es: es, thr: thr };
+  }
+
+  // peso máximo, HHI (sobre pesos normalizados al total invertido) y número efectivo de posiciones
+  function concentration(weights) {
+    var vals = Object.keys(weights).map(function (t) { return weights[t]; }).filter(function (w) { return w > 0; });
+    var tot = vals.reduce(function (a, b) { return a + b; }, 0);
+    if (!vals.length || !(tot > 0)) return null;
+    var hhi = vals.reduce(function (a, w) { return a + (w / tot) * (w / tot); }, 0);
+    return { maxW: Math.max.apply(null, vals), hhi: hhi, effN: 1 / hhi, n: vals.length, total: tot };
+  }
+
+  function sectorExposure(weights, sectors) {
+    var acc = {};
+    Object.keys(weights).forEach(function (t) {
+      var s = (sectors && sectors[t]) || "otro";
+      acc[s] = (acc[s] || 0) + weights[t];
+    });
+    return Object.keys(acc).map(function (s) { return { sector: s, w: acc[s] }; })
+      .sort(function (a, b) { return b.w - a.w; });
+  }
+
+  // acciones enteras que cumplen la regla de riesgo (y el peso máximo, y el capital disponible)
+  function positionSize(capital, riskPct, entry, stop, maxWeightPct) {
+    if (!(capital > 0)) return { error: "El capital debe ser mayor que 0." };
+    if (!(riskPct > 0) || riskPct > 100) return { error: "El riesgo máximo por posición debe ser mayor que 0 y no superar 100%." };
+    if (!(entry > 0) || !(stop > 0)) return { error: "La entrada y el stop deben ser números mayores que 0." };
+    if (!(stop < entry)) return { error: "El stop debe estar por debajo de la entrada (posición larga)." };
+    var rps = entry - stop, budget = capital * riskPct / 100;
+    var byRisk = Math.floor(budget / rps);
+    var byWeight = (isNum(maxWeightPct) && maxWeightPct > 0) ? Math.floor(capital * maxWeightPct / 100 / entry) : Infinity;
+    var byCash = Math.floor(capital / entry);
+    var shares = Math.min(byRisk, byWeight, byCash);
+    var binding = shares === byRisk ? "riesgo" : (shares === byWeight ? "peso" : "capital");
+    return { shares: shares, value: shares * entry, loss: shares * rps, lossPct: shares * rps / capital * 100,
+             weightPct: shares * entry / capital * 100, byRisk: byRisk, byWeight: byWeight, byCash: byCash,
+             binding: binding, riskPerShare: rps, budget: budget };
+  }
+  /* @@PURE-END */
+
+  // ------------------------------------------------------------------ utilidades de interfaz
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined && text !== null) n.textContent = String(text);
+    return n;
+  }
+  function clear(n) { while (n.firstChild) n.removeChild(n.firstChild); }
+  function pct(x, d) { return isNum(x) ? (x * 100).toFixed(d === undefined ? 0 : d).replace(".", ",") + "%" : "s/d"; }
+  function spct(x, d) { return isNum(x) ? (x > 0 ? "+" : "") + pct(x, d) : "s/d"; }
+  function num(x, d) { return isNum(x) ? x.toFixed(d === undefined ? 2 : d).replace(".", ",") : "s/d"; }
+  function money(x) { return isNum(x) ? x.toLocaleString("es", { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : "s/d"; }
+  function table(headers, rows) {
+    var wrap = el("table");
+    var th = el("thead"), hr = el("tr");
+    headers.forEach(function (h, i) { var c = el("th", i === 0 ? "txt" : "", h); c.setAttribute("scope", "col"); hr.appendChild(c); });
+    th.appendChild(hr); wrap.appendChild(th);
+    var tb = el("tbody"); rows.forEach(function (r) { tb.appendChild(r); }); wrap.appendChild(tb);
+    return wrap;
+  }
+  function trow(cells) {
+    var tr = el("tr");
+    cells.forEach(function (c, i) {
+      var td = el("td", i === 0 ? "txt" : "");
+      if (c && c.nodeType) td.appendChild(c); else td.textContent = c === null || c === undefined ? "" : String(c);
+      tr.appendChild(td);
+    });
+    return tr;
+  }
+
+  var KEY = "tradinglab.cartera.v1";
+  var DATA = null;
+  var rows = [];                       // {t, w, v, tr, st, it, iw, iv}
+  var saveTimer = null, calcTimer = null;
+
+  // ------------------------------------------------------------------ almacenamiento local
+  function loadState() {
+    try {
+      var s = window.localStorage.getItem(KEY);
+      if (s) { var o = JSON.parse(s); if (o && typeof o === "object") return o; }
+    } catch (e) { /* sin almacenamiento: la página funciona igual */ }
+    return null;
+  }
+  function saveState() {
+    var st = {
+      capital: $("capital").value,
+      rows: rows.map(function (r) { return { t: r.it.value, w: r.iw.value, v: r.iv.value }; }),
+      rules: { maxW: $("r-maxw").value, maxRisk: $("r-maxrisk").value, maxLoss: $("r-maxloss").value },
+      sizer: { entry: $("s-entry").value, stop: $("s-stop").value }
+    };
+    try { window.localStorage.setItem(KEY, JSON.stringify(st)); $("guardado").textContent = "Guardado en este navegador."; }
+    catch (e) { $("guardado").textContent = "No se pudo guardar (almacenamiento bloqueado); los datos se pierden al cerrar."; }
+  }
+  function scheduleSave() { clearTimeout(saveTimer); saveTimer = setTimeout(saveState, 300); }
+  function scheduleCalc() { scheduleSave(); clearTimeout(calcTimer); calcTimer = setTimeout(compute, 150); }
+
+  // ------------------------------------------------------------------ tabla editable
+  function addRow(t, w, v) {
+    var tr = el("tr");
+    function cell(label, val, mode) {
+      var td = el("td");
+      var i = el("input"); i.type = "text"; i.value = val || ""; i.autocomplete = "off";
+      i.setAttribute("aria-label", label);
+      if (mode) i.setAttribute("inputmode", mode); else { i.autocapitalize = "characters"; i.spellcheck = false; }
+      i.addEventListener("input", scheduleCalc);
+      td.appendChild(i); tr.appendChild(td);
+      return i;
+    }
+    var n = rows.length + 1;
+    var it = cell("Ticker de la posición " + n, t, null);
+    var iw = cell("Peso (%) de la posición " + n, w, "decimal");
+    var iv = cell("Valor (USD) de la posición " + n, v, "decimal");
+    var st = el("td", "txt small"); tr.appendChild(st);
+    var tdx = el("td");
+    var bx = el("button", "btn sec", "Quitar"); bx.type = "button";
+    bx.setAttribute("aria-label", "Quitar la fila " + n);
+    var row = { t: t, tr: tr, st: st, it: it, iw: iw, iv: iv };
+    bx.addEventListener("click", function () {
+      rows = rows.filter(function (x) { return x !== row; });
+      tr.parentNode.removeChild(tr);
+      scheduleCalc();
+    });
+    tdx.appendChild(bx); tr.appendChild(tdx);
+    $("tbody-pos").appendChild(tr);
+    rows.push(row);
+    return row;
+  }
+  function resetRows(list) {
+    clear($("tbody-pos")); rows = [];
+    list.forEach(function (r) { addRow(r.t || "", r.w || "", r.v || ""); });
+    if (!list.length) { addRow("", "", ""); }
+  }
+  function fmtInput(x) { return isNum(x) ? String(Math.round(x * 100) / 100).replace(".", ",") : ""; }
+
+  // ------------------------------------------------------------------ datos del panel
+  function universeSet() {
+    var set = {};
+    if (DATA && DATA.portfolio) {
+      ["h21", "h63"].forEach(function (k) {
+        var b = DATA.portfolio[k];
+        if (b && b.tickers) b.tickers.forEach(function (t) { set[t] = true; });
+      });
+    }
+    return set;
+  }
+
+  function currentRows() {
+    return rows.map(function (r) {
+      return { ticker: r.it.value.trim().toUpperCase(), peso: parseNum(r.iw.value), valor: parseNum(r.iv.value) };
+    }).filter(function (r) { return r.ticker; });
+  }
+  function rules() {
+    var a = parseNum($("r-maxw").value), b = parseNum($("r-maxrisk").value), c = parseNum($("r-maxloss").value);
+    return { maxW: a > 0 ? a : null, maxRisk: b > 0 ? b : null, maxLoss: c > 0 ? c : null };
+  }
+
+  // ------------------------------------------------------------------ cálculo y presentación
+  function managersFor(conv, t) {
+    if (!conv || typeof conv !== "object") return [];
+    var m = conv.by_ticker || conv.tickers || conv;
+    var item = m && m[t];
+    if (!item) return [];
+    var list = Array.isArray(item) ? item : (item.managers || item.gestores || []);
+    var out = list.map(function (x) {
+      if (typeof x === "string") return x;
+      var name = x.manager || x.gestor || x.name || x.fund || x.nombre || "?";
+      var w = x.weight !== undefined ? x.weight : (x.peso !== undefined ? x.peso : x.pct);
+      return isNum(w) ? name + " (" + pct(w, 1) + ")" : name;
+    });
+    if (out.length && !Array.isArray(item) && isNum(item.avg_weight)) out.push("peso medio entre ellos " + pct(item.avg_weight, 1));
+    return out;
+  }
+
+  function anyTxt(v) {
+    if (isNum(v)) return num(v, 2);
+    if (Array.isArray(v)) return v.map(anyTxt).join(" / ");
+    if (v && typeof v === "object") return Object.keys(v).map(function (k) { return k + " " + anyTxt(v[k]); }).join(", ");
+    return v === null || v === undefined ? "s/d" : String(v);
+  }
+  function notaEl(cls, text) { return el("div", "nota " + cls, text); }
+
+  function compute() {
+    if (!DATA) return;
+    var P = DATA.portfolio;
+    var list = currentRows();
+    var uni = universeSet();
+    var capIn = parseNum($("capital").value);
+    var rw = resolveWeights(list, capIn);
+    var warn = $("aviso-cartera"); warn.textContent = "";
+    var out = $("fuera-universo"); clear(out);
+
+    // estado por fila
+    rows.forEach(function (r) {
+      var tk = r.it.value.trim().toUpperCase();
+      var w = parseNum(r.iw.value), v = parseNum(r.iv.value);
+      if (!tk) r.st.textContent = "";
+      else if (!P) r.st.textContent = "sin muestras";
+      else if (!uni[tk]) r.st.textContent = "fuera del universo";
+      else if (!(w >= 0) && !(v >= 0)) r.st.textContent = "falta peso o valor";
+      else r.st.textContent = "ok";
+    });
+
+    var outside = Object.keys(rw.weights).filter(function (t) { return !uni[t]; });
+    var inside = {};
+    Object.keys(rw.weights).forEach(function (t) { if (uni[t]) inside[t] = rw.weights[t]; });
+    var coveredW = 0;
+    Object.keys(inside).forEach(function (t) { coveredW += inside[t]; });
+
+    if (!P) {
+      $("res-vacio").hidden = false; $("res-cuerpo").hidden = true;
+      $("res-vacio").textContent = "El panel todavía no incluye las muestras conjuntas (portfolio); no se pueden calcular los resultados.";
+      return;
+    }
+    if (outside.length) {
+      out.appendChild(notaEl("warn", "No se pueden calcular (fuera del universo del panel): " + outside.join(", ") +
+        ". En el cálculo se tratan como efectivo sin riesgo (retorno 0), así que el riesgo real de tu cartera sería mayor que el mostrado. " +
+        "Cubren " + pct(outside.reduce(function (a, t) { return a + rw.weights[t]; }, 0), 1) + " del capital."));
+    }
+    var emptyMsg = $("res-vacio");
+    if (!Object.keys(inside).length) {
+      emptyMsg.hidden = false;
+      emptyMsg.textContent = Object.keys(rw.weights).length ?
+        "Ninguna de tus posiciones está en el universo del panel: no hay nada que calcular." :
+        "Agrega al menos una posición con peso o valor para ver los resultados.";
+      $("res-cuerpo").hidden = true;
+      renderRulesSummary(null, null);
+      return;
+    }
+    emptyMsg.hidden = true; $("res-cuerpo").hidden = false;
+
+    if (rw.total > 1.0001) {
+      warn.textContent = "Tus pesos suman " + pct(rw.total, 1) + ", más que el capital: se calculan tal cual (equivale a apalancamiento).";
+    } else if (rw.cash > 0.0001) {
+      warn.textContent = "Tus pesos suman " + pct(rw.total, 1) + "; el resto (" + pct(rw.cash, 1) + ") se trata como efectivo sin riesgo.";
+    }
+
+    var cap = rw.capital;
+    var blocks = [["1 mes (21 ruedas)", P.h21], ["3 meses (63 ruedas)", P.h63]].filter(function (b) { return b[1]; });
+    var res = blocks.map(function (b) {
+      var pr = portfolioReturns(b[1], inside);
+      return { label: b[0], block: b[1], r: pr.r,
+               p10: percentile(pr.r, 0.10), p50: percentile(pr.r, 0.50), p90: percentile(pr.r, 0.90) };
+    });
+
+    // régimen
+    var rg = $("res-regimen"); clear(rg);
+    renderRegime(rg);
+
+    // rangos
+    var hr = $("res-rangos"); clear(hr);
+    var hdr = ["Horizonte", "P10 (escenario adverso)", "P50 (mediana)", "P90 (escenario favorable)"];
+    hr.appendChild(table(hdr, res.map(function (x) {
+      function f(v) { return spct(v, 1) + (cap ? " (" + (v >= 0 ? "+" : "-") + money(Math.abs(v) * cap) + " USD)" : ""); }
+      return trow([x.label, f(x.p10), f(x.p50), f(x.p90)]);
+    })));
+
+    // probabilidades de pérdida
+    var hp = $("res-prob"); clear(hp);
+    var levels = [0.05, 0.10, 0.20];
+    var ml = rules().maxLoss;
+    var head = ["Horizonte"].concat(levels.map(function (l) { return "Pérdida > " + pct(l); }));
+    if (ml && levels.indexOf(ml / 100) === -1) head.push("Pérdida > " + num(ml, 1) + "% (tu regla)");
+    hp.appendChild(table(head, res.map(function (x) {
+      var cells = [x.label].concat(levels.map(function (l) { return pct(probLoss(x.r, l), 1); }));
+      if (ml && levels.indexOf(ml / 100) === -1) cells.push(pct(probLoss(x.r, ml / 100), 1));
+      return trow(cells);
+    })));
+    var n21 = P.h21 ? P.h21.z.length : (P.h63 ? P.h63.z.length : 0);
+    $("prob-nota").textContent = "Frecuencia sobre " + n21 + " escenarios históricos; con ventanas solapadas la incertidumbre es mayor de lo que sugiere el tamaño de la muestra.";
+
+    // contribuciones (1 mes)
+    var hc = $("res-contrib"); clear(hc);
+    var rcBlock = P.h21 || P.h63;
+    var rc = rcBlock ? riskContributions(rcBlock, inside, 0.10) : null;
+    var RU = rules();
+    var posIssues = [];
+    if (rc) {
+      var order = rc.tickers.map(function (t, i) { return i; }).sort(function (a, b) { return rc.weights[b] - rc.weights[a]; });
+      hc.appendChild(table(["Posición", "Peso", "Pérdida en escenario adverso (P10, % del capital)", "Contribución a la volatilidad", "Contribución a la cola (peor 10%)", "Contra tus reglas"],
+        order.map(function (i) {
+          var t = rc.tickers[i], w = rc.weights[i], adv = -Math.min(0, rc.adverse[i]);
+          var flags = [];
+          if (RU.maxW && w * 100 > RU.maxW) flags.push("peso " + pct(w, 1) + " > " + num(RU.maxW, 1) + "%");
+          if (RU.maxRisk && adv * 100 > RU.maxRisk) flags.push("pérdida adversa " + pct(adv, 1) + " > " + num(RU.maxRisk, 1) + "%");
+          if (flags.length) posIssues.push(t + ": " + flags.join("; "));
+          var cellRule = el("span");
+          if (!RU.maxW && !RU.maxRisk) cellRule.textContent = "sin reglas definidas";
+          else if (flags.length) { cellRule.appendChild(el("span", "tag bad", "Supera tu límite")); cellRule.appendChild(document.createTextNode(" " + flags.join("; "))); }
+          else { cellRule.appendChild(el("span", "tag ok", "Dentro de tu límite")); }
+          var tdRule = cellRule;
+          return trow([t, pct(w, 1), (adv > 0 ? "-" : "") + pct(adv, 2) + (cap ? " (" + money(adv * cap) + " USD)" : ""),
+                       rc.vol[i] === null ? "s/d" : pct(rc.vol[i], 0), rc.tail[i] === null ? "s/d" : pct(rc.tail[i], 0), tdRule]);
+        })));
+      var tr = hc.querySelectorAll("tbody tr");
+      Array.prototype.forEach.call(tr, function (r) { var last = r.lastChild; last.className = "txt"; });
+    } else {
+      hc.appendChild(el("p", "muted", "Sin datos suficientes."));
+    }
+
+    // concentración
+    var cc = concentration(inside), hcn = $("res-conc"); clear(hcn);
+    if (cc) {
+      var kv = el("div", "kv k4");
+      [["Peso máximo", pct(cc.maxW, 1)], ["HHI (0 a 1)", num(cc.hhi, 3)],
+       ["N.º efectivo de posiciones", num(cc.effN, 1)], ["Posiciones calculadas", String(cc.n)]].forEach(function (p) {
+        var d = el("div"); d.appendChild(el("b", "", p[0])); d.appendChild(el("span", "v", p[1])); kv.appendChild(d);
+      });
+      hcn.appendChild(kv);
+      hcn.appendChild(el("p", "muted small", "HHI = suma de los pesos al cuadrado (sobre lo invertido); el n.º efectivo es 1/HHI: cuántas posiciones iguales equivaldrían a tu reparto."));
+    }
+
+    // sectores
+    var hs = $("res-sector"); clear(hs);
+    var sx = sectorExposure(inside, P.sectors || {});
+    var mx = sx.length ? sx[0].w : 1;
+    sx.forEach(function (s) {
+      var row = el("div", "hb");
+      row.appendChild(el("span", "lab", s.sector));
+      var tk = el("span", "track"); var f = el("span", "fill"); f.style.width = Math.max(1, s.w / mx * 100) + "%"; tk.appendChild(f);
+      row.appendChild(tk);
+      row.appendChild(el("span", "val", pct(s.w, 1)));
+      hs.appendChild(row);
+    });
+
+    // gestores
+    var hg = $("res-gestores"); clear(hg);
+    if (!DATA.convergence) {
+      hg.appendChild(el("p", "muted", "El panel todavía no incluye la convergencia de gestores 13F."));
+    } else {
+      var any = false;
+      Object.keys(inside).sort().forEach(function (t) {
+        var ms = managersFor(DATA.convergence, t);
+        if (!ms.length) return;
+        any = true;
+        var p = el("p"); p.appendChild(el("strong", "", t + ": ")); p.appendChild(document.createTextNode(ms.join(", ")));
+        hg.appendChild(p);
+      });
+      if (!any) hg.appendChild(el("p", "muted", "Ninguno de los gestores seguidos tiene entre sus mayores posiciones las de tu cartera."));
+      hg.appendChild(el("p", "muted small", "Dato de los últimos 13F presentados (con retraso de hasta 45 días y solo posiciones largas en EE. UU.). Es información, no una señal."));
+    }
+
+    // eventos
+    var he = $("res-eventos"); clear(he);
+    if (!DATA.events || !Array.isArray(DATA.events.events)) {
+      he.appendChild(el("p", "muted", "El panel todavía no incluye el calendario de eventos."));
+    } else {
+      var evs = DATA.events.events.filter(function (e) { return e.ticker && inside[e.ticker]; })
+        .sort(function (a, b) { return a.days_to - b.days_to; });
+      var ul = el("ul", "l");
+      evs.forEach(function (e) {
+        ul.appendChild(el("li", "", e.ticker + ": " + (e.label || e.kind) + " " + (isNum(e.days_to) ? (e.days_to === 0 ? "hoy" : "en " + e.days_to + (e.days_to === 1 ? " día" : " días")) : "") + " (" + e.date + ")"));
+      });
+      if (evs.length) he.appendChild(ul); else he.appendChild(el("p", "muted", "Sin eventos de tus posiciones en el calendario cargado."));
+      var macro = DATA.events.events.filter(function (e) { return !e.ticker && e.kind === "fomc" && e.days_to <= 14; });
+      if (macro.length) he.appendChild(el("p", "muted small", "Evento macro: " + macro.map(function (e) { return (e.label || "FOMC") + " en " + e.days_to + " días"; }).join("; ")));
+    }
+
+    renderRulesSummary(res, posIssues);
+    renderSizer(true);
+  }
+
+  function renderRegime(box) {
+    var rg = DATA.regime;
+    if (!rg || !rg.state) { box.appendChild(el("p", "muted", "El panel todavía no incluye el semáforo de régimen.")); return; }
+    var st = rg.state;
+    var s = el("div", "sem " + st);
+    var dot = el("span", "dot", st === "verde" ? "●" : st === "amarillo" ? "▲" : "■"); dot.setAttribute("aria-hidden", "true");
+    s.appendChild(dot);
+    var tx = el("div");
+    tx.appendChild(el("strong", "", "Régimen " + st.toUpperCase()));
+    var rl = (rg.rules || []).slice();
+    var bad = rl.filter(function (r) { return r.state && r.state !== "verde"; });
+    (bad.length ? bad : rl).slice(0, 2).forEach(function (r) {
+      tx.appendChild(el("div", "small muted", r.name + ": " + anyTxt(r.value) + (r.threshold !== undefined && r.threshold !== null ? " (umbral " + anyTxt(r.threshold) + ")" : "") + (r.state ? " · " + r.state : "")));
+    });
+    s.appendChild(tx);
+    box.appendChild(s);
+  }
+
+  function renderRulesSummary(res, posIssues) {
+    var box = $("res-reglas"); clear(box);
+    var R = rules();
+    if (!R.maxW && !R.maxRisk && !R.maxLoss) { box.appendChild(el("p", "muted small", "Sin reglas definidas: escribe al menos una arriba para compararla con tu cartera.")); return; }
+    if (!res) { box.appendChild(el("p", "muted small", "Agrega posiciones para comparar con tus reglas.")); return; }
+    var ul = el("ul", "l");
+    if (R.maxLoss) {
+      var x = res.filter(function (r) { return r.label.indexOf("1 mes") === 0; })[0] || res[0];
+      var loss = -Math.min(0, x.p10);
+      var pr = probLoss(x.r, R.maxLoss / 100);
+      var over = loss * 100 > R.maxLoss;
+      var li = el("li");
+      li.appendChild(el("span", "tag " + (over ? "bad" : "ok"), over ? "Supera tu límite" : "Dentro de tu límite"));
+      li.appendChild(document.createTextNode(" Pérdida máxima de la cartera: tu regla es " + num(R.maxLoss, 1) + "%. En el escenario adverso P10 a 1 mes la cartera pierde " +
+        pct(loss, 1) + "; la frecuencia histórica de perder más de " + num(R.maxLoss, 1) + "% a 1 mes es " + pct(pr, 1) + "."));
+      ul.appendChild(li);
+    }
+    if (R.maxW || R.maxRisk) {
+      var li2 = el("li");
+      if (posIssues && posIssues.length) {
+        li2.appendChild(el("span", "tag bad", "Supera tu límite"));
+        li2.appendChild(document.createTextNode(" Posiciones por encima de tus reglas: " + posIssues.join(" | ") + "."));
+      } else {
+        li2.appendChild(el("span", "tag ok", "Dentro de tu límite"));
+        li2.appendChild(document.createTextNode(" Ninguna posición supera tus reglas por posición."));
+      }
+      ul.appendChild(li2);
+    }
+    box.appendChild(ul);
+    box.appendChild(el("p", "muted small", "Es una comparación con los límites que tú definiste, no una recomendación."));
+  }
+
+  // ------------------------------------------------------------------ tamaño de posición
+  function capitalNow() {
+    var rw = resolveWeights(currentRows(), parseNum($("capital").value));
+    return rw.capital;
+  }
+  function renderSizer(silent) {
+    var err = $("s-error"), out = $("s-out");
+    err.textContent = ""; clear(out);
+    var en = parseNum($("s-entry").value), sp = parseNum($("s-stop").value);
+    if (!$("s-entry").value && !$("s-stop").value) return;
+    var R = rules(), cap = capitalNow();
+    if (!cap) { if (!silent) err.textContent = "Escribe tu capital total (o valores en la tabla) para calcular el tamaño."; return; }
+    if (!R.maxRisk) { if (!silent) err.textContent = "Define tu riesgo máximo por posición en «Tus reglas»."; return; }
+    var r = positionSize(cap, R.maxRisk, en, sp, R.maxW);
+    if (r.error) { if (!silent) err.textContent = r.error; return; }
+    if (r.shares < 1) { err.textContent = "Con estos datos no alcanza para una acción entera (presupuesto de riesgo " + money(r.budget) + " USD; riesgo por acción " + num(r.riskPerShare, 2) + " USD)."; return; }
+    var kv = el("div", "kv k4");
+    [["Acciones", String(r.shares)], ["Valor de la posición", money(r.value) + " USD (" + num(r.weightPct, 1) + "% del capital)"],
+     ["Pérdida si toca el stop", money(r.loss) + " USD (" + num(r.lossPct, 2) + "% del capital)"],
+     ["Límite que fijó el tamaño", r.binding === "riesgo" ? "tu riesgo máximo" : r.binding === "peso" ? "tu peso máximo" : "el capital disponible"]]
+      .forEach(function (p) { var d = el("div"); d.appendChild(el("b", "", p[0])); d.appendChild(el("span", "v", p[1])); kv.appendChild(d); });
+    out.appendChild(kv);
+    out.appendChild(el("p", "muted small", "No incluye comisiones ni deslizamiento; un gap puede cerrar por debajo del stop. Aritmética con tus datos, no una recomendación."));
+  }
+
+  // ------------------------------------------------------------------ carga e inicio
+  function showError(msg) {
+    var e = $("estado"); e.className = "error"; e.setAttribute("role", "alert"); e.textContent = msg; e.hidden = false;
+    $("contenido").hidden = true;
+  }
+  function pasteIntoTable() {
+    var items = parsePaste($("paste").value);
+    var msg = $("aviso-cartera");
+    if (!items.length) { msg.textContent = "No encontré posiciones en el texto. Usa el formato «AAPL 40%, MSFT 30%»."; return; }
+    msg.textContent = "";
+    resetRows(items.map(function (i) { return { t: i.ticker, w: fmtInput(i.peso), v: fmtInput(i.valor) }; }));
+    scheduleCalc();
+  }
+  function wipe() {
+    resetRows([]);
+    ["capital", "paste", "r-maxw", "r-maxrisk", "r-maxloss", "s-entry", "s-stop"].forEach(function (id) { $(id).value = ""; });
+    try { window.localStorage.removeItem(KEY); $("guardado").textContent = "Cartera borrada de este navegador."; }
+    catch (e) { $("guardado").textContent = "Borrada de la pantalla."; }
+    compute();
+  }
+
+  function init() {
+    $("btn-paste").addEventListener("click", pasteIntoTable);
+    $("btn-ejemplo").addEventListener("click", function () {
+      $("paste").value = "AAPL 25%, MSFT 25%, JPM 20%, XOM 15%, JNJ 15%";
+      pasteIntoTable();
+    });
+    $("btn-add").addEventListener("click", function () { addRow("", "", "").it.focus(); });
+    $("btn-borrar").addEventListener("click", wipe);
+    ["capital", "r-maxw", "r-maxrisk", "r-maxloss", "s-entry", "s-stop"].forEach(function (id) {
+      $(id).addEventListener("input", scheduleCalc);
+    });
+    $("reglas-form").addEventListener("submit", function (e) { e.preventDefault(); });
+    $("sizer-form").addEventListener("submit", function (e) { e.preventDefault(); renderSizer(false); });
+    var st = loadState();
+    if (st) {
+      $("capital").value = st.capital || "";
+      if (st.rules) { $("r-maxw").value = st.rules.maxW || ""; $("r-maxrisk").value = st.rules.maxRisk || ""; $("r-maxloss").value = st.rules.maxLoss || ""; }
+      if (st.sizer) { $("s-entry").value = st.sizer.entry || ""; $("s-stop").value = st.sizer.stop || ""; }
+      resetRows(Array.isArray(st.rows) ? st.rows : []);
+    } else { resetRows([]); }
+
+    fetch("data/dashboard.json", { cache: "no-cache" })
+      .then(function (r) { if (!r.ok) throw new Error("respuesta HTTP " + r.status); return r.json(); })
+      .then(function (d) {
+        DATA = d;
+        $("asof").textContent = d.asof || "s/d";
+        var P = d.portfolio;
+        $("muestras").textContent = P && P.h21 ? P.h21.z.length + " escenarios (1 mes), " + (P.h63 ? P.h63.z.length : 0) + " (3 meses)" : "no disponibles";
+        $("estado").hidden = true; $("contenido").hidden = false;
+        var ul = $("caveats"); clear(ul);
+        var cv = (P && P.caveats ? P.caveats : []).concat(d.caveats || []);
+        cv.forEach(function (c) { ul.appendChild(el("li", "", c)); });
+        try { compute(); } catch (err) { showError("Los datos tienen un formato inesperado (" + err.message + ")."); }
+      })
+      .catch(function (err) {
+        showError("No se pudieron cargar los datos (data/dashboard.json): " + err.message +
+          ". Si abriste el archivo desde el disco, sirve la carpeta docs con un servidor local (python -m http.server).");
+      });
+  }
+  init();
+})();
+</script>
+</body>
+</html>

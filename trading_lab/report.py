@@ -21,10 +21,64 @@ DASHBOARD_URL = "https://delarge95.github.io/trading-lab/"
 _TARGETS = {"up5": "Sube en 1 semana", "up21": "Sube en 1 mes", "up63": "Sube en 3 meses", "rel21": "Supera a SPY en 1 mes"}
 
 
+_STATE_EMOJI = {"verde": "🟢", "amarillo": "🟡", "rojo": "🔴"}
+
+
+def _one_screen(eng: dict) -> list[str]:
+    """Resumen de una pantalla: régimen, eventos próximos, alertas y cómo leer el resto (hechos, no recomendaciones)."""
+    L = ["## Hoy en una pantalla", ""]
+    rg = eng.get("regime")
+    if rg and rg.get("state"):
+        why = "; ".join(f"{r['label'] if 'label' in r else r['name']}: {r['state']}" for r in rg.get("rules", [])[:5])
+        L.append(f"- **Régimen de mercado:** {_STATE_EMOJI.get(rg['state'], '')} **{rg['state']}** "
+                 f"(puntaje {rg.get('score', '?')}/{rg.get('max_score', 10)}). {why}.")
+        vm = (rg.get("history") or {}).get("vol_managed") or {}
+        if vm.get("verdict"):
+            L.append(f"  - Prueba histórica de la regla de exposición: {vm['verdict']}")
+    ev = (eng.get("events") or {}).get("events") or []
+    soon = [e for e in ev if 0 <= e.get("days_to", 99) <= 7]
+    if soon:
+        L.append("- **Eventos de riesgo en los próximos 7 días:** " + "; ".join(
+            f"{e['label']} ({e['date']}{', ' + e['ticker'] if e.get('ticker') else ''})" for e in soon[:8]) + ".")
+    al = (eng.get("alerts") or {}).get("counts") or {}
+    if al:
+        L.append(f"- **Alertas:** {al.get('alta', 0)} altas, {al.get('media', 0)} medias, {al.get('info', 0)} informativas.")
+    rk = eng.get("ranking")
+    if rk and rk.get("summary"):
+        L.append(f"- **Qué dicen los datos:** {rk['summary']}")
+    L += ["- **Cartera y diario:** en el panel puedes cargar tu cartera y tus reglas de riesgo y ver cuáles posiciones las "
+          f"exceden, y llevar el diario de decisiones: {DASHBOARD_URL}", ""]
+    return L
+
+
+def _ranking_section(rk: dict | None) -> list[str]:
+    if not rk or not rk.get("criteria"):
+        return []
+    L = ["### Ranking por criterio (perfil estadístico; no es una recomendación)", "", rk.get("summary", ""), ""]
+    for c in rk["criteria"]:
+        fm = {"pct": lambda v: f"{v * 100:.1f}%", "num": lambda v: f"{v:.2f}", "count": lambda v: f"{v:.0f}"}[c.get("format", "pct")]
+        L.append(f"**{c['label']}** — evidencia: _{c['evidence']}_")
+        if c.get("degenerate"):
+            L += [f"  - {c['note']}", ""]
+            continue
+        fav = ", ".join(f"{x['ticker']} ({fm(x['value'])})" for x in c["favorable"][:5])
+        unf = ", ".join(f"{x['ticker']} ({fm(x['value'])})" for x in c["desfavorable"][:5])
+        L += [f"  - Mejor perfil según este criterio: {fav}", f"  - Peor perfil según este criterio: {unf}", ""]
+    sel = rk.get("rule_selections") or []
+    if sel:
+        L += ["**Selecciones de las reglas hoy** (con su historial frente al igual ponderado):", ""]
+        for s in sel:
+            ex = "" if s.get("annual_excess_vs_ew") is None else f", exceso anual histórico {s['annual_excess_vs_ew'] * 100:+.1f}%"
+            L.append(f"- {s['label']} [{s['evidence']}{ex}]: {', '.join(s['tickers'])}")
+        L.append("")
+    return L
+
+
 def _engine_section(eng: dict) -> list[str]:
     """Sección del motor v2 a partir de res['engine'] (ver docs/contratos-datos.md)."""
-    L = ["## Predicciones por probabilidad (S&P 100)", "",
-         f"Panel interactivo: {DASHBOARD_URL} · {eng.get('n_stocks', '?')} acciones · datos al {eng.get('asof', '?')}.", ""]
+    L = _one_screen(eng)
+    L += ["## Predicciones por probabilidad (S&P 100)", "",
+          f"Panel interactivo: {DASHBOARD_URL} · {eng.get('n_stocks', '?')} acciones · datos al {eng.get('asof', '?')}.", ""]
     ev = eng.get("eval") or {}
     if ev:
         L += ["### ¿Hay ventaja estadística? (validación fuera de muestra, walk-forward con purga)", "",
@@ -61,6 +115,7 @@ def _engine_section(eng: dict) -> list[str]:
         for c in lab.get("caveats", []):
             L.append(f"- _{c}_")
         L.append("")
+    L += _ranking_section(eng.get("ranking"))
     led = eng.get("ledger")
     if led and led.get("rules"):
         L += ["### Libro de picks hacia adelante (simulado, sin dinero real)", "",

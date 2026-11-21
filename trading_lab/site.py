@@ -310,8 +310,41 @@ def _macro_summary(macro):
 
 
 # ----------------------------------------------------------------------------- API
+def _round_matrix(rows):
+    """Matriz z ya redondeada por portfolio.py; aquí solo se asegura que no haya NaN/-0.0."""
+    out = []
+    for r in rows or []:
+        out.append([(0.0 if (v is None or not math.isfinite(v)) else v + 0.0) for v in r])
+    return out
+
+
+def _portfolio_block(portfolio):
+    """Salida de portfolio.build/joint_samples + sectores. Devuelve None si no hay muestras utilizables."""
+    if not isinstance(portfolio, dict):
+        return None
+    out = {}
+    for k, v in portfolio.items():
+        if isinstance(v, dict) and k.startswith("h") and "z" in v and "tickers" in v:
+            blk = dict(v)
+            blk["z"] = _round_matrix(v["z"])
+            out[k] = blk
+        else:
+            out[k] = v
+    if not any(k.startswith("h") and isinstance(v, dict) for k, v in out.items()):
+        return None
+    if "sectors" not in out:
+        from .portfolio import OTHER, sector_map
+        sec = sector_map()
+        names = sorted({t for v in out.values() if isinstance(v, dict) and "tickers" in v for t in v["tickers"]})
+        out["sectors"] = {t: sec.get(t, OTHER) for t in names}
+    return out
+
+
 def build_dashboard(forecast_res: dict, lab_res: dict | None = None, ledger: dict | None = None,
-                    alerts=None, macro: dict | None = None, report_meta: dict | None = None) -> dict:
+                    alerts=None, macro: dict | None = None, report_meta: dict | None = None,
+                    regime: dict | None = None, events: dict | None = None, fundamentals: dict | None = None,
+                    portfolio: dict | None = None, convergence: dict | None = None,
+                    ranking: dict | None = None) -> dict:
     fc = forecast_res or {}
     ev = _eval_block(fc)
     rv = _risk_validation(fc)
@@ -338,6 +371,12 @@ def build_dashboard(forecast_res: dict, lab_res: dict | None = None, ledger: dic
         "lab": lab_res if lab_res else None,
         "ledger": ledger if ledger else None,
         "macro": _macro_summary(macro),
+        "regime": regime if regime else None,
+        "events": events if events else None,
+        "fundamentals": fundamentals if fundamentals else None,
+        "portfolio": _portfolio_block(portfolio),
+        "convergence": convergence if convergence else None,
+        "ranking": ranking if ranking else None,
         "disclaimer": DISCLAIMER,
         "caveats": list(CAVEATS),
     }

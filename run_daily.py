@@ -14,8 +14,9 @@ from pathlib import Path
 
 import yaml
 
-from trading_lab import (alerts, backtest, evaluate, forecast, fred, insiders, lab, managers, predictions, prices,
-                         report, sec, signals, site, universe)
+from trading_lab import (alerts, altdata, backtest, evaluate, events, forecast, fred, fundamentals, insiders, lab,
+                         managers, portfolio, predictions, prices, ranking, regime, report, sec, signals, site,
+                         sources, universe)
 
 ROOT = Path(__file__).parent
 
@@ -27,6 +28,26 @@ def load_env(path: Path = ROOT / ".env") -> None:
             if line and not line.startswith("#") and "=" in line:
                 k, v = line.split("=", 1)
                 os.environ.setdefault(k.strip(), v.strip())
+
+
+def args_no_alt() -> bool:
+    return os.environ.get("TRADING_LAB_NO_ALT") == "1"
+
+
+def _fundamentals(P, stocks: list[str], today) -> dict:
+    """Snapshot de fundamentales (caché diaria) + evidencia de los factores (se recalcula una vez por semana ISO)."""
+    snap = fundamentals.snapshot(stocks, today)
+    path = ROOT / "data" / "fundamentals_eval.json"
+    week = managers.iso_week(today)
+    cached = json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+    if not cached or cached.get("week") != week:
+        ev = sources.evaluate_all_fundamentals(P, stocks)
+        cached = {"week": week, "evidence": ev.get("evidence"), "verdict": ev.get("verdict"),
+                  "factors": ev.get("factors", ev.get("results"))}
+        path.write_text(json.dumps(cached, default=float, ensure_ascii=False), encoding="utf-8")
+    snap["evidence"] = cached.get("evidence") or {}
+    snap["factor_verdict"] = cached.get("verdict")
+    return snap
 
 
 def _previous_snapshot(history: dict, asof: str) -> dict | None:
@@ -56,7 +77,32 @@ def run_engine(res: dict, today) -> dict:
         history.pop(d)
     hist_path.write_text(json.dumps(history), encoding="utf-8")
 
-    dash = site.build_dashboard(fc, lab_res, ledger, al, res.get("macro"), {"date": today.isoformat()})
+    stocks = list(fc["tickers"])
+    macro = res.get("macro")
+    extras: dict = {}
+
+    def safe(name, fn):
+        """Cada módulo opcional falla de forma aislada: se anota la incidencia y el resto sigue."""
+        try:
+            extras[name] = fn()
+        except Exception as exc:  # noqa: BLE001
+            extras[name] = None
+            res["errors"].append(f"{name}: {exc}")
+
+    safe("regime", lambda: regime.run(P, bench, macro))
+    safe("events", lambda: events.upcoming(stocks, today))
+    safe("fundamentals", lambda: _fundamentals(P, stocks, today))
+    safe("portfolio", lambda: portfolio.build(P, [c for c in P.columns if c != bench]))
+    safe("convergence", lambda: alerts.convergence_13f(res.get("managers") or [], cmap))
+    if not args_no_alt():
+        safe("altdata", lambda: altdata.collect(stocks, today, str(ROOT / "data" / "alt")))
+    extras["ranking"] = ranking.build(fc, lab_res, extras.get("fundamentals"), extras.get("convergence"),
+                                      res.get("insiders"), res.get("manager_track"))
+
+    dash = site.build_dashboard(fc, lab_res, ledger, al, macro, {"date": today.isoformat()},
+                                regime=extras.get("regime"), events=extras.get("events"),
+                                fundamentals=extras.get("fundamentals"), portfolio=extras.get("portfolio"),
+                                convergence=extras.get("convergence"), ranking=extras["ranking"])
     site.write(dash, ROOT / "docs" / "data" / "dashboard.json")
 
     risk_table = []
@@ -70,7 +116,10 @@ def run_engine(res: dict, today) -> dict:
                                   + f"; {al['counts']['alta']} alertas altas)")
     return {"asof": fc["asof"], "n_stocks": fc["n_stocks"], "eval": fc["eval"], "risk_validation": fc["risk_validation"],
             "risk_table": risk_table[:15], "lab": lab_res, "ledger": ledger, "alerts": al,
-            "push": alerts.push_text(al)}
+            "push": alerts.push_text(al), "regime": extras.get("regime"), "events": extras.get("events"),
+            "ranking": extras["ranking"],
+            "fundamentals_evidence": (extras.get("fundamentals") or {}).get("evidence"),
+            "alt_coverage": {k: v for k, v in (extras.get("altdata") or {}).items() if k != "path"} or None}
 
 
 def main(argv: list[str] | None = None) -> int:

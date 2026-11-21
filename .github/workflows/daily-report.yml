@@ -49,7 +49,7 @@ jobs:
         run: |
           git config user.name "trading-lab-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add reports docs/data data/predictions.csv data/managers_track.json data/cusip_map.json data/picks_ledger.json data/forecast_history.json
+          git add reports docs/data data/predictions.csv data/managers_track.json data/cusip_map.json data/picks_ledger.json data/forecast_history.json data/fundamentals_eval.json data/alt
           git diff --cached --quiet || git commit -m "report: $(date -u +%Y-%m-%d)"
           git pull -q --rebase
           git push
