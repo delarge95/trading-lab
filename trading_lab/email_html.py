@@ -72,12 +72,6 @@ def _chip(text: str, state: str) -> str:
             f'font:700 11px/1.5 {FONT};">{_e(text)}</span>')
 
 
-def _button(label: str, url: str, primary=False) -> str:
-    bg, fg, bd = (INK, "#ffffff", INK) if primary else (CARD, INK, "#c5ccd8")
-    return (f'<a href="{_e(url, quote=True)}" style="display:inline-block;margin:0 8px 8px 0;padding:10px 16px;border-radius:8px;'
-            f'background:{bg};color:{fg};border:1px solid {bd};font:600 14px/1 {FONT};text-decoration:none;">{_e(label)}</a>')
-
-
 # ---------------------------------------------------------------- bloques
 def _hero(res: dict, rg: dict | None) -> str:
     asof = (res.get("engine") or {}).get("asof")
@@ -234,18 +228,69 @@ def _watch(res: dict, eng: dict) -> str:
     if stale:
         bits.append("13F desactualizado: " + ", ".join(_e(s) for s in stale) + ".")
     lis = "".join(f'<li style="margin:0 0 5px 0;font:400 13px/1.45 {FONT};color:{INK};">{b}</li>' for b in bits)
-    return _card(_h("Seguimiento silencioso") + f'<ul style="margin:0;padding-left:18px;">{lis}</ul>')
+    return _card(_h("Otros indicadores") + f'<ul style="margin:0;padding-left:18px;">{lis}</ul>')
+
+
+def _guide() -> str:
+    """Cómo usar el correo: método para decidir con las propias reglas del lector; no dice qué activos elegir."""
+    steps = [
+        ("Mira el semáforo", "Rojo significa que el mercado se está moviendo más de lo normal. No dice si va a subir o a bajar: "
+                             "dice cuánto puede moverse."),
+        ("Revisa tu riesgo, no el ranking", "Para cada acción que tengas o te interese: si cae 10%, ¿puedes aceptarlo con el "
+                                           "monto que le asignas? Si no, lo que se ajusta es el monto, no la elección."),
+        ("No uses las listas para buscar ganadoras", "Ordenan por criterio, pero ninguno superó al azar. Sirven para ver "
+                                                     "qué tienen en común tus posiciones y no concentrar el riesgo."),
+        ("Decide con reglas escritas antes", "Define en el Diario tus límites (monto máximo por acción, pérdida que toleras) "
+                                              "y la lista de chequeo te avisa cuando una decisión los rompe."),
+    ]
+    rows = []
+    for i, (t, d) in enumerate(steps, 1):
+        top = f"border-top:1px solid {LINE};" if i > 1 else ""
+        rows.append(
+            f'<tr><td width="40" valign="top" style="padding:10px 0;{top}"><div style="width:26px;height:26px;border-radius:13px;'
+            f'background:{INK};color:#ffffff;font:700 13px/26px {FONT};text-align:center;">{i}</div></td>'
+            f'<td valign="top" style="padding:10px 0;{top}"><p style="margin:0 0 2px 0;font:700 14px/1.35 {FONT};color:{INK};">{_e(t)}</p>'
+            f'<p style="margin:0;font:400 13px/1.5 {FONT};color:{MUTED};">{_e(d)}</p></td></tr>')
+    note = _p("Qué activos mantener o evitar es decisión tuya. Este sistema mide riesgo y probabilidades; con los datos actuales "
+              "la única palanca respaldada es <b>cuánto riesgo asumes</b>, no <b>qué acción eliges</b>.", 13, INK)
+    return _card(_h("Cómo usar este correo") + f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0">{"".join(rows)}</table>'
+                 + f'<div style="margin-top:6px;padding:10px 12px;background:#eef2f8;border-radius:8px;">{note}</div>')
+
+
+def _link_rows() -> str:
+    items = [("Panel completo", "Todas las listas, rangos y alertas", DASHBOARD_URL),
+             ("Mi cartera y riesgo", "Carga tus posiciones y ve cuáles exceden tus límites", DASHBOARD_URL + "cartera.html"),
+             ("Diario de decisiones", "Anota por qué decides y repasa tu lista de chequeo", DASHBOARD_URL + "diario.html")]
+    rows = []
+    for i, (t, d, u) in enumerate(items):
+        top = f"border-top:1px solid {LINE};" if i else ""
+        rows.append(
+            f'<tr><td style="padding:11px 0;{top}"><a href="{_e(u, quote=True)}" style="text-decoration:none;display:block;">'
+            f'<span style="display:block;font:700 15px/1.3 {FONT};color:{INK};">{_e(t)}</span>'
+            f'<span style="display:block;font:400 13px/1.4 {FONT};color:{MUTED};">{_e(d)}</span></a></td>'
+            f'<td width="28" align="right" style="padding:11px 0;{top}"><a href="{_e(u, quote=True)}" '
+            f'style="text-decoration:none;font:700 18px/1 {FONT};color:{INK};">›</a></td></tr>')
+    return _card(_h("Seguir explorando") + f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0">{"".join(rows)}</table>',
+                 pad="16px 20px 6px 20px")
+
+
+def _glossary() -> str:
+    terms = [("Volatilidad", "cuánto se mueve el precio de un día a otro."),
+             ("VIX", "el miedo que espera el mercado para los próximos 30 días."),
+             ("Rango probable", "entre qué valores quedó el 80% de los casos históricos parecidos."),
+             ("Validado", "se comprobó con datos que el modelo no había visto."),
+             ("Sin ventaja", "no superó al azar en esa comprobación."),
+             ("No probado", "aún no se ha puesto a prueba aquí.")]
+    rows = "".join(
+        f'<tr><td width="112" valign="top" style="padding:5px 0;font:700 13px/1.4 {FONT};color:{INK};">{_e(a)}</td>'
+        f'<td valign="top" style="padding:5px 0;font:400 13px/1.4 {FONT};color:{MUTED};">{_e(b)}</td></tr>' for a, b in terms)
+    return _card(_h("Glosario") + f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0">{rows}</table>', pad="16px 20px 10px 20px")
 
 
 def _footer(res: dict) -> str:
-    btns = (_button("Abrir el panel completo", DASHBOARD_URL, True) + _button("Mi cartera y riesgo", DASHBOARD_URL + "cartera.html")
-            + _button("Diario de decisiones", DASHBOARD_URL + "diario.html"))
-    gloss = ("<b>Glosario rápido.</b> <i>Volatilidad</i>: cuánto se mueve el precio. <i>VIX</i>: miedo esperado del mercado a 30 días. "
-             "<i>Rango probable</i>: de donde queda el 80% de los casos históricos. <i>Validado</i>: se comprobó fuera de muestra; "
-             "<i>sin ventaja</i>: no superó al azar; <i>no probado</i>: aún sin prueba aquí.")
-    return (_card(_h("Seguir explorando") + f'<div>{btns}</div>', pad="16px 20px 8px 20px")
-            + f'<tr><td style="padding:4px 4px 0 4px;">{_p(gloss, 12, MUTED, False, 10)}'
-              f'{_p(_e(DISCLAIMER) + " Resultados pasados no garantizan resultados futuros.", 12, INK, True, 0)}</td></tr>')
+    return (_guide() + _link_rows() + _glossary()
+            + f'<tr><td align="center" style="padding:6px 16px 4px 16px;">{_p(_e(DISCLAIMER), 12, MUTED, True, 2)}'
+              f'{_p("Resultados pasados no garantizan resultados futuros.", 12, MUTED)}</td></tr>')
 
 
 # ---------------------------------------------------------------- ensamblado

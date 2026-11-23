@@ -30,7 +30,7 @@ def _res(state="rojo"):
 def test_renders_all_blocks_and_slots():
     h = email_html.render(_res())
     assert "<!--MERCADO_AYER-->" in h and "<!--AVISO-->" in h
-    for s in ("Estrés alto", "INTC", "Reunión de la Fed", "no asesoría financiera", "mar 24 nov", "LIN 7%"):
+    for s in ("Estrés alto", "INTC", "Reunión de la Fed", "no asesoría financiera", "mar 24 nov", "LIN 7%", "Cómo usar este correo", "Seguir explorando", "Glosario", "cartera.html", "diario.html"):
         assert s in h, s
     assert "en 1 días" not in h and "mañana" in h
     assert 5000 < len(h) < 40000
