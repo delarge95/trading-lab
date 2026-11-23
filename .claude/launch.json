@@ -4,8 +4,26 @@
     {
       "name": "panel",
       "runtimeExecutable": "E:\\Trading\\.venv\\Scripts\\python.exe",
-      "runtimeArgs": ["-m", "http.server", "8777", "--directory", "docs"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8777",
+        "--directory",
+        "docs"
+      ],
       "port": 8777
+    },
+    {
+      "name": "email",
+      "runtimeExecutable": "E:\\Trading\\.venv\\Scripts\\python.exe",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8778",
+        "--directory",
+        "reports"
+      ],
+      "port": 8778
     }
   ]
 }

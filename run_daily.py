@@ -14,7 +14,7 @@ from pathlib import Path
 
 import yaml
 
-from trading_lab import (alerts, altdata, backtest, evaluate, events, forecast, fred, fundamentals, insiders, lab,
+from trading_lab import (alerts, altdata, backtest, email_html, evaluate, events, forecast, fred, fundamentals, insiders, lab,
                          managers, portfolio, predictions, prices, ranking, regime, report, sec, signals, site,
                          sources, universe)
 
@@ -228,6 +228,11 @@ def main(argv: list[str] | None = None) -> int:
     (out / "latest.md").write_text(md, encoding="utf-8")
     (out / f"{today.isoformat()}.md").write_text(md, encoding="utf-8")
     (out / "latest.json").write_text(json.dumps(res, indent=2, default=str, ensure_ascii=False), encoding="utf-8")
+    try:   # correo de una pantalla (HTML con huecos para datos de mercado en vivo)
+        (out / "email.html").write_text(email_html.render(res), encoding="utf-8")
+        (out / "email_subject.txt").write_text(email_html.subject(res), encoding="utf-8")
+    except Exception as exc:  # noqa: BLE001
+        print(f"correo HTML no generado: {exc}")
     print(f"Informe escrito: reports/latest.md ({len(res['errors'])} incidencias)")
     return 0 if series else 1
 
