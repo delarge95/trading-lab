@@ -11,14 +11,14 @@
 
 | Ticker | Precio | Mom. 12-1 | Tendencia | Vol 63d | P(sube) cond. [IC95%] (n) | P(sube) base [IC95%] (n) |
 |---|---|---|---|---|---|---|
-| SPY | 722.05 | 17.7% | positiva | 20% | 68% [58%–76%] (93) | 68% [59%–76%] (107) |
-| QQQ | 650.21 | 20.8% | positiva | 30% | 65% [55%–74%] (94) | 66% [57%–75%] (107) |
-| AAPL | 347.83 | 31.0% | positiva | 22% | 59% [49%–68%] (90) | 64% [54%–72%] (107) |
-| MSFT | 498.38 | 10.3% | positiva | 29% | 62% [51%–71%] (86) | 63% [53%–71%] (107) |
-| NVDA | 164.73 | 17.1% | positiva | 77% | 65% [55%–74%] (86) | 67% [58%–75%] (107) |
-| AMZN | 255.90 | 14.2% | positiva | 35% | 60% [49%–70%] (85) | 60% [50%–69%] (107) |
-| GOOGL | 281.95 | 10.9% | positiva | 39% | 53% [42%–63%] (85) | 58% [48%–67%] (107) |
-| BRK-B | 573.70 | 8.2% | positiva | 15% | 63% [53%–73%] (82) | 63% [53%–71%] (107) |
+| SPY | 722.29 | 17.7% | positiva | 20% | 68% [58%–76%] (93) | 68% [59%–76%] (107) |
+| QQQ | 651.03 | 20.8% | positiva | 30% | 65% [55%–74%] (94) | 66% [57%–75%] (107) |
+| AAPL | 349.08 | 31.0% | positiva | 22% | 59% [49%–68%] (90) | 64% [54%–72%] (107) |
+| MSFT | 492.50 | 10.3% | positiva | 28% | 62% [51%–71%] (86) | 63% [53%–71%] (107) |
+| NVDA | 165.05 | 17.1% | positiva | 77% | 65% [55%–74%] (86) | 67% [58%–75%] (107) |
+| AMZN | 255.39 | 14.2% | positiva | 35% | 60% [49%–70%] (85) | 60% [50%–69%] (107) |
+| GOOGL | 282.10 | 10.9% | positiva | 39% | 53% [42%–63%] (85) | 58% [48%–67%] (107) |
+| BRK-B | 572.36 | 8.2% | positiva | 15% | 63% [53%–73%] (82) | 63% [53%–71%] (107) |
 
 _Las probabilidades usan ventanas no solapadas; el intervalo es amplio a propósito. Si el IC condicional incluye la base, la tendencia no aporta información medible._
 
@@ -26,14 +26,14 @@ _Las probabilidades usan ventanas no solapadas; el intervalo es amplio a propós
 
 | Ticker | Períodos | Sharpe estrategia | Sharpe comprar y mantener | Exposición |
 |---|---|---|---|---|
-| SPY | 107 | 0.84 | 0.97 | 90% |
-| QQQ | 107 | 0.90 | 0.97 | 89% |
-| AAPL | 107 | 0.61 | 0.97 | 91% |
-| MSFT | 107 | 0.93 | 1.08 | 85% |
-| NVDA | 107 | 0.93 | 1.10 | 81% |
-| AMZN | 107 | 0.75 | 0.69 | 86% |
-| GOOGL | 107 | 0.65 | 0.81 | 84% |
-| BRK-B | 107 | 0.66 | 0.78 | 90% |
+| SPY | 107 | 0.83 | 0.86 | 91% |
+| QQQ | 107 | 0.81 | 0.88 | 90% |
+| AAPL | 107 | 0.70 | 0.98 | 92% |
+| MSFT | 107 | 0.99 | 1.01 | 88% |
+| NVDA | 107 | 0.83 | 1.05 | 81% |
+| AMZN | 107 | 0.82 | 0.67 | 84% |
+| GOOGL | 107 | 0.59 | 0.79 | 82% |
+| BRK-B | 107 | 0.56 | 0.77 | 90% |
 
 Control: con precios sin tendencia el Sharpe medio es 0.00 (error estándar 0.02, z=0.1, 200 series); |z|<2 indica que no hay anticipación en el código.
 
@@ -41,16 +41,16 @@ Control: con precios sin tendencia el Sharpe medio es 0.00 (error estándar 0.02
 
 | Ticker | Sharpe [IC95%] | PSR(>0) | DSR | Δ Sharpe vs comprar y mantener [IC95%] | p (Holm) | Walk-forward: Sharpe fuera de muestra vs B&H |
 |---|---|---|---|---|---|---|
-| SPY | 0.84 [0.14, 1.54] | 0.99 | 0.96 | -0.13 [-0.32, +0.08] | 1.00 | 1.13 vs 1.06 (Δ +0.07, p=0.37) |
-| QQQ | 0.90 [0.21, 1.58] | 0.99 | 0.98 | -0.07 [-0.35, +0.18] | 1.00 | 0.81 vs 0.83 (Δ -0.02, p=0.56) |
-| AAPL | 0.61 [-0.03, 1.25] | 0.97 | 0.90 | -0.36 [-0.69, -0.09] | 1.00 | 0.53 vs 0.86 (Δ -0.34, p=0.86) |
-| MSFT | 0.93 [0.26, 1.61] | 1.00 | 0.98 | -0.15 [-0.53, +0.22] | 1.00 | 0.59 vs 0.79 (Δ -0.20, p=0.79) |
-| NVDA | 0.93 [0.25, 1.60] | 1.00 | 0.98 | -0.18 [-0.52, +0.13] | 1.00 | 0.98 vs 1.18 (Δ -0.20, p=0.84) |
-| AMZN | 0.75 [0.11, 1.39] | 0.99 | 0.95 | +0.06 [-0.30, +0.45] | 1.00 | 0.24 vs 0.42 (Δ -0.18, p=0.74) |
-| GOOGL | 0.65 [0.00, 1.29] | 0.98 | 0.91 | -0.16 [-0.46, +0.14] | 1.00 | 0.75 vs 0.81 (Δ -0.06, p=0.65) |
-| BRK-B | 0.66 [-0.01, 1.32] | 0.97 | 0.91 | -0.12 [-0.37, +0.08] | 1.00 | 0.90 vs 0.94 (Δ -0.04, p=0.64) |
+| SPY | 0.83 [0.11, 1.56] | 0.99 | 0.95 | -0.03 [-0.20, +0.18] | 1.00 | 0.96 vs 0.93 (Δ +0.03, p=0.45) |
+| QQQ | 0.81 [0.11, 1.51] | 0.99 | 0.95 | -0.07 [-0.29, +0.15] | 1.00 | 0.76 vs 0.74 (Δ +0.03, p=0.48) |
+| AAPL | 0.70 [0.04, 1.35] | 0.98 | 0.93 | -0.28 [-0.58, -0.01] | 1.00 | 0.53 vs 0.88 (Δ -0.35, p=0.93) |
+| MSFT | 0.99 [0.29, 1.70] | 1.00 | 0.99 | -0.02 [-0.34, +0.31] | 1.00 | 0.45 vs 0.74 (Δ -0.29, p=0.88) |
+| NVDA | 0.83 [0.18, 1.48] | 0.99 | 0.97 | -0.22 [-0.57, +0.08] | 1.00 | 0.86 vs 1.11 (Δ -0.25, p=0.88) |
+| AMZN | 0.82 [0.16, 1.49] | 0.99 | 0.96 | +0.15 [-0.24, +0.63] | 1.00 | 0.50 vs 0.41 (Δ +0.09, p=0.40) |
+| GOOGL | 0.59 [-0.08, 1.25] | 0.96 | 0.87 | -0.20 [-0.48, +0.07] | 1.00 | 0.71 vs 0.79 (Δ -0.08, p=0.67) |
+| BRK-B | 0.56 [-0.12, 1.23] | 0.95 | 0.84 | -0.21 [-0.45, -0.02] | 1.00 | 0.85 vs 0.97 (Δ -0.12, p=0.82) |
 
-**Veredicto:** Ningún ticker muestra que la estrategia supere a comprar y mantener (Holm, α=0.05, 8 pruebas). Significativamente peor que comprar y mantener: AAPL.
+**Veredicto:** Ningún ticker muestra que la estrategia supere a comprar y mantener (Holm, α=0.05, 8 pruebas). Significativamente peor que comprar y mantener: AAPL, BRK-B.
 
 _Sharpe sobre retorno total (sin tasa libre), períodos mensuales no solapados, costo 0.1% por cambio. PSR: probabilidad de que el Sharpe verdadero sea >0. DSR: igual, corregido por probar 8 tickers (si DSR es bajo, el mejor resultado puede ser suerte de selección). Δ y p vienen de un bootstrap por bloques pareado contra comprar y mantener; p es unilateral (H0: la estrategia no supera) y se ajusta por Holm entre tickers. Walk-forward: el lookback (126/189/252) se elige solo con datos pasados._
 
@@ -184,7 +184,7 @@ Ningún criterio de selección ha mostrado ventaja estadística fuera de muestra
 |---|---|---|---|---|---|---|
 | AAPL | 0 | 0 | 0 | 0 | $0 | $129.7M |
 | MSFT | 0 | 0 | 0 | 0 | $0 | $74.8M |
-| NVDA | 0 | 0 | 0 | 0 | $0 | $967.6M |
+| NVDA | 0 | 0 | 0 | 0 | $0 | $972.1M |
 | AMZN | 0 | 0 | 0 | 0 | $0 | $1.9M |
 | GOOGL | 0 | 0 | 0 | 0 | $0 | $169.2K |
 | BRK-B | 2 | 0 | 0 | 2 | $250.2K | $20.0M |
@@ -325,9 +325,9 @@ _*Años de historia necesarios para detectar con 80% de potencia un alfa de 3% a
 
 | Serie | Fecha | Valor | Δ 21 obs. |
 |---|---|---|---|
-| Tasa Treasury 10 años (%) | 2026-11-19 | 5.04 | -0.08 |
-| Tasa Treasury 2 años (%) | 2026-11-19 | 4.76 | -0.03 |
-| Pendiente curva 10a-2a (pp) | 2026-11-20 | 0.29 | -0.03 |
+| Tasa Treasury 10 años (%) | 2026-11-20 | 4.92 | -0.21 |
+| Tasa Treasury 2 años (%) | 2026-11-20 | 4.63 | -0.18 |
+| Pendiente curva 10a-2a (pp) | 2026-11-23 | 0.29 | -0.02 |
 | VIX | 2026-11-20 | 35.89 | +16.86 |
 | Spread high yield (pp) | 2026-11-20 | 3.76 | +0.36 |
 
