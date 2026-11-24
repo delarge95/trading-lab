@@ -258,20 +258,21 @@ def _guide() -> str:
 
 
 def _link_rows() -> str:
+    """Mismo formato que «Próximos 14 días»: etiqueta en negrita | descripción en gris | acción a la derecha."""
     items = [("Panel completo", "Todas las listas, rangos y alertas", DASHBOARD_URL),
-             ("Mi cartera y riesgo", "Carga tus posiciones y ve cuáles exceden tus límites", DASHBOARD_URL + "cartera.html"),
-             ("Diario de decisiones", "Anota por qué decides y repasa tu lista de chequeo", DASHBOARD_URL + "diario.html")]
+             ("Mi cartera", "Tus posiciones frente a tus límites de riesgo", DASHBOARD_URL + "cartera.html"),
+             ("Diario", "Por qué decides y tu lista de chequeo", DASHBOARD_URL + "diario.html")]
     rows = []
-    for i, (t, d, u) in enumerate(items):
-        top = f"border-top:1px solid {LINE};" if i else ""
+    for t, d, u in items:
+        href = _e(u, quote=True)
+        link = f'color:{INK};text-decoration:underline;'
         rows.append(
-            f'<tr><td style="padding:11px 0;{top}"><a href="{_e(u, quote=True)}" style="text-decoration:none;display:block;">'
-            f'<span style="display:block;font:700 15px/1.3 {FONT};color:{INK};">{_e(t)}</span>'
-            f'<span style="display:block;font:400 13px/1.4 {FONT};color:{MUTED};">{_e(d)}</span></a></td>'
-            f'<td width="28" align="right" style="padding:11px 0;{top}"><a href="{_e(u, quote=True)}" '
-            f'style="text-decoration:none;font:700 18px/1 {FONT};color:{INK};">›</a></td></tr>')
-    return _card(_h("Seguir explorando") + f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0">{"".join(rows)}</table>',
-                 pad="16px 20px 6px 20px")
+            f'<tr><td width="112" style="padding:6px 0;border-top:1px solid {LINE};font:600 13px/1.3 {FONT};color:{INK};">'
+            f'<a href="{href}" style="{link}">{_e(t)}</a></td>'
+            f'<td style="padding:6px 0;border-top:1px solid {LINE};font:400 14px/1.3 {FONT};color:{INK};">{_e(d)}</td>'
+            f'<td align="right" style="padding:6px 0;border-top:1px solid {LINE};font:400 12px/1.3 {FONT};color:{MUTED};">'
+            f'<a href="{href}" style="color:{MUTED};text-decoration:underline;">abrir</a></td></tr>')
+    return _card(_h("Seguir explorando") + f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0">{"".join(rows)}</table>')
 
 
 def _glossary() -> str:
@@ -321,7 +322,7 @@ def render(res: dict) -> str:
         '<!doctype html><html lang="es"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1">'
         '<meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light">'
-        f'<title>{_e(subject(res))}</title></head>'
+        f'<title>{_e(subject(res))}</title><style>a{{color:{INK};}}</style></head>'
         f'<body style="margin:0;padding:0;background:{BG};">'
         f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{BG};"><tr><td align="center" style="padding:16px 10px;">'
         f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;">{body}</table>'
