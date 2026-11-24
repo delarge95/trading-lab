@@ -3,31 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="light">
 <title>Trading Lab - panel de investigación</title>
 <meta name="description" content="Panel de investigación: probabilidades con incertidumbre, rangos de retorno y riesgo de caída. No es asesoría financiera.">
 <style>
 :root{
-  --bg:#f4f6f9; --surface:#ffffff; --surface2:#eef1f5; --text:#14181f; --muted:#556070;
-  --border:#d5dbe3; --accent:#1c5bc8; --accent-text:#ffffff;
-  --ok:#14663a; --ok-bg:#e3f4ea; --warn:#7a4f00; --warn-bg:#fdf0d5; --none:#4a5563; --none-bg:#e9edf2;
-  --danger:#a8231b; --danger-bg:#fbe6e4; --info:#1c5bc8; --info-bg:#e5eefb;
-  --track:#dfe4eb; --bar:#7aa2dd; --focus:#1c5bc8;
+  color-scheme:light;
+  --bg:#f2f4f8; --surface:#ffffff; --surface2:#eceff4; --text:#1b2330; --muted:#5b6677;
+  --border:#e3e7ee; --accent:#1b2330; --accent-text:#ffffff;
+  --ok:#175c33; --ok-bg:#e4f4ea; --warn:#7a5a00; --warn-bg:#fff5d1; --none:#5b6677; --none-bg:#eceff4;
+  --danger:#a31616; --danger-bg:#fdecea; --info:#34507a; --info-bg:#eef2f8;
+  --track:#eceff4; --bar:#8a97ab; --focus:#1b2330;
   --radius:10px; --gutter:16px;
-}
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg:#0e1116; --surface:#171b22; --surface2:#1e232c; --text:#e8ebf0; --muted:#a2acba;
-    --border:#2c333e; --accent:#7ba8ff; --accent-text:#0e1116;
-    --ok:#6fd99a; --ok-bg:#12281b; --warn:#f2bd55; --warn-bg:#2e2410; --none:#b4bdca; --none-bg:#232932;
-    --danger:#ff9087; --danger-bg:#331816; --info:#8db4ff; --info-bg:#16233a;
-    --track:#2a313c; --bar:#4f78b8; --focus:#8db4ff;
-  }
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--text);
-  font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font:16px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
   overflow-x:hidden}
 .wrap{max-width:1100px;margin:0 auto;padding:0 var(--gutter) 48px}
 h1{font-size:1.35rem;line-height:1.25;margin:0}
@@ -119,7 +111,7 @@ footer ul{padding-left:20px;margin:6px 0}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 nav.nav{display:flex;flex-wrap:wrap;gap:6px;padding:12px 0 0}
 nav.nav a{display:inline-block;padding:10px 14px;min-height:44px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);text-decoration:none;font-weight:600}
-nav.nav a[aria-current="page"]{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
+nav.nav a[aria-current="page"]{border-color:var(--accent);box-shadow:inset 0 -3px 0 var(--accent)}
 .hoy{display:grid;gap:10px;grid-template-columns:1fr}
 @media(min-width:800px){.hoy{grid-template-columns:1fr 1fr}.hoy .span2{grid-column:1/-1}}
 .hoy h3{margin:0 0 6px}

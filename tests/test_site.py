@@ -184,7 +184,7 @@ def test_html_ids_and_basics(html):
         assert f'id="{i}"' in html, i
     assert '<html lang="es">' in html
     assert "width=device-width" in html
-    assert "prefers-color-scheme: dark" in html
+    assert "color-scheme:light" in html   # misma apariencia que el correo (claro)
     assert "Herramienta de investigación, no asesoría financiera" in html
     assert "cálculo educativo, no una recomendación" in html.lower() or "Cálculo educativo, no una recomendación" in html
     assert "data/dashboard.json" in html
@@ -277,12 +277,14 @@ def page(request):
 
 def test_all_pages_basics(page):
     name, h = page
-    assert '<html lang="es">' in h and "width=device-width" in h and "prefers-color-scheme: dark" in h
+    assert '<html lang="es">' in h and "width=device-width" in h and "color-scheme:light" in h
     assert "Herramienta de investigación; los cálculos usan los datos y reglas que tú introduces; no es asesoría financiera." in h
     assert "data/dashboard.json" in h
     for href in ("index.html", "cartera.html", "diario.html"):
         assert f'href="{href}"' in h, (name, href)
     assert 'aria-current="page"' in h
+    for tok in ("--accent:#1b2330", "--danger:#a31616", "--ok:#175c33", "--bg:#f2f4f8"):   # paleta única (igual que el correo)
+        assert tok in h, (name, tok)
 
 
 def test_all_pages_no_innerhtml_no_external_no_eval(page):
