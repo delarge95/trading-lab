@@ -1,4 +1,4 @@
-# Informe de trading — 2026-11-26
+# Informe de trading — 2026-11-27
 
 ## Estado de las fuentes
 
@@ -11,14 +11,14 @@
 
 | Ticker | Precio | Mom. 12-1 | Tendencia | Vol 63d | P(sube) cond. [IC95%] (n) | P(sube) base [IC95%] (n) |
 |---|---|---|---|---|---|---|
-| SPY | 716.70 | 16.3% | positiva | 20% | 64% [54%–73%] (92) | 65% [56%–74%] (107) |
-| QQQ | 633.93 | 19.7% | positiva | 30% | 65% [55%–74%] (94) | 66% [57%–75%] (107) |
-| AAPL | 355.58 | 26.1% | positiva | 22% | 62% [51%–71%] (91) | 66% [57%–75%] (107) |
-| MSFT | 489.93 | 12.8% | positiva | 28% | 64% [54%–74%] (87) | 64% [55%–73%] (107) |
-| NVDA | 149.30 | 19.7% | positiva | 76% | 59% [49%–69%] (86) | 62% [52%–70%] (107) |
-| AMZN | 244.43 | 11.9% | positiva | 35% | 64% [53%–73%] (85) | 60% [50%–69%] (107) |
-| GOOGL | 273.10 | 0.9% | positiva | 39% | 61% [50%–71%] (87) | 63% [53%–71%] (107) |
-| BRK-B | 579.32 | 6.9% | positiva | 15% | 57% [47%–67%] (82) | 59% [49%–68%] (107) |
+| SPY | 728.32 | 15.6% | positiva | 20% | 66% [56%–75%] (92) | 66% [57%–75%] (107) |
+| QQQ | 650.99 | 19.7% | positiva | 31% | 63% [53%–73%] (93) | 65% [56%–74%] (107) |
+| AAPL | 358.54 | 24.5% | positiva | 22% | 57% [47%–67%] (91) | 63% [53%–71%] (107) |
+| MSFT | 492.85 | 12.0% | positiva | 28% | 66% [55%–75%] (87) | 67% [58%–75%] (107) |
+| NVDA | 150.49 | 21.4% | positiva | 75% | 60% [50%–70%] (86) | 62% [52%–70%] (107) |
+| AMZN | 254.12 | 10.9% | positiva | 35% | 61% [50%–71%] (87) | 59% [49%–68%] (107) |
+| GOOGL | 274.96 | 0.7% | positiva | 39% | 57% [46%–67%] (86) | 60% [50%–69%] (107) |
+| BRK-B | 582.73 | 6.2% | positiva | 15% | 60% [50%–70%] (81) | 61% [51%–69%] (107) |
 
 _Las probabilidades usan ventanas no solapadas; el intervalo es amplio a propósito. Si el IC condicional incluye la base, la tendencia no aporta información medible._
 
@@ -57,7 +57,7 @@ _Sharpe sobre retorno total (sin tasa libre), períodos mensuales no solapados, 
 ## Hoy en una pantalla
 
 - **Régimen de mercado:** 🔴 **rojo** (puntaje 5/10). Volatilidad EWMA anualizada del benchmark: rojo; VIX: amarillo; Caída desde el máximo de 52 semanas: amarillo; Distancia a la media de 200 ruedas: amarillo; Spread high yield (pp): verde.
-  - Prueba histórica de la regla de exposición: Regla de exposición (100% verde, 50% amarillo, 25% rojo; costo 0.05%) vs comprar y mantener sobre 119 períodos no solapados de 21 ruedas: Sharpe 0.98 vs 0.86; diferencia +0.12 (IC95% -0.37 a +0.43, p=0.37). NO mejora el Sharpe de forma significativa: solo reduce el drawdown (máximo drawdown -16% vs -34%) a costa de menor retorno anualizado (11.1% vs 14.3%).
+  - Prueba histórica de la regla de exposición: Regla de exposición (100% verde, 50% amarillo, 25% rojo; costo 0.05%) vs comprar y mantener sobre 119 períodos no solapados de 21 ruedas: Sharpe 0.97 vs 0.83; diferencia +0.14 (IC95% -0.36 a +0.45, p=0.35). NO mejora el Sharpe de forma significativa: solo reduce el drawdown (máximo drawdown -16% vs -34%) a costa de menor retorno anualizado (11.2% vs 14.5%).
 - **Eventos de riesgo en los próximos 7 días:** Resultados trimestrales de CRM (trimestre Oct/2026), después del cierre (2026-12-02, CRM).
 - **Alertas:** 0 altas, 0 medias, 10 informativas.
 - **Qué dicen los datos:** Ningún criterio de selección ha mostrado ventaja estadística fuera de muestra; lo validado es el riesgo (rangos y caídas). Las listas ordenan por criterio y no son una recomendación.
@@ -65,45 +65,45 @@ _Sharpe sobre retorno total (sin tasa libre), períodos mensuales no solapados, 
 
 ## Predicciones por probabilidad (S&P 100)
 
-Panel interactivo: https://delarge95.github.io/trading-lab/ · 101 acciones · datos al 2026-11-25.
+Panel interactivo: https://delarge95.github.io/trading-lab/ · 101 acciones · datos al 2026-11-27.
 
 ### ¿Hay ventaja estadística? (validación fuera de muestra, walk-forward con purga)
 
 | Objetivo | Tasa base | Brier skill [IC95%] | AUC | IC de rango [IC95%] | Veredicto |
 |---|---|---|---|---|---|
-| Sube en 1 semana | 54% | +0.21% [-0.18, +0.57] | 0.496 | -0.014 [-0.037, +0.008] | Sin ventaja demostrada: usar la tasa base como referencia |
-| Sube en 1 mes | 56% | +0.63% [-0.42, +1.69] | 0.477 | -0.012 [-0.051, +0.026] | Sin ventaja demostrada: usar la tasa base como referencia |
-| Sube en 3 meses | 60% | +1.37% [-1.20, +3.75] | 0.469 | -0.057 [-0.120, +0.004] | Sin ventaja demostrada: usar la tasa base como referencia |
-| Supera a SPY en 1 mes | 48% | +0.27% [-0.07, +0.61] | 0.507 | +0.008 [-0.028, +0.041] | Sin ventaja demostrada: usar la tasa base como referencia |
+| Sube en 1 semana | 54% | +0.15% [-0.21, +0.49] | 0.502 | -0.010 [-0.029, +0.011] | Sin ventaja demostrada: usar la tasa base como referencia |
+| Sube en 1 mes | 56% | +0.58% [-0.39, +1.59] | 0.489 | -0.030 [-0.073, +0.014] | Sin ventaja demostrada: usar la tasa base como referencia |
+| Sube en 3 meses | 60% | +1.28% [-1.20, +3.59] | 0.478 | -0.051 [-0.116, +0.014] | Sin ventaja demostrada: usar la tasa base como referencia |
+| Supera a SPY en 1 mes | 48% | +0.32% [-0.08, +0.70] | 0.507 | +0.006 [-0.027, +0.040] | Sin ventaja demostrada: usar la tasa base como referencia |
 
 _Brier skill > 0 con IC que excluye 0 = el modelo supera a la tasa base. Si no, la probabilidad calibrada se reduce a la tasa base (que además está inflada por sesgo de supervivencia: el universo son los miembros actuales del índice)._
 
 ### Rangos de retorno y riesgo de caída (lo que sí se puede estimar)
 
-- 21 ruedas: el rango P10–P90 cubrió 78.5% de los casos reales (IC95% 76.0–80.9%, objetivo 80%)
-- 63 ruedas: el rango P10–P90 cubrió 77.6% de los casos reales (IC95% 73.5–81.2%, objetivo 80%)
+- 21 ruedas: el rango P10–P90 cubrió 78.7% de los casos reales (IC95% 76.3–81.1%, objetivo 80%)
+- 63 ruedas: el rango P10–P90 cubrió 77.6% de los casos reales (IC95% 73.4–81.2%, objetivo 80%)
 
 | Mayor riesgo de caída >10% a 1 mes | Prob. | Rango 1m (P10 / P50 / P90) | Vol. 63d |
 |---|---|---|---|
-| INTC | 37% | -37.5% / 3.9% / 61.6% | 103% |
-| NVDA | 35% | -27.6% / 13.6% / 79.1% | 76% |
-| AMD | 34% | -29.0% / 5.8% / 75.8% | 90% |
-| ORCL | 31% | -25.3% / 3.7% / 45.6% | 69% |
-| NOW | 31% | -23.0% / 5.6% / 35.8% | 78% |
-| QCOM | 30% | -21.0% / 1.5% / 35.8% | 59% |
-| TXN | 30% | -20.5% / 5.0% / 34.6% | 54% |
-| TSLA | 29% | -20.4% / 2.0% / 38.0% | 53% |
+| INTC | 36% | -37.0% / 3.9% / 60.4% | 104% |
+| NVDA | 34% | -26.9% / 13.2% / 75.8% | 75% |
+| AMD | 34% | -28.6% / 5.7% / 73.9% | 90% |
+| ORCL | 31% | -24.9% / 3.6% / 44.3% | 69% |
+| NOW | 31% | -22.6% / 5.5% / 34.6% | 77% |
+| QCOM | 30% | -21.6% / 1.5% / 37.0% | 60% |
+| TXN | 29% | -20.3% / 5.0% / 34.2% | 54% |
+| TSLA | 29% | -20.7% / 2.0% / 38.7% | 54% |
 
 ### Laboratorio de reglas de selección (backtest histórico vs igual ponderado)
 
 | Regla | Sharpe [IC95%] | Exceso anual vs EW | p (Holm) | DSR | Máx. drawdown |
 |---|---|---|---|---|---|
-| Momentum 12-1 (mayor retorno de 12 a 1 meses) | 1.08 [0.44, 1.72] | +9.8% | 1.00 | 1.00 | -24% |
-| Baja volatilidad (menor volatilidad de 63 ruedas) | 0.89 [0.24, 1.53] | -4.9% | 1.00 | 0.99 | -19% |
-| Reversión 1 mes (peor retorno de 21 ruedas) | 0.79 [0.14, 1.44] | +2.3% | 1.00 | 0.97 | -38% |
-| Cerca del máximo (menor distancia al máximo de 252 ruedas) | 0.77 [0.11, 1.44] | -5.6% | 1.00 | 0.97 | -19% |
+| Momentum 12-1 (mayor retorno de 12 a 1 meses) | 1.00 [0.36, 1.64] | +7.8% | 1.00 | 0.99 | -24% |
+| Baja volatilidad (menor volatilidad de 63 ruedas) | 0.92 [0.26, 1.59] | -5.2% | 1.00 | 0.99 | -15% |
+| Reversión 1 mes (peor retorno de 21 ruedas) | 0.91 [0.31, 1.51] | +5.2% | 1.00 | 0.99 | -34% |
+| Cerca del máximo (menor distancia al máximo de 252 ruedas) | 0.60 [-0.06, 1.26] | -8.2% | 1.00 | 0.89 | -27% |
 
-**Veredicto:** Ninguna de las 4 reglas supera al igual ponderado del universo con significancia estadística (Holm, alfa 5%). La mejor diferencia de Sharpe es +0.02 (mom12_1, p Holm 1.00); la diferencia no se distingue del azar.
+**Veredicto:** Ninguna de las 4 reglas supera al igual ponderado del universo con significancia estadística (Holm, alfa 5%). La mejor diferencia de Sharpe es -0.06 (mom12_1, p Holm 1.00); la diferencia no se distingue del azar.
 
 - _Sesgo de supervivencia: el universo son los miembros ACTUALES del S&P 100, lo que infla todos los retornos históricos (también los del EW y los de las reglas); las diferencias entre reglas y EW están menos sesgadas, pero no libres de sesgo._
 - _Sin impuestos ni deslizamiento más allá del costo fijo por rotación; el EW y SPY se muestran sin costo (sesgo conservador contra las reglas)._
@@ -115,23 +115,23 @@ _Brier skill > 0 con IC que excluye 0 = el modelo supera a la tasa base. Si no, 
 Ningún criterio de selección ha mostrado ventaja estadística fuera de muestra; lo validado es el riesgo (rangos y caídas). Las listas ordenan por criterio y no son una recomendación.
 
 **Menor riesgo de caída >10% a 1 mes** — evidencia: _validado_
-  - Mejor perfil según este criterio: BRK-B (7.1%), DUK (8.1%), SO (8.2%), LIN (8.5%), KO (8.9%)
-  - Peor perfil según este criterio: INTC (36.7%), NVDA (34.5%), AMD (34.3%), ORCL (31.4%), NOW (31.2%)
+  - Mejor perfil según este criterio: BRK-B (6.9%), DUK (7.9%), SO (8.1%), LIN (8.7%), KO (8.8%)
+  - Peor perfil según este criterio: INTC (36.2%), NVDA (33.9%), AMD (33.8%), ORCL (30.9%), NOW (30.6%)
 
 **Menor volatilidad de 63 ruedas** — evidencia: _validado_
-  - Mejor perfil según este criterio: BRK-B (14.9%), LIN (16.6%), DUK (16.6%), SO (17.3%), KO (17.4%)
-  - Peor perfil según este criterio: INTC (103.0%), AMD (90.0%), NOW (77.9%), NVDA (75.8%), ORCL (68.7%)
+  - Mejor perfil según este criterio: BRK-B (14.9%), DUK (16.6%), LIN (16.7%), SO (17.2%), KO (17.4%)
+  - Peor perfil según este criterio: INTC (103.6%), AMD (90.4%), NOW (77.2%), NVDA (75.4%), ORCL (69.0%)
 
 **Mejor asimetría del rango a 1 mes (P90 / |P10|)** — evidencia: _no probado aquí_
-  - Mejor perfil según este criterio: NVDA (2.87), AMD (2.61), AVGO (2.37), WMT (2.02), MSFT (1.91)
-  - Peor perfil según este criterio: UPS (0.93), NKE (1.02), CVS (1.03), VZ (1.03), CMCSA (1.05)
+  - Mejor perfil según este criterio: NVDA (2.81), AMD (2.59), AVGO (2.37), WMT (2.01), MSFT (1.90)
+  - Peor perfil según este criterio: UPS (0.93), NKE (1.02), CVS (1.02), VZ (1.03), CMCSA (1.05)
 
 **Mayor probabilidad calibrada de subir a 1 mes** — evidencia: _sin ventaja demostrada_
   - Si no hay ventaja estadística, todas las probabilidades se reducen a la tasa base. Sin dispersión entre acciones: no se muestra un orden porque sería ruido.
 
 **Mayor momentum 12-1** — evidencia: _sin ventaja demostrada_
-  - Mejor perfil según este criterio: INTC (161.9%), AMD (160.5%), TXN (94.8%), TGT (79.9%), COP (72.7%)
-  - Peor perfil según este criterio: INTU (-49.0%), CHTR (-47.3%), NFLX (-41.6%), NKE (-37.4%), ORCL (-34.0%)
+  - Mejor perfil según este criterio: AMD (180.6%), INTC (166.6%), TXN (94.7%), TGT (76.8%), COP (75.9%)
+  - Peor perfil según este criterio: INTU (-48.6%), CHTR (-47.5%), NFLX (-40.6%), NKE (-39.7%), TMUS (-26.9%)
 
 **Mayor margen operativo (TTM)** — evidencia: _sin ventaja demostrada_
   - Mejor perfil según este criterio: NVDA (65.2%), V (61.2%), MA (58.6%), AVGO (48.0%), MSFT (47.1%)
@@ -150,10 +150,10 @@ Ningún criterio de selección ha mostrado ventaja estadística fuera de muestra
 
 **Selecciones de las reglas hoy** (con su historial frente al igual ponderado):
 
-- Momentum 12-1 (mayor retorno de 12 a 1 meses) [sin ventaja demostrada, exceso anual histórico +9.8%]: INTC, AMD, TXN, TGT, COP, XOM, CVX, CSCO, MRK, FDX
-- Baja volatilidad (menor volatilidad de 63 ruedas) [sin ventaja demostrada, exceso anual histórico -4.9%]: BRK-B, LIN, DUK, SO, KO, SPG, COST, NEE, PG, PFE
-- Reversión 1 mes (peor retorno de 21 ruedas) [sin ventaja demostrada, exceso anual histórico +2.3%]: INTC, NOW, NVDA, AMD, CAT, ORCL, CRM, PLTR, INTU, UNH
-- Cerca del máximo (menor distancia al máximo de 252 ruedas) [sin ventaja demostrada, exceso anual histórico -5.6%]: DIS, DUK, MDLZ, PG, AAPL, SPG, COST, GILD, CL, AMGN
+- Momentum 12-1 (mayor retorno de 12 a 1 meses) [sin ventaja demostrada, exceso anual histórico +7.8%]: AMD, INTC, TXN, TGT, COP, XOM, CVX, CSCO, LMT, FDX
+- Baja volatilidad (menor volatilidad de 63 ruedas) [sin ventaja demostrada, exceso anual histórico -5.2%]: BRK-B, DUK, LIN, SO, KO, SPG, COST, NEE, PG, PFE
+- Reversión 1 mes (peor retorno de 21 ruedas) [sin ventaja demostrada, exceso anual histórico +5.2%]: INTC, NOW, NVDA, AMD, ORCL, CAT, CRM, INTU, GOOGL, UNH
+- Cerca del máximo (menor distancia al máximo de 252 ruedas) [sin ventaja demostrada, exceso anual histórico -8.2%]: AAPL, COST, DIS, DUK, SPG, MDLZ, PG, AMGN, SBUX, WMT
 
 ### Libro de picks hacia adelante (simulado, sin dinero real)
 
@@ -166,7 +166,7 @@ Ningún criterio de selección ha mostrado ventaja estadística fuera de muestra
 
 ### Alertas
 
-- **[info]** Mayor riesgo de caída >10% a 21 ruedas: INTC, NVDA, AMD — Probabilidad calibrada de caída mayor a 10% a 21 ruedas (y P(sube) a 21 ruedas entre paréntesis): INTC 36.7% (P(sube) 56.1%); NVDA 34.5% (P(sube) 56.1%); AMD 34.3% (P(sube) 56.1%).
+- **[info]** Mayor riesgo de caída >10% a 21 ruedas: INTC, NVDA, AMD — Probabilidad calibrada de caída mayor a 10% a 21 ruedas (y P(sube) a 21 ruedas entre paréntesis): INTC 36.2% (P(sube) 56.1%); NVDA 33.9% (P(sube) 56.1%); AMD 33.8% (P(sube) 56.1%).
 - **[info]** AMZN: en el top de 4 gestores — AMAZON COM INC aparece en el top 10 de Pershing Square, Appaloosa, Baupost Group y Duquesne Family Office (peso medio 13.8%).
 - **[info]** FERG: posición nueva en el top de 1 gestor (13F al 2026-09-30) — Trian Fund Management abrió FERGUSON ENTERPRISES INC en su top 10 en el trimestre al 2026-09-30. Los datos del 13F tienen hasta ~45 días de retraso.
 - **[info]** GOOG: en el top de 5 gestores — ALPHABET INC aparece en el top 10 de Berkshire Hathaway, Pershing Square, Appaloosa, Baupost Group y Himalaya Capital (peso medio 7.3%).
@@ -185,7 +185,7 @@ Ningún criterio de selección ha mostrado ventaja estadística fuera de muestra
 | MSFT | 0 | 0 | 0 | 0 | $0 | $74.8M |
 | NVDA | 0 | 0 | 0 | 0 | $0 | $972.1M |
 | AMZN | 0 | 0 | 0 | 0 | $0 | $18.5M |
-| GOOGL | 0 | 0 | 0 | 0 | $0 | $169.2K |
+| GOOGL | 0 | 0 | 0 | 0 | $0 | $141.5K |
 | BRK-B | 2 | 0 | 0 | 2 | $250.2K | $20.0M |
 
 _Solo las compras oportunistas tienen respaldo académico (rutinarias ≈ 0)._
@@ -193,7 +193,7 @@ _Solo las compras oportunistas tienen respaldo académico (rutinarias ≈ 0)._
 
 ## Gestores (13F, último trimestre disponible)
 
-### Berkshire Hathaway — trimestre 2026-09-30 (presentado 2026-11-16, 57 días)
+### Berkshire Hathaway — trimestre 2026-09-30 (presentado 2026-11-16, 58 días)
 Valor total $304.2B, 30 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -205,7 +205,7 @@ Valor total $304.2B, 30 posiciones.
 | BANK OF AMER CORP | 8.2% | -6% |
 | CHEVRON CORPORATION | 5.7% | = |
 
-### Pershing Square — trimestre 2026-03-31 (presentado 2026-05-15, 240 días) ⚠ **13F atrasado**
+### Pershing Square — trimestre 2026-03-31 (presentado 2026-05-15, 241 días) ⚠ **13F atrasado**
 Valor total $13.7B, 11 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -219,7 +219,7 @@ Valor total $13.7B, 11 posiciones.
 
 Cerradas: HILTON WORLDWIDE HLDGS INC
 
-### Appaloosa — trimestre 2026-09-30 (presentado 2026-11-16, 57 días)
+### Appaloosa — trimestre 2026-09-30 (presentado 2026-11-16, 58 días)
 Valor total $7.6B, 24 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -233,7 +233,7 @@ Valor total $7.6B, 24 posiciones.
 
 Cerradas: ADVANCED MICRO DEVICES INC, BROADCOM INC, QUALCOMM INC
 
-### Third Point — trimestre 2026-09-30 (presentado 2026-11-16, 57 días)
+### Third Point — trimestre 2026-09-30 (presentado 2026-11-16, 58 días)
 Valor total $4.5B, 38 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -247,7 +247,7 @@ Valor total $4.5B, 38 posiciones.
 
 Cerradas: WARNER BROS DISCOVERY INC, AMAZON COM INC, NORFOLK SOUTHN CORP
 
-### Baupost Group — trimestre 2026-09-30 (presentado 2026-11-13, 57 días)
+### Baupost Group — trimestre 2026-09-30 (presentado 2026-11-13, 58 días)
 Valor total $5.0B, 21 posiciones. _(valores declarados en miles; reescalados)_
 
 | Posición | Peso | Cambio acciones |
@@ -261,7 +261,7 @@ Valor total $5.0B, 21 posiciones. _(valores declarados en miles; reescalados)_
 
 Cerradas: TELEFLEX INCORPORATED, NORWEGIAN CRUISE LINE HLDGS, LIBERTY GLOBAL LTD
 
-### Duquesne Family Office — trimestre 2026-09-30 (presentado 2026-11-16, 57 días)
+### Duquesne Family Office — trimestre 2026-09-30 (presentado 2026-11-16, 58 días)
 Valor total $4.1B, 60 posiciones. _(valores declarados en miles; reescalados)_
 
 | Posición | Peso | Cambio acciones |
@@ -275,7 +275,7 @@ Valor total $4.1B, 60 posiciones. _(valores declarados en miles; reescalados)_
 
 Cerradas: Alphabet Inc, United Airls Hldgs Inc, Sandisk Corp
 
-### Himalaya Capital — trimestre 2026-09-30 (presentado 2026-11-16, 57 días)
+### Himalaya Capital — trimestre 2026-09-30 (presentado 2026-11-16, 58 días)
 Valor total $3.8B, 8 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -287,7 +287,7 @@ Valor total $3.8B, 8 posiciones.
 | EAST WEST BANCORP INC | 9.1% | = |
 | TENCENT MUSIC ENTERTAINM | 3.1% | +125% |
 
-### Trian Fund Management — trimestre 2026-09-30 (presentado 2026-11-16, 57 días)
+### Trian Fund Management — trimestre 2026-09-30 (presentado 2026-11-16, 58 días)
 Valor total $2.6B, 8 posiciones.
 
 | Posición | Peso | Cambio acciones |
@@ -327,12 +327,12 @@ _*Años de historia necesarios para detectar con 80% de potencia un alfa de 3% a
 | Tasa Treasury 10 años (%) | 2026-11-24 | 4.91 | -0.09 |
 | Tasa Treasury 2 años (%) | 2026-11-24 | 4.63 | -0.06 |
 | Pendiente curva 10a-2a (pp) | 2026-11-25 | 0.24 | -0.08 |
-| VIX | 2026-11-24 | 26.36 | +7.97 |
-| Spread high yield (pp) | 2026-11-24 | 3.72 | +0.42 |
+| VIX | 2026-11-26 | 26.8 | +9.89 |
+| Spread high yield (pp) | 2026-11-26 | 3.77 | +0.63 |
 
 ## Seguimiento de predicciones
 
-Sin predicciones cerradas aún (64 abiertas). Cada predicción se evalúa a su vencimiento en `data/predictions.csv`.
+Sin predicciones cerradas aún (72 abiertas). Cada predicción se evalúa a su vencimiento en `data/predictions.csv`.
 
 ---
 _Herramienta de investigación, no asesoría financiera._
